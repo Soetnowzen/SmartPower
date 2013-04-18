@@ -5,7 +5,7 @@ import org.json.*;
 public class User {
 	private String userName;
 	private String password;
-	Boolean loggedIn = false;
+	boolean loggedIn = false;
 	public String getUserName(){
 		return this.userName;
 	}
@@ -15,7 +15,7 @@ public class User {
 		String result = Server.sendAndRecieve(message);
 		try {
 			JSONObject data = new JSONObject(result);
-			if (data.get("User") == userName){
+			if (data.getString("User") == userName){
 				loggedIn = data.getBoolean("Login");
 			}
 		} catch (JSONException e) {
