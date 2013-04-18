@@ -63,6 +63,7 @@ public class GraphView extends View {
 		mDataPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		mDataPaint.setColor(mDataColor);
 		mDataPaint.setStyle(Paint.Style.STROKE);
+		mDataPaint.setStrokeWidth(2f);
 		
 		mDataFillPaint = new Paint();
 		mDataFillPaint.setColor(mFillColor);
@@ -82,8 +83,6 @@ public class GraphView extends View {
 		
 		drawAxis(canvas);
 		drawSegments(canvas);
-		
-
 		
 		// TODO: Use real implementation - this is only test data
 		ArrayList<Float> data = new ArrayList<Float>();
