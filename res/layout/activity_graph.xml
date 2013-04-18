@@ -18,6 +18,8 @@
         app:ySegments="3" 
         app:segmentColor="#DDDDDD"
         app:dataColor="#FF3333"
-        app:axisColor="#000000"/>
+        app:axisColor="#000000"
+        app:fillData="true"
+        app:fillColor="#30FF0000"/>
 
 </RelativeLayout>

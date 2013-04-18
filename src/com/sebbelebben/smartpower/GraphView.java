@@ -18,6 +18,7 @@ public class GraphView extends View {
 	
 	// Data for the graph lines
 	private Paint mDataPaint;
+	private Paint mDataFillPaint;
 	private Paint mSegmentPaint;
 	private Paint mAxisPaint;
 	
@@ -31,6 +32,8 @@ public class GraphView extends View {
 	private int mSegmentColor;
 	private int mDataColor;
 	private int mAxisColor;
+	private boolean mFillData;
+	private int mFillColor;
 	
 	public GraphView(Context context) {
 		super(context);
@@ -50,6 +53,8 @@ public class GraphView extends View {
 		mSegmentColor = attributes.getColor(R.styleable.GraphView_segmentColor, Color.BLACK);
 		mDataColor = attributes.getColor(R.styleable.GraphView_dataColor, Color.BLACK);
 		mAxisColor = attributes.getColor(R.styleable.GraphView_axisColor, Color.BLACK);
+		mFillData = attributes.getBoolean(R.styleable.GraphView_fillData, false);
+		mFillColor = attributes.getColor(R.styleable.GraphView_fillColor, Color.BLACK);
 		
 		init();
 	}
@@ -58,6 +63,10 @@ public class GraphView extends View {
 		mDataPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		mDataPaint.setColor(mDataColor);
 		mDataPaint.setStyle(Paint.Style.STROKE);
+		
+		mDataFillPaint = new Paint();
+		mDataFillPaint.setColor(mFillColor);
+		mDataFillPaint.setStyle(Paint.Style.FILL);
 		
 		mSegmentPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		mSegmentPaint.setColor(mSegmentColor);
@@ -140,6 +149,13 @@ public class GraphView extends View {
 		
 		for(int i = 1; i < data.size(); i++) {	
 			dataPath.lineTo(i * xDist, getHeight() - (data.get(i) * scaleY));
+		}
+		
+		
+		
+		if(mFillData) {
+			dataPath.lineTo(getWidth(), getHeight());
+			canvas.drawPath(dataPath, mDataFillPaint);
 		}
 		
 		canvas.drawPath(dataPath, mDataPaint);

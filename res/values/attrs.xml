@@ -10,5 +10,7 @@
         <attr name="segmentColor" format="color" />
         <attr name="dataColor" format="color" />
         <attr name="axisColor" format="color" />
+        <attr name="fillData" format="boolean" />
+        <attr name="fillColor" format="color" />
     </declare-styleable>
 </resources>
