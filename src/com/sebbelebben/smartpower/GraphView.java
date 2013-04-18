@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -14,9 +16,21 @@ import android.view.View;
 public class GraphView extends View {
 	private Context mContext;
 	
-	// Data for the graph line
-	private Paint mLinePaint;
-	private int mLineColor = Color.RED;
+	// Data for the graph lines
+	private Paint mDataPaint;
+	private Paint mSegmentPaint;
+	private Paint mAxisPaint;
+	
+	// Attributes
+	private int mXAxisStart;
+	private int mXAxisEnd;
+	private int mYAxisStart;
+	private int mYAxisEnd;
+	private int mXSegments;
+	private int mYSegments;
+	private int mSegmentColor;
+	private int mDataColor;
+	private int mAxisColor;
 	
 	public GraphView(Context context) {
 		super(context);
@@ -26,17 +40,31 @@ public class GraphView extends View {
 	public GraphView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;
-		init();
-	}
-	public GraphView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
-		mContext = context;
+		TypedArray attributes = mContext.obtainStyledAttributes(attrs, R.styleable.GraphView);
+		mXAxisStart = attributes.getInteger(R.styleable.GraphView_xAxisStart, 10);
+		mXAxisEnd = attributes.getInteger(R.styleable.GraphView_xAxisEnd, 10);
+		mYAxisStart = attributes.getInteger(R.styleable.GraphView_yAxisStart, 10);
+		mYAxisEnd = attributes.getInteger(R.styleable.GraphView_yAxisEnd, 10);
+		mXSegments = attributes.getInteger(R.styleable.GraphView_xSegments, 3);
+		mYSegments = attributes.getInteger(R.styleable.GraphView_ySegments, 3);
+		mSegmentColor = attributes.getColor(R.styleable.GraphView_segmentColor, Color.BLACK);
+		mDataColor = attributes.getColor(R.styleable.GraphView_dataColor, Color.BLACK);
+		mAxisColor = attributes.getColor(R.styleable.GraphView_axisColor, Color.BLACK);
+		
 		init();
 	}
 	
 	private void init() {
-		mLinePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-		mLinePaint.setColor(mLineColor);
+		mDataPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		mDataPaint.setColor(mDataColor);
+		mDataPaint.setStyle(Paint.Style.FILL);
+		
+		mSegmentPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		mSegmentPaint.setColor(mSegmentColor);
+		
+		mAxisPaint = new Paint();
+		mAxisPaint.setColor(mAxisColor);
+		mAxisPaint.setStrokeWidth(2f);
 	}
 
 	@Override
@@ -44,9 +72,13 @@ public class GraphView extends View {
 		super.onDraw(canvas);
 		
 		drawAxis(canvas);
+		drawSegments(canvas);
+		
+
 		
 		// TODO: Use real implementation - this is only test data
 		ArrayList<Float> data = new ArrayList<Float>();
+		data.add(0.0f);
 		data.add(0.4f);
 		data.add(4.3f);
 		data.add(7.5f);
@@ -59,19 +91,34 @@ public class GraphView extends View {
 		int w = getWidth();
 		int h = getHeight();
 		
-		int startX = 10;
-		int stopX = w - 10;
-		int startY = h - 10;
-		int stopY = h - 10;
+		int startX = 0;
+		int stopX = w;
+		int startY = h;
+		int stopY = h;
 		
-		canvas.drawLine(startX, startY, stopX, stopY, mLinePaint);
+		canvas.drawLine(startX, startY, stopX, stopY, mAxisPaint);
 		
-		startX = 10;
-		stopX = 10;
-		startY = h - 10;
-		stopY = 10;
+		startX = 0;
+		stopX = 0;
+		startY = h;
+		stopY = 0;
 		
-		canvas.drawLine(startX, startY, stopX, stopY, mLinePaint);
+		canvas.drawLine(startX, startY, stopX, stopY, mAxisPaint);
+	}
+	
+	private void drawSegments(Canvas canvas) {
+		int w = getWidth();
+		int h = getHeight();
+		
+		float xSegmentInterval = w / mXSegments;
+		for(int i = 1; i < mXSegments; i++) {
+			canvas.drawLine(xSegmentInterval*i, 0, xSegmentInterval*i, h, mSegmentPaint);
+		}
+		
+		float ySegmentInterval = h / mYSegments;
+		for(int i = 1; i < mYSegments; i++) {
+			canvas.drawLine(0, ySegmentInterval*i, w, ySegmentInterval*i, mSegmentPaint);
+		}
 	}
 	
 	private void drawData(Canvas canvas, List<Float> data) {
@@ -92,7 +139,7 @@ public class GraphView extends View {
 			Float p1 = data.get(i);
 			Float p2 = data.get(i+1);
 			
-			canvas.drawLine(i * xDist, p1 * scaleY, i * xDist + xDist, p2 * scaleY, mLinePaint);
+			canvas.drawLine(i * xDist, getHeight() - (p1 * scaleY), i * xDist + xDist, getHeight() - (p2 * scaleY), mDataPaint);
 		}
 	}
 }

@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.sebbelebben.smartpower"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,6 +11,13 @@
 
     <com.sebbelebben.smartpower.GraphView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        app:xAxisStart="0"
+        app:xAxisEnd="10"
+        app:xSegments="3"
+        app:ySegments="3" 
+        app:segmentColor="#DDDDDD"
+        app:dataColor="#FF3333"
+        app:axisColor="#000000"/>
 
 </RelativeLayout>
