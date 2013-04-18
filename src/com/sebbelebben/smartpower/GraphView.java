@@ -57,7 +57,7 @@ public class GraphView extends View {
 	private void init() {
 		mDataPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		mDataPaint.setColor(mDataColor);
-		mDataPaint.setStyle(Paint.Style.FILL);
+		mDataPaint.setStyle(Paint.Style.STROKE);
 		
 		mSegmentPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		mSegmentPaint.setColor(mSegmentColor);
@@ -135,11 +135,13 @@ public class GraphView extends View {
 		
 		float scaleY = getHeight() / heighestY;
 		
-		for(int i = 0; i < data.size() - 1; i++) {
-			Float p1 = data.get(i);
-			Float p2 = data.get(i+1);
-			
-			canvas.drawLine(i * xDist, getHeight() - (p1 * scaleY), i * xDist + xDist, getHeight() - (p2 * scaleY), mDataPaint);
+		Path dataPath = new Path();
+		dataPath.moveTo(0, getHeight() - (data.get(0) * scaleY));
+		
+		for(int i = 1; i < data.size(); i++) {	
+			dataPath.lineTo(i * xDist, getHeight() - (data.get(i) * scaleY));
 		}
+		
+		canvas.drawPath(dataPath, mDataPaint);
 	}
 }
