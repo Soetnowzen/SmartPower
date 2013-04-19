@@ -12,5 +12,7 @@
         <attr name="axisColor" format="color" />
         <attr name="fillData" format="boolean" />
         <attr name="fillColor" format="color" />
+        <attr name="axisBackgroundColor" format="color" />
+        <attr name="dataBackgroundColor" format="color" />
     </declare-styleable>
 </resources>

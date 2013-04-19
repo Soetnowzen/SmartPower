@@ -10,16 +10,21 @@
     tools:context=".MainActivity" >
 
     <com.sebbelebben.smartpower.GraphView
+        android:id="@+id/graphview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:xAxisStart="0"
+        app:xAxisStart="3"
         app:xAxisEnd="10"
+        app:yAxisStart="0"
+        app:yAxisEnd="10"
         app:xSegments="3"
         app:ySegments="3" 
         app:segmentColor="#DDDDDD"
         app:dataColor="#FF3333"
         app:axisColor="#000000"
         app:fillData="true"
-        app:fillColor="#30FF0000"/>
+        app:fillColor="#30FF0000"
+        app:axisBackgroundColor="#FFFFFF"
+        app:dataBackgroundColor="#000000"/>
 
 </RelativeLayout>

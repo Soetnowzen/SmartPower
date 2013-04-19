@@ -17,10 +17,13 @@ public class GraphView extends View {
 	private Context mContext;
 	
 	// Data for the graph lines
+	private List<Point> mDataPoints = new ArrayList<Point>();
 	private Paint mDataPaint;
 	private Paint mDataFillPaint;
 	private Paint mSegmentPaint;
 	private Paint mAxisPaint;
+	private Paint mAxisBackgroundPaint;
+	private Paint mDataBackgroundPaint;
 	
 	// Attributes
 	private int mXAxisStart;
@@ -34,6 +37,9 @@ public class GraphView extends View {
 	private int mAxisColor;
 	private boolean mFillData;
 	private int mFillColor;
+	private int mAxisBackgroundColor;
+	private int mDataBackgroundColor;
+	
 	
 	// Misc
 	private int mXPadding = 20;
@@ -44,6 +50,7 @@ public class GraphView extends View {
 		mContext = context;
 		init();
 	}
+	
 	public GraphView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;
@@ -59,6 +66,8 @@ public class GraphView extends View {
 		mAxisColor = attributes.getColor(R.styleable.GraphView_axisColor, Color.BLACK);
 		mFillData = attributes.getBoolean(R.styleable.GraphView_fillData, false);
 		mFillColor = attributes.getColor(R.styleable.GraphView_fillColor, Color.BLACK);
+		mAxisBackgroundColor = attributes.getColor(R.styleable.GraphView_axisBackgroundColor, Color.BLACK);
+		mDataBackgroundColor = attributes.getColor(R.styleable.GraphView_dataBackgroundColor, Color.BLACK);
 		
 		init();
 	}
@@ -79,25 +88,33 @@ public class GraphView extends View {
 		mAxisPaint = new Paint();
 		mAxisPaint.setColor(mAxisColor);
 		mAxisPaint.setStrokeWidth(2f);
+		
+		mAxisBackgroundPaint = new Paint();
+		mAxisBackgroundPaint.setColor(mAxisBackgroundColor);
+		
+		mDataBackgroundPaint = new Paint();
+		mDataBackgroundPaint.setColor(mDataBackgroundColor);
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		
+		drawBackground(canvas);
 		drawSegments(canvas);
+		
+		if(mDataPoints.size() > 0) {
+			drawData(canvas);
+		}
 		drawAxis(canvas);
-		
-		
-		// TODO: Use real implementation - this is only test data
-		ArrayList<Float> data = new ArrayList<Float>();
-		data.add(0.0f);
-		data.add(0.4f);
-		data.add(4.3f);
-		data.add(7.5f);
-		data.add(1.2f);
-		data.add(0.2f);
-		drawData(canvas, data);
+	}
+	
+	public void SetDataPoints(List<Point> data) {
+		mDataPoints = data;
+	}
+	
+	public void AppendDataPoints(List<Point> data) {
+		mDataPoints.addAll(data);
 	}
 	
 	private void drawAxis(Canvas canvas) {
@@ -109,6 +126,7 @@ public class GraphView extends View {
 		int startY = h - mYPadding;
 		int stopY = h - mYPadding;
 		
+		canvas.drawRect(0, 0, mXPadding, h, mAxisBackgroundPaint);
 		canvas.drawLine(startX, startY, stopX, stopY, mAxisPaint);
 		
 		startX = mXPadding;
@@ -116,7 +134,12 @@ public class GraphView extends View {
 		startY = h - mYPadding;
 		stopY = 0;
 		
+		canvas.drawRect(0, h - mYPadding, w, h, mAxisBackgroundPaint);
 		canvas.drawLine(startX, startY, stopX, stopY, mAxisPaint);
+	}
+	
+	private void drawBackground(Canvas canvas) {
+		canvas.drawRect(0, 0, getWidth(), getHeight(), mDataBackgroundPaint);
 	}
 	
 	private void drawSegments(Canvas canvas) {
@@ -135,34 +158,61 @@ public class GraphView extends View {
 		}
 	}
 	
-	private void drawData(Canvas canvas, List<Float> data) {
-		// Calculate the X distance between each pair of points
-		float xDist = (getWidth() - mXPadding) / data.size();
+	private void drawData(Canvas canvas) {		
+		Path dataPath = new Path();
+		Point firstPoint = dataToCanvas(mDataPoints.get(0));
+		dataPath.moveTo(firstPoint.x, firstPoint.y);
 		
-		// Get the y-coordinate of the heighest point
-		float heighestY = 0;
-		for(Float point : data) {
-			if(heighestY < point) {
-				heighestY = point;
+		for(int i = 1; i < mDataPoints.size(); i++) {	
+			Point currentPoint = mDataPoints.get(i);
+			Point p = dataToCanvas(currentPoint);
+			dataPath.lineTo(p.x, p.y);
+		}
+		
+		/*
+		if(mFillData) {
+			Path fillPath = new Path();
+			fillPath.setFillType(Path.FillType.WINDING);
+			Point lastPoint = dataToCanvas(mDataPoints.get(mDataPoints.size() - 1));
+			fillPath.moveTo(firstPoint.x, mYPadding);
+			fillPath.addPath(dataPath);
+			
+			fillPath.lineTo(lastPoint.x, getHeight() - mYPadding);
+			canvas.drawPath(fillPath, mDataFillPaint);
+		}
+		*/
+		canvas.drawPath(dataPath, mDataPaint);
+	}
+	
+	private Point dataToCanvas(Point point) {
+		float xInterval = mXAxisEnd - mXAxisStart;
+		float yInterval = mYAxisEnd - mYAxisStart;
+		float x;
+		float y;
+		
+		x = point.x * (getWidth() - mXPadding) / xInterval + mXPadding - mXAxisStart * (getWidth() - mXPadding) / xInterval;
+		y = getHeight() - (point.y * ((getHeight() - mYPadding) / yInterval)) - mYPadding;
+		
+		return new Point(x, y);
+	}
+	
+	private boolean isInCanvas(Point point) {
+		if(point.x >= mXAxisStart && point.x <= mXAxisEnd) {
+			if(point.y >= mYAxisStart && point.y <= mYAxisEnd) {
+				return true;
 			}
 		}
 		
-		float scaleY = (getHeight() - mYPadding) / heighestY;
+		return false;
+	}
+	
+	public static class Point {
+		public float x;
+		public float y;
 		
-		Path dataPath = new Path();
-		dataPath.moveTo(mXPadding, getHeight() - (data.get(0) * scaleY) - mXPadding);
-		
-		for(int i = 1; i < data.size(); i++) {	
-			dataPath.lineTo(i * xDist + mXPadding, getHeight() - (data.get(i) * scaleY) - mYPadding);
+		public Point(float x, float y) {
+			this.x = x;
+			this.y = y;
 		}
-		
-		
-		
-		if(mFillData) {
-			dataPath.lineTo(getWidth(), getHeight() - mYPadding);
-			canvas.drawPath(dataPath, mDataFillPaint);
-		}
-		
-		canvas.drawPath(dataPath, mDataPaint);
 	}
 }
