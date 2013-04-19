@@ -35,6 +35,10 @@ public class GraphView extends View {
 	private boolean mFillData;
 	private int mFillColor;
 	
+	// Misc
+	private int mXPadding = 20;
+	private int mYPadding = 20;
+	
 	public GraphView(Context context) {
 		super(context);
 		mContext = context;
@@ -81,8 +85,9 @@ public class GraphView extends View {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 		
-		drawAxis(canvas);
 		drawSegments(canvas);
+		drawAxis(canvas);
+		
 		
 		// TODO: Use real implementation - this is only test data
 		ArrayList<Float> data = new ArrayList<Float>();
@@ -99,16 +104,16 @@ public class GraphView extends View {
 		int w = getWidth();
 		int h = getHeight();
 		
-		int startX = 0;
+		int startX = mXPadding;
 		int stopX = w;
-		int startY = h;
-		int stopY = h;
+		int startY = h - mYPadding;
+		int stopY = h - mYPadding;
 		
 		canvas.drawLine(startX, startY, stopX, stopY, mAxisPaint);
 		
-		startX = 0;
-		stopX = 0;
-		startY = h;
+		startX = mXPadding;
+		stopX = mXPadding;
+		startY = h - mYPadding;
 		stopY = 0;
 		
 		canvas.drawLine(startX, startY, stopX, stopY, mAxisPaint);
@@ -118,20 +123,21 @@ public class GraphView extends View {
 		int w = getWidth();
 		int h = getHeight();
 		
-		float xSegmentInterval = w / mXSegments;
+		float xSegmentInterval = (w - mXPadding)  / mXSegments + mXPadding;
 		for(int i = 1; i < mXSegments; i++) {
-			canvas.drawLine(xSegmentInterval*i, 0, xSegmentInterval*i, h, mSegmentPaint);
+			canvas.drawLine(xSegmentInterval*i, 0, xSegmentInterval*i, h - mYPadding, mSegmentPaint);
+			canvas.drawText("Hello", xSegmentInterval*i, h, mSegmentPaint);
 		}
 		
-		float ySegmentInterval = h / mYSegments;
+		float ySegmentInterval = (h - mYPadding) / mYSegments + mYPadding;
 		for(int i = 1; i < mYSegments; i++) {
-			canvas.drawLine(0, ySegmentInterval*i, w, ySegmentInterval*i, mSegmentPaint);
+			canvas.drawLine(mYPadding, ySegmentInterval*i, w, ySegmentInterval*i, mSegmentPaint);
 		}
 	}
 	
 	private void drawData(Canvas canvas, List<Float> data) {
 		// Calculate the X distance between each pair of points
-		float xDist = (float)getWidth() / data.size();
+		float xDist = (getWidth() - mXPadding) / data.size();
 		
 		// Get the y-coordinate of the heighest point
 		float heighestY = 0;
@@ -141,19 +147,19 @@ public class GraphView extends View {
 			}
 		}
 		
-		float scaleY = getHeight() / heighestY;
+		float scaleY = (getHeight() - mYPadding) / heighestY;
 		
 		Path dataPath = new Path();
-		dataPath.moveTo(0, getHeight() - (data.get(0) * scaleY));
+		dataPath.moveTo(mXPadding, getHeight() - (data.get(0) * scaleY) - mXPadding);
 		
 		for(int i = 1; i < data.size(); i++) {	
-			dataPath.lineTo(i * xDist, getHeight() - (data.get(i) * scaleY));
+			dataPath.lineTo(i * xDist + mXPadding, getHeight() - (data.get(i) * scaleY) - mYPadding);
 		}
 		
 		
 		
 		if(mFillData) {
-			dataPath.lineTo(getWidth(), getHeight());
+			dataPath.lineTo(getWidth(), getHeight() - mYPadding);
 			canvas.drawPath(dataPath, mDataFillPaint);
 		}
 		
