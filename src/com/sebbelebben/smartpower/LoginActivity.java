@@ -38,9 +38,10 @@ public class LoginActivity extends Activity {
 				PrintWriter output = null;
 				BufferedReader input = null;
 				try {
-					Socket s = new Socket("localhost", 39500);
-					output = new PrintWriter(s.getOutputStream(),true);
-					input = new BufferedReader(new InputStreamReader(s.getInputStream()));
+					Socket socket = new Socket("localhost", 39500);
+					//Socket socket = new Socket("bregell.mine.nu", 39500);
+					output = new PrintWriter(socket.getOutputStream(),true);
+					input = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 					output.println("Android#{User:"+username+", Password:"+password+"}:\n");
 					String inputMessage = input.readLine();
 					String tempUser = inputMessage.substring(14, username.length()+14);
@@ -50,6 +51,7 @@ public class LoginActivity extends Activity {
 					}
 				} catch(IOException error) {
 					error.toString();
+					//error.printStackTrace();
 				} finally {
 					output.close();
 					//input.close();
