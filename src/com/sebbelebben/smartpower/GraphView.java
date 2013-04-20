@@ -24,6 +24,7 @@ public class GraphView extends View {
 	private Paint mAxisPaint;
 	private Paint mAxisBackgroundPaint;
 	private Paint mDataBackgroundPaint;
+	private Paint mTextPaint;
 	
 	// Attributes
 	private int mXAxisStart;
@@ -39,6 +40,7 @@ public class GraphView extends View {
 	private int mFillColor;
 	private int mAxisBackgroundColor;
 	private int mDataBackgroundColor;
+	private int mTextColor;
 	
 	
 	// Misc
@@ -68,6 +70,7 @@ public class GraphView extends View {
 		mFillColor = attributes.getColor(R.styleable.GraphView_fillColor, Color.BLACK);
 		mAxisBackgroundColor = attributes.getColor(R.styleable.GraphView_axisBackgroundColor, Color.BLACK);
 		mDataBackgroundColor = attributes.getColor(R.styleable.GraphView_dataBackgroundColor, Color.BLACK);
+		mTextColor = attributes.getColor(R.styleable.GraphView_textColor, Color.BLACK);
 		
 		init();
 	}
@@ -94,6 +97,9 @@ public class GraphView extends View {
 		
 		mDataBackgroundPaint = new Paint();
 		mDataBackgroundPaint.setColor(mDataBackgroundColor);
+		
+		mTextPaint = new Paint();
+		mTextPaint.setColor(mTextColor);
 	}
 
 	@Override
@@ -107,6 +113,7 @@ public class GraphView extends View {
 			drawData(canvas);
 		}
 		drawAxis(canvas);
+		drawText(canvas);
 	}
 	
 	public void SetDataPoints(List<Point> data) {
@@ -147,14 +154,31 @@ public class GraphView extends View {
 		int h = getHeight();
 		
 		float xSegmentInterval = (w - mXPadding)  / mXSegments + mXPadding;
+		float xSegmentValue = (mXAxisEnd - mXAxisStart)/mXSegments;
 		for(int i = 1; i < mXSegments; i++) {
 			canvas.drawLine(xSegmentInterval*i, 0, xSegmentInterval*i, h - mYPadding, mSegmentPaint);
-			canvas.drawText("Hello", xSegmentInterval*i, h, mSegmentPaint);
+			canvas.drawText(String.valueOf(xSegmentValue * i), xSegmentInterval*i, h, mTextPaint);
 		}
 		
 		float ySegmentInterval = (h - mYPadding) / mYSegments + mYPadding;
 		for(int i = 1; i < mYSegments; i++) {
 			canvas.drawLine(mYPadding, ySegmentInterval*i, w, ySegmentInterval*i, mSegmentPaint);
+		}
+	}
+	
+	private void drawText(Canvas canvas) {
+		int w = getWidth();
+		int h = getHeight();
+		
+		float xSegmentInterval = (w - mXPadding)  / mXSegments + mXPadding;
+		float xSegmentValue = (mXAxisEnd - mXAxisStart)/mXSegments;
+		for(int i = 1; i < mXSegments; i++) {
+			canvas.drawText(String.valueOf(xSegmentValue * i), xSegmentInterval*i, h, mTextPaint);
+		}
+		
+		float ySegmentInterval = (h - mYPadding) / mYSegments + mYPadding;
+		for(int i = 1; i < mYSegments; i++) {
+			
 		}
 	}
 	

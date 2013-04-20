@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res/com.sebbelebben.smartpower"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,24 +7,31 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context=".MainActivity" >
 
     <com.sebbelebben.smartpower.GraphView
         android:id="@+id/graphview"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         app:xAxisStart="3"
         app:xAxisEnd="10"
         app:yAxisStart="0"
         app:yAxisEnd="10"
         app:xSegments="3"
         app:ySegments="3" 
-        app:segmentColor="#DDDDDD"
+        app:segmentColor="#333333"
         app:dataColor="#FF3333"
         app:axisColor="#000000"
         app:fillData="true"
         app:fillColor="#30FF0000"
         app:axisBackgroundColor="#FFFFFF"
-        app:dataBackgroundColor="#000000"/>
+        app:dataBackgroundColor="#000000"
+        app:textColor="#000000"
+        android:layout_weight="0.5"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.5" />
 
-</RelativeLayout>
+</LinearLayout>

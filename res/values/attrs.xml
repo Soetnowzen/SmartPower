@@ -14,5 +14,6 @@
         <attr name="fillColor" format="color" />
         <attr name="axisBackgroundColor" format="color" />
         <attr name="dataBackgroundColor" format="color" />
+        <attr name="textColor" format="color" />
     </declare-styleable>
 </resources>
