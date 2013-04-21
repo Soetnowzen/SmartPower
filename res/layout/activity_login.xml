@@ -14,9 +14,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
+        android:layout_marginBottom="16dp"
         android:ems="10"
-        android:hint="@string/username" >
+        android:hint="@string/usernamebox" >
         
     </EditText>
 
@@ -26,10 +26,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/usernamebox"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="16dp"
         android:ems="10"
         android:inputType="textPassword"
-        android:hint="@string/password" />
+        android:hint="@string/passwordbox" />
 
     <Button
         android:id="@+id/loginbutton"
@@ -37,7 +37,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/passwordbox"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="Button" />
+        android:text="@string/loginbutton" />
 
 </RelativeLayout>

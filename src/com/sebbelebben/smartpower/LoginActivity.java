@@ -81,7 +81,7 @@ public class LoginActivity extends Activity {
 		//If you're already logged in then skip this activity/screen
 		if(mUser != null && mUser.loginStatus()) {
 			startActivity(new Intent(this, MainActivity.class));
-		} else { //If the user ain't logged in then the password & username is entered into the boxes for them
+		} else if(mUser != null){ //If the user ain't logged in then the password & username is entered into the boxes for them
 			mUsernameBox.setText(mUser.getUserName());
 			mPasswordBox.setText(mUser.getPassword());
 		}
@@ -92,21 +92,6 @@ public class LoginActivity extends Activity {
 		Editor edit = sp.edit();
 		edit.putString("USER", value);
 		edit.commit();
-	}
-	
-	@Override
-	protected void onStop() {
-		super.onStop();
-		try {
-			JSONObject jUser = new JSONObject();
-			jUser.put("Username", mUser.getUserName());
-			jUser.put("Password", mUser.getPassword());
-			jUser.put("Loggged in", mUser.loginStatus());
-			savePrefs(jUser.toString());
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	@Override
