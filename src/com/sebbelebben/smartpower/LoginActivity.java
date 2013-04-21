@@ -32,25 +32,29 @@ public class LoginActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
-		//Checks the old preferences
-		loadPrefs();
 		
 		//Finds the loginbutton on the login screen
 		Button loginButton = (Button) findViewById(R.id.loginbutton);
 		mUsernameBox = (EditText) findViewById(R.id.usernamebox);
 		mPasswordBox = (EditText) findViewById(R.id.passwordbox);
-		
+
+		//Checks the old preferences
+		loadPrefs();
 		
 		//Listens for when the button is pressed & takes the username & password...
 		loginButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
 				String username = mUsernameBox.getText().toString();
 				String password = mPasswordBox.getText().toString();
-				//Log.i("SmartPower",username +", "+password);
 				
+				//Initiates the User with the new username & password
 				mUser = new User(username, password);
 				mUser.logIn();
+				
+				//If login was successful
 				if(mUser.loginStatus()) {
+					//Creates a JSONObject to save the user so the username & password will be needed to be 
+					//input every time
 					JSONObject jUser = new JSONObject();
 					try {
 						jUser.put("Username", mUser.getUserName());
@@ -63,11 +67,6 @@ public class LoginActivity extends Activity {
 						e.printStackTrace();
 					}
 				}
-				//Android#{User:<username>,Password:<password>}:\n
-				//"Android#{User:"+Username+", Password:"+Password+"}:\n"
-				
-				//Android#{User:<username>,Login:<true/false>}
-				//*,Login:true*
 			}
 			
 		});
@@ -90,6 +89,9 @@ public class LoginActivity extends Activity {
 		//If you're already logged in then skip this activity/screen
 		if(mUser != null && mUser.loginStatus()) {
 			startActivity(new Intent(this, MainActivity.class));
+		} else { //If the user ain't logged in then the password & username is entered into the boxes for them
+			mUsernameBox.setText(mUser.getUserName());
+			mPasswordBox.setText(mUser.getPassword());
 		}
 	}
 
@@ -103,8 +105,8 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		JSONObject jUser = new JSONObject();
 		try {
+			JSONObject jUser = new JSONObject();
 			jUser.put("Username", mUser.getUserName());
 			jUser.put("Password", mUser.getPassword());
 			jUser.put("Loggged in", mUser.loginStatus());
@@ -113,14 +115,6 @@ public class LoginActivity extends Activity {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// We need an Editor object to make preference changes.
-	    // All objects are from android.context.Context
-	    /*SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-	    SharedPreferences.Editor editor = settings.edit();
-	    editor.putBoolean("silentMode", mSilentMode);
-
-	    // Commit the edits!
-	    editor.commit();*/
 	}
 
 	@Override
