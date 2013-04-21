@@ -1,6 +1,5 @@
 package com.sebbelebben.smartpower;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,8 +30,8 @@ public class GraphView extends View {
 	// Attributes
 	private float mXAxisStart;
 	private float mXAxisEnd;
-	private int mYAxisStart;
-	private int mYAxisEnd;
+	private float mYAxisStart;
+	private float mYAxisEnd;
 	private int mXSegments;
 	private int mYSegments;
 	private int mSegmentColor;
@@ -75,6 +73,7 @@ public class GraphView extends View {
 		mAxisBackgroundColor = attributes.getColor(R.styleable.GraphView_axisBackgroundColor, Color.BLACK);
 		mDataBackgroundColor = attributes.getColor(R.styleable.GraphView_dataBackgroundColor, Color.BLACK);
 		mTextColor = attributes.getColor(R.styleable.GraphView_textColor, Color.BLACK);
+		attributes.recycle();
 		
 		init();
 	}
@@ -118,14 +117,17 @@ public class GraphView extends View {
 		}
 		drawAxis(canvas);
 		drawText(canvas);
+		drawForeground(canvas);
 	}
 	
 	public void SetDataPoints(List<Point> data) {
 		mDataPoints = data;
+		invalidate();
 	}
 	
 	public void AppendDataPoints(List<Point> data) {
 		mDataPoints.addAll(data);
+		invalidate();
 	}
 	
 	private void drawAxis(Canvas canvas) {
@@ -153,20 +155,25 @@ public class GraphView extends View {
 		canvas.drawRect(0, 0, getWidth(), getHeight(), mDataBackgroundPaint);
 	}
 	
+	private void drawForeground(Canvas canvas) {
+		// Draw the corner that hides data text
+		canvas.drawRect(0, getHeight() - mYPadding, mXPadding, getHeight(), mAxisBackgroundPaint);
+	}
+	
 	private void drawSegments(Canvas canvas) {
 		int w = getWidth();
 		int h = getHeight();
 		
-		float xSegmentInterval = (w - mXPadding)  / (mXSegments);
-		float xSegmentValue = (mXAxisEnd - mXAxisStart)/mXSegments;
-		for(int i = 1; i < mXSegments; i++) {
-			canvas.drawLine(xSegmentInterval*i + mXPadding, 0, xSegmentInterval*i + mXPadding, h - mYPadding, mSegmentPaint);
-			canvas.drawText(String.valueOf(xSegmentValue * i), xSegmentInterval*i, h, mTextPaint);
+		for(float i = mXAxisStart - (mXAxisStart % mXSegments); i < mXAxisEnd; i+=mXSegments) {
+			Point segmentPoint = new Point(i, h);
+			Point newP = dataToCanvas(segmentPoint);
+			canvas.drawLine(newP.x, 0, newP.x, h - mYPadding, mSegmentPaint);
 		}
 		
-		float ySegmentInterval = (h - mYPadding) / mYSegments + mYPadding;
-		for(int i = 1; i < mYSegments; i++) {
-			canvas.drawLine(mYPadding, ySegmentInterval*i, w, ySegmentInterval*i, mSegmentPaint);
+		for(float i = mYAxisStart - (mYAxisStart % mYSegments); i < mYAxisEnd; i+=mYSegments) {
+			Point segmentPoint = new Point(mXAxisStart, i);
+			Point newP = dataToCanvas(segmentPoint);
+			canvas.drawLine(newP.x, newP.y, newP.x + w, newP.y, mSegmentPaint);
 		}
 	}
 	
@@ -174,15 +181,16 @@ public class GraphView extends View {
 		int w = getWidth();
 		int h = getHeight();
 		
-		float xSegmentInterval = (w - mXPadding)  / (mXSegments);
-		float xSegmentValue = (float) (mXAxisEnd - mXAxisStart)/mXSegments;
-		for(int i = 0; i < mXSegments+1; i++) {
-			canvas.drawText(new DecimalFormat("#.##").format(xSegmentValue* i + mXAxisStart), xSegmentInterval*i + mXPadding, h, mTextPaint);
+		for(float i = mXAxisStart - (mXAxisStart % mXSegments); i < mXAxisEnd; i+=mXSegments) {
+			Point segmentPoint = new Point(i, h);
+			Point newP = dataToCanvas(segmentPoint);
+			canvas.drawText(String.valueOf(i), newP.x, h, mTextPaint);
 		}
 		
-		float ySegmentInterval = (h - mYPadding) / mYSegments + mYPadding;
-		for(int i = 1; i < mYSegments; i++) {
-			
+		for(float i = mYAxisStart - (mYAxisStart % mYSegments); i < mYAxisEnd; i+=mYSegments) {
+			Point segmentPoint = new Point(0, i);
+			Point newP = dataToCanvas(segmentPoint);
+			canvas.drawText(String.valueOf(i), 0, newP.y, mTextPaint);
 		}
 	}
 	
@@ -197,19 +205,23 @@ public class GraphView extends View {
 			dataPath.lineTo(p.x, p.y);
 		}
 		
-		/*
-		if(mFillData) {
-			Path fillPath = new Path();
-			fillPath.setFillType(Path.FillType.WINDING);
-			Point lastPoint = dataToCanvas(mDataPoints.get(mDataPoints.size() - 1));
-			fillPath.moveTo(firstPoint.x, mYPadding);
-			fillPath.addPath(dataPath);
-			
-			fillPath.lineTo(lastPoint.x, getHeight() - mYPadding);
-			canvas.drawPath(fillPath, mDataFillPaint);
-		}
-		*/
 		canvas.drawPath(dataPath, mDataPaint);
+		
+		if(mFillData) {
+			for(int i = 1; i < mDataPoints.size(); i++) {	
+				Path fillPath = new Path();
+				Point currentPoint = mDataPoints.get(i);
+				Point prevPoint = mDataPoints.get(i-1);
+				Point p = dataToCanvas(currentPoint);
+				Point p2 = dataToCanvas(prevPoint);
+				
+				fillPath.moveTo(p2.x, p2.y);
+				fillPath.lineTo(p.x, p.y);
+				fillPath.lineTo(p.x, getHeight() - mYPadding);
+				fillPath.lineTo(p2.x, getHeight() - mYPadding);
+				canvas.drawPath(fillPath, mDataFillPaint);
+			}
+		}
 	}
 	
 	private Point dataToCanvas(Point point) {
@@ -224,33 +236,10 @@ public class GraphView extends View {
 		return new Point(x, y);
 	}
 	
-	private Point canvasToData(Point point) {
-		float xInterval = mXAxisEnd - mXAxisStart;
-		float yInterval = mYAxisEnd - mYAxisStart;
-		float x;
-		float y;
-		
-		x = ((point.x - mXPadding) * xInterval + mXPadding) / getWidth() + mXAxisStart;
-		y = getHeight() - (point.y * ((getHeight() - mYPadding) / yInterval)) - mYPadding;
-		
-		return new Point(x, y);
-	}
-	
-	private boolean isInCanvas(Point point) {
-		if(point.x >= mXAxisStart && point.x <= mXAxisEnd) {
-			if(point.y >= mYAxisStart && point.y <= mYAxisEnd) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 		boolean result = mDetector.onTouchEvent(event);
-		if(result)
-			Log.i("SmartPower", "YÄY");
+
 		return result;
 	}
 	
@@ -263,9 +252,6 @@ public class GraphView extends View {
 		@Override
 		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 			float scale = (float)(mXAxisEnd - mXAxisStart) / (float)(getWidth() - mXPadding);
-			Log.i("SmartPower", "Text: " + String.valueOf(mXAxisEnd - mXAxisStart));
-			Log.i("SmartPower", "Scale: " + String.valueOf(scale));
-			Log.i("SmartPower", "Distance: " + String.valueOf(distanceX));
 			float newDistanceX = distanceX * scale;
 			float newDistanceY = 0.0f;
 			mXAxisEnd += newDistanceX;
@@ -275,6 +261,22 @@ public class GraphView extends View {
 			
 			return true;
 		}
+	}
+	
+	public void setXAxisStart(float xAxisStart) {
+		mXAxisStart = xAxisStart;
+	}
+	
+	public void setXAxisEnd(float xAxisEnd) {
+		mXAxisEnd = xAxisEnd;
+	}
+	
+	public void setYAxisStart(float yAxisStart) {
+		mYAxisStart = yAxisStart;
+	}
+	
+	public void setYAxisEnd(float yAxisEnd) {
+		mYAxisEnd = yAxisEnd;
 	}
 	
 	public static class Point {

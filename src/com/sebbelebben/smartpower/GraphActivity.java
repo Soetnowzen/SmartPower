@@ -27,6 +27,7 @@ public class GraphActivity extends Activity {
 		data.add(new Point(4.0f, 0.0f));
 		data.add(new Point(5.0f, 1.0f));
 		data.add(new Point(6.0f, 0.0f));
+		data.add(new Point(7.5f, 3.0f));
 		graphView.SetDataPoints(data);
 	}
 
