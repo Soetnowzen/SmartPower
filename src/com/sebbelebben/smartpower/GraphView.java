@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -164,13 +165,13 @@ public class GraphView extends View {
 		int w = getWidth();
 		int h = getHeight();
 		
-		for(float i = mXAxisStart - (mXAxisStart % mXSegments); i < mXAxisEnd; i+=mXSegments) {
+		for(float i = mXAxisStart - mod(mXAxisStart, mXSegments); i < mXAxisEnd; i+=mXSegments) {
 			Point segmentPoint = new Point(i, h);
 			Point newP = dataToCanvas(segmentPoint);
 			canvas.drawLine(newP.x, 0, newP.x, h - mYPadding, mSegmentPaint);
 		}
 		
-		for(float i = mYAxisStart - (mYAxisStart % mYSegments); i < mYAxisEnd; i+=mYSegments) {
+		for(float i = mYAxisStart - mod(mYAxisStart, mYSegments); i < mYAxisEnd; i+=mYSegments) {
 			Point segmentPoint = new Point(mXAxisStart, i);
 			Point newP = dataToCanvas(segmentPoint);
 			canvas.drawLine(newP.x, newP.y, newP.x + w, newP.y, mSegmentPaint);
@@ -180,18 +181,27 @@ public class GraphView extends View {
 	private void drawText(Canvas canvas) {
 		int w = getWidth();
 		int h = getHeight();
-		
-		for(float i = mXAxisStart - (mXAxisStart % mXSegments); i < mXAxisEnd; i+=mXSegments) {
+		for(float i = mXAxisStart - mod(mXAxisStart,mXSegments); i < mXAxisEnd; i+=mXSegments) {
 			Point segmentPoint = new Point(i, h);
 			Point newP = dataToCanvas(segmentPoint);
 			canvas.drawText(String.valueOf(i), newP.x, h, mTextPaint);
 		}
 		
-		for(float i = mYAxisStart - (mYAxisStart % mYSegments); i < mYAxisEnd; i+=mYSegments) {
+		for(float i = mYAxisStart - mod(mYAxisStart, mYSegments); i < mYAxisEnd; i+=mYSegments) {
 			Point segmentPoint = new Point(0, i);
 			Point newP = dataToCanvas(segmentPoint);
 			canvas.drawText(String.valueOf(i), 0, newP.y, mTextPaint);
 		}
+	}
+	
+	private float mod(float x, float y)
+	{
+	    float result = x % y;
+	    if (result < 0)
+	    {
+	        result += y;
+	    }
+	    return result;
 	}
 	
 	private void drawData(Canvas canvas) {		
@@ -252,13 +262,10 @@ public class GraphView extends View {
 		@Override
 		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
 			float scale = (float)(mXAxisEnd - mXAxisStart) / (float)(getWidth() - mXPadding);
-			float newDistanceX = distanceX * scale;
-			float newDistanceY = 0.0f;
-			mXAxisEnd += newDistanceX;
-			mXAxisStart += newDistanceX;
+			mXAxisEnd += distanceX * scale;
+			mXAxisStart += distanceX * scale;
 			
 			invalidate();
-			
 			return true;
 		}
 	}
