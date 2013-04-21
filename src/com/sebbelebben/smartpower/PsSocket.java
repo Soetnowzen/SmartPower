@@ -20,7 +20,7 @@ public class PsSocket {
 		String result = Server.sendAndRecieve("{socketid:"+id+",request:consumption,apikey:"+apiKey+",startdate:"+start+",enddate:"+end+"}");
 		try {
 			JSONObject data = new JSONObject(result);
-			if (data.getInt("powerStrip") == id){
+			if (data.getInt("socketid") == id){
 				JSONArray sockets = data.getJSONArray("data");
 				for(int i = 0; i < sockets.length(); i++){
 					JSONObject JSONsockets = sockets.getJSONObject(i);

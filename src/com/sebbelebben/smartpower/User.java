@@ -28,7 +28,7 @@ public class User {
 		try {
 			JSONObject data = new JSONObject(result);
 			if (data.getString("username") == userName){
-				loggedIn = data.getBoolean("Login");
+				loggedIn = data.getBoolean("login");
 				apiKey = data.getString("apikey");
 			}
 		} catch (JSONException e) {
