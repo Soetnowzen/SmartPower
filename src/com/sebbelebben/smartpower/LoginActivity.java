@@ -100,18 +100,28 @@ public class LoginActivity extends Activity {
 		edit.commit();
 	}
 	
-	/*@Override
+	@Override
 	protected void onStop() {
 		super.onStop();
+		JSONObject jUser = new JSONObject();
+		try {
+			jUser.put("Username", mUser.getUserName());
+			jUser.put("Password", mUser.getPassword());
+			jUser.put("Loggged in", mUser.loginStatus());
+			savePrefs(jUser.toString());
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// We need an Editor object to make preference changes.
 	    // All objects are from android.context.Context
-	    SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+	    /*SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
 	    SharedPreferences.Editor editor = settings.edit();
 	    editor.putBoolean("silentMode", mSilentMode);
 
 	    // Commit the edits!
-	    editor.commit();
-	}*/
+	    editor.commit();*/
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
