@@ -18,6 +18,10 @@ public class User {
 		return this.userName;
 	}
 	
+	public String getPassword() {
+		return this.password;
+	}
+	
 	public boolean loginStatus(){
 		return this.loggedIn;
 	}
