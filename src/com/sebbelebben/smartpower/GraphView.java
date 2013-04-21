@@ -1,5 +1,6 @@
 package com.sebbelebben.smartpower;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,8 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 
 public class GraphView extends View {
@@ -27,8 +30,8 @@ public class GraphView extends View {
 	private Paint mTextPaint;
 	
 	// Attributes
-	private int mXAxisStart;
-	private int mXAxisEnd;
+	private float mXAxisStart;
+	private float mXAxisEnd;
 	private int mYAxisStart;
 	private int mYAxisEnd;
 	private int mXSegments;
@@ -46,6 +49,7 @@ public class GraphView extends View {
 	// Misc
 	private int mXPadding = 20;
 	private int mYPadding = 20;
+	private GestureDetector mDetector = new GestureDetector(GraphView.this.getContext(), new mListener());
 	
 	public GraphView(Context context) {
 		super(context);
@@ -153,10 +157,10 @@ public class GraphView extends View {
 		int w = getWidth();
 		int h = getHeight();
 		
-		float xSegmentInterval = (w - mXPadding)  / mXSegments + mXPadding;
+		float xSegmentInterval = (w - mXPadding)  / (mXSegments);
 		float xSegmentValue = (mXAxisEnd - mXAxisStart)/mXSegments;
 		for(int i = 1; i < mXSegments; i++) {
-			canvas.drawLine(xSegmentInterval*i, 0, xSegmentInterval*i, h - mYPadding, mSegmentPaint);
+			canvas.drawLine(xSegmentInterval*i + mXPadding, 0, xSegmentInterval*i + mXPadding, h - mYPadding, mSegmentPaint);
 			canvas.drawText(String.valueOf(xSegmentValue * i), xSegmentInterval*i, h, mTextPaint);
 		}
 		
@@ -170,10 +174,10 @@ public class GraphView extends View {
 		int w = getWidth();
 		int h = getHeight();
 		
-		float xSegmentInterval = (w - mXPadding)  / mXSegments + mXPadding;
-		float xSegmentValue = (mXAxisEnd - mXAxisStart)/mXSegments;
-		for(int i = 1; i < mXSegments; i++) {
-			canvas.drawText(String.valueOf(xSegmentValue * i), xSegmentInterval*i, h, mTextPaint);
+		float xSegmentInterval = (w - mXPadding)  / (mXSegments);
+		float xSegmentValue = (float) (mXAxisEnd - mXAxisStart)/mXSegments;
+		for(int i = 0; i < mXSegments+1; i++) {
+			canvas.drawText(new DecimalFormat("#.##").format(xSegmentValue* i + mXAxisStart), xSegmentInterval*i + mXPadding, h, mTextPaint);
 		}
 		
 		float ySegmentInterval = (h - mYPadding) / mYSegments + mYPadding;
@@ -214,7 +218,19 @@ public class GraphView extends View {
 		float x;
 		float y;
 		
-		x = point.x * (getWidth() - mXPadding) / xInterval + mXPadding - mXAxisStart * (getWidth() - mXPadding) / xInterval;
+		x = (point.x - mXAxisStart) * (getWidth() - mXPadding) / xInterval + mXPadding;
+		y = getHeight() - (point.y * ((getHeight() - mYPadding) / yInterval)) - mYPadding;
+		
+		return new Point(x, y);
+	}
+	
+	private Point canvasToData(Point point) {
+		float xInterval = mXAxisEnd - mXAxisStart;
+		float yInterval = mYAxisEnd - mYAxisStart;
+		float x;
+		float y;
+		
+		x = ((point.x - mXPadding) * xInterval + mXPadding) / getWidth() + mXAxisStart;
 		y = getHeight() - (point.y * ((getHeight() - mYPadding) / yInterval)) - mYPadding;
 		
 		return new Point(x, y);
@@ -228,6 +244,37 @@ public class GraphView extends View {
 		}
 		
 		return false;
+	}
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+		boolean result = mDetector.onTouchEvent(event);
+		if(result)
+			Log.i("SmartPower", "YÄY");
+		return result;
+	}
+	
+	private class mListener extends GestureDetector.SimpleOnGestureListener {
+		@Override
+		public boolean onDown(MotionEvent e) {
+			return true;
+		}
+		
+		@Override
+		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+			float scale = (float)(mXAxisEnd - mXAxisStart) / (float)(getWidth() - mXPadding);
+			Log.i("SmartPower", "Text: " + String.valueOf(mXAxisEnd - mXAxisStart));
+			Log.i("SmartPower", "Scale: " + String.valueOf(scale));
+			Log.i("SmartPower", "Distance: " + String.valueOf(distanceX));
+			float newDistanceX = distanceX * scale;
+			float newDistanceY = 0.0f;
+			mXAxisEnd += newDistanceX;
+			mXAxisStart += newDistanceX;
+			
+			invalidate();
+			
+			return true;
+		}
 	}
 	
 	public static class Point {
