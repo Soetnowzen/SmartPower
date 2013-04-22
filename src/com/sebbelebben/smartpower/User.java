@@ -29,7 +29,7 @@ public class User {
 		return this.loggedIn;
 	}
 	
-	public void logIn(){
+	public void logIn(final OnLoginListener listener){
 		Server.sendAndRecieve("{username:"+userName+",request:login,password:"+password+"}", new OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
@@ -37,6 +37,11 @@ public class User {
 					JSONObject data = new JSONObject(result);
 					if (data.getString("username") == userName){
 						loggedIn = data.getBoolean("login");
+						if(loggedIn) {
+							listener.onLoginSuccess();
+						} else {
+							listener.onLoginFailure();
+						}
 						apiKey = data.getString("apikey");
 					}
 				} catch (JSONException e) {
@@ -75,5 +80,10 @@ public class User {
 	
 	public static interface OnPowerStripReceiveListener {
 		void onPowerStripReceive(PowerStrip[] powerStrips);
+	}
+	
+	public static interface OnLoginListener {
+		void onLoginSuccess();
+		void onLoginFailure();
 	}
 }
