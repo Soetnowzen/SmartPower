@@ -4,6 +4,9 @@ import java.util.*;
 
 import org.json.*;
 
+import com.sebbelebben.smartpower.PsSocket.OnConsumptionReceiveListener;
+import com.sebbelebben.smartpower.Server.OnReceiveListener;
+
 public class PowerStrip {
 	private int id;
 	private String apiKey;
@@ -13,22 +16,26 @@ public class PowerStrip {
 		this.apiKey = apiKey;
 	}
 		
-	public Consumption[] getConsumption(Date start, Date end){
-		ArrayList<Consumption> consumptionList = new ArrayList<Consumption>();
-		String result = Server.sendAndRecieve("{powerstripid:"+id+",request:consumption,apikey:"+apiKey+",startdate:"+start+",enddate:"+end+"}");
-		try {
-			JSONObject data = new JSONObject(result);
-			if (data.getInt("powerStrip") == id){
-				JSONArray sockets = data.getJSONArray("data");
-				for(int i = 0; i < sockets.length(); i++){
-					JSONObject JSONsockets = sockets.getJSONObject(i);
-					consumptionList.add(new Consumption(JSONsockets.getString("time"),JSONsockets.getInt("power")));
+	public void getConsumption(Date start, Date end, final OnConsumptionReceiveListener listener){
+		Server.sendAndRecieve("{powerstripid:"+id+",request:consumption,apikey:"+apiKey+",startdate:"+start+",enddate:"+end+"}", new OnReceiveListener() {
+			@Override
+			public void onReceive(String result) {
+				ArrayList<Consumption> consumptionList = new ArrayList<Consumption>();
+				try {
+					JSONObject data = new JSONObject(result);
+					if (data.getInt("powerStrip") == id){
+						JSONArray sockets = data.getJSONArray("data");
+						for(int i = 0; i < sockets.length(); i++){
+							JSONObject JSONsockets = sockets.getJSONObject(i);
+							consumptionList.add(new Consumption(JSONsockets.getString("time"),JSONsockets.getInt("power")));
+						}
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
+				listener.onConsumptionReceive((Consumption[]) consumptionList.toArray());
 			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return (Consumption[]) consumptionList.toArray();
+		});
 	}
 	
 	public void getSockets(final OnSocketReceiveListener listener){

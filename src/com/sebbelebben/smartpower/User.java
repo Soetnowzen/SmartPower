@@ -3,6 +3,8 @@ package com.sebbelebben.smartpower;
 import java.util.ArrayList;
 import org.json.*;
 
+import com.sebbelebben.smartpower.Server.OnReceiveListener;
+
 public class User {
 	private String userName;
 	private String password;
@@ -28,37 +30,50 @@ public class User {
 	}
 	
 	public void logIn(){
-		String result = Server.sendAndRecieve("{username:"+userName+",request:login,password:"+password+"}");
-		try {
-			JSONObject data = new JSONObject(result);
-			if (data.getString("username") == userName){
-				loggedIn = data.getBoolean("login");
-				apiKey = data.getString("apikey");
+		Server.sendAndRecieve("{username:"+userName+",request:login,password:"+password+"}", new OnReceiveListener() {
+			@Override
+			public void onReceive(String result) {
+				try {
+					JSONObject data = new JSONObject(result);
+					if (data.getString("username") == userName){
+						loggedIn = data.getBoolean("login");
+						apiKey = data.getString("apikey");
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		});
+		
 	}
 	
 	public void logOut(){
 		loggedIn = false;
 	}
 	
-	public PowerStrip[] getPowerStrips(){
-		ArrayList<PowerStrip> powerStripList = new ArrayList<PowerStrip>();
-		String result = Server.sendAndRecieve("{username:"+userName+",request:powerstrips,apikey:"+apiKey+"}");
-		try {
-			JSONObject data = new JSONObject(result);
-			if (data.getString("username") == userName){
-				JSONArray powerStrips = data.getJSONArray("powerStrips");
-				for(int i = 0; i < powerStrips.length(); i++){
-					JSONObject JSONpowerStrip = powerStrips.getJSONObject(i);
-					powerStripList.add(new PowerStrip(JSONpowerStrip.getInt("id"),JSONpowerStrip.getString("serialId"),1,apiKey));
+	public void getPowerStrips(final OnPowerStripReceiveListener listener){
+		Server.sendAndRecieve("{username:"+userName+",request:powerstrips,apikey:"+apiKey+"}", new OnReceiveListener() {
+			@Override
+			public void onReceive(String result) {
+				ArrayList<PowerStrip> powerStripList = new ArrayList<PowerStrip>();
+				try {
+					JSONObject data = new JSONObject(result);
+					if (data.getString("username") == userName){
+						JSONArray powerStrips = data.getJSONArray("powerStrips");
+						for(int i = 0; i < powerStrips.length(); i++){
+							JSONObject JSONpowerStrip = powerStrips.getJSONObject(i);
+							powerStripList.add(new PowerStrip(JSONpowerStrip.getInt("id"),JSONpowerStrip.getString("serialId"),1,apiKey));
+						}
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
 				}
+				listener.onPowerStripReceive((PowerStrip[]) powerStripList.toArray());
 			}
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		return (PowerStrip[]) powerStripList.toArray();
+		});
+	}
+	
+	public static interface OnPowerStripReceiveListener {
+		void onPowerStripReceive(PowerStrip[] powerStrips);
 	}
 }
