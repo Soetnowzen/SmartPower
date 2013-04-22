@@ -11,8 +11,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import com.sebbelebben.smartpower.User.OnLoginListener;
 
 public class LoginActivity extends Activity {
 	
@@ -32,35 +36,43 @@ public class LoginActivity extends Activity {
 
 		//Checks the old preferences
 		loadPrefs();
+
 		
 		//Listens for when the button is pressed & takes the username & password...
 		loginButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
 				String username = mUsernameBox.getText().toString();
 				String password = mPasswordBox.getText().toString();
-				
-				//Initiates the User with the new username & password
 				mUser = new User(username, password);
-				mUser.logIn();
-				
-				//If login was successful
-				if(mUser.loginStatus()) {
-					//Creates a JSONObject to save the user so the username & password will be needed to be 
-					//input every time
-					JSONObject jUser = new JSONObject();
-					try {
-						jUser.put("Username", mUser.getUserName());
-						jUser.put("Password", mUser.getPassword());
-						jUser.put("Loggged in", mUser.loginStatus());
-						savePrefs(jUser.toString());
-						startActivity(new Intent(LoginActivity.this, GraphActivity.class));
-					} catch (JSONException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+				logIn();
+			}
+		});
+	}
+	
+	private void logIn() {
+		//Initiates the User with the new username & password
+		mUser.logIn(new OnLoginListener() {
+			@Override
+			public void onLoginSuccess() {
+				//Creates a JSONObject to save the user so the username & password will be needed to be 
+				//input every time
+				JSONObject jUser = new JSONObject();
+				try {
+					jUser.put("Username", mUser.getUserName());
+					jUser.put("Password", mUser.getPassword());
+					jUser.put("Loggged in", mUser.loginStatus());
+					savePrefs(jUser.toString());
+					startActivity(new Intent(LoginActivity.this, GraphActivity.class));
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 			}
 			
+			@Override
+			public void onLoginFailure() {
+				Toast.makeText(LoginActivity.this, "Login failed!", Toast.LENGTH_SHORT).show();
+			}
 		});
 	}
 	
@@ -73,7 +85,9 @@ public class LoginActivity extends Activity {
 			else {
 				jUser = new JSONObject(user);
 				mUser = new User(jUser.getString("Username"),jUser.getString("Password"));
-				if(jUser.getBoolean("Logged in")) mUser.logIn();
+				if(jUser.getBoolean("Logged in")) {
+					logIn();
+				}
 			}
 		} catch (JSONException error) {
 			error.printStackTrace();

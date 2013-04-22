@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.*;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 public class Server {
 	public static void sendAndRecieve(String message, OnReceiveListener listener){
@@ -39,6 +40,7 @@ public class Server {
 		
 		@Override
 		protected void onPostExecute(String result) {
+			Log.i("SmartPower", "TEST");
 			mListener.onReceive(result);
 		}
 	}
