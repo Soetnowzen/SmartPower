@@ -26,7 +26,7 @@ public class Server {
 			try{
 			     Socket socket = new Socket("bregell.mine.nu", 39500);
 			     PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-			     out.println("Android#"+message);
+			     out.print("Android#"+message);
 			     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			     ret = in.readLine().split("#");
 			   } catch (UnknownHostException e) {
