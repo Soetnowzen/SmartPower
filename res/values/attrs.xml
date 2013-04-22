@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="GraphView">
+        <attr name="xAxisStart" format="integer" />
+        <attr name="xAxisEnd" format="integer" />
+        <attr name="yAxisStart" format="integer" />
+        <attr name="yAxisEnd" format="integer" />
+        <attr name="xSegments" format="integer" />
+        <attr name="ySegments" format="integer" />
+        <attr name="segmentColor" format="color" />
+        <attr name="dataColor" format="color" />
+        <attr name="axisColor" format="color" />
+        <attr name="fillData" format="boolean" />
+        <attr name="fillColor" format="color" />
+        <attr name="axisBackgroundColor" format="color" />
+        <attr name="dataBackgroundColor" format="color" />
+        <attr name="textColor" format="color" />
+    </declare-styleable>
+</resources>

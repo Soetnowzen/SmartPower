@@ -53,7 +53,7 @@ public class LoginActivity extends Activity {
 						jUser.put("Password", mUser.getPassword());
 						jUser.put("Loggged in", mUser.loginStatus());
 						savePrefs(jUser.toString());
-						startActivity(new Intent(LoginActivity.this, MainActivity.class));
+						startActivity(new Intent(LoginActivity.this, GraphActivity.class));
 					} catch (JSONException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -80,7 +80,7 @@ public class LoginActivity extends Activity {
 		}
 		//If you're already logged in then skip this activity/screen
 		if(mUser != null && mUser.loginStatus()) {
-			startActivity(new Intent(this, MainActivity.class));
+			startActivity(new Intent(this, GraphActivity.class));
 		} else if(mUser != null){ //If the user ain't logged in then the password & username is entered into the boxes for them
 			mUsernameBox.setText(mUser.getUserName());
 			mPasswordBox.setText(mUser.getPassword());
