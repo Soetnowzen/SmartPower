@@ -15,5 +15,12 @@ public class Consumption {
 			e.printStackTrace();
 		}
 	}
-	
+
+	public int getWatt() {
+		return watt;
+	}
+
+	public Date getDate() {
+		return date;
+	}
 }
