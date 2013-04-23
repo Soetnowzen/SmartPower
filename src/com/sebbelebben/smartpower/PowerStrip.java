@@ -1,11 +1,10 @@
 package com.sebbelebben.smartpower;
 
 import java.util.*;
-
 import org.json.*;
-
-import com.sebbelebben.smartpower.PsSocket.OnConsumptionReceiveListener;
+import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
 import com.sebbelebben.smartpower.Server.OnReceiveListener;
+import com.sebbelebben.smartpower.Server.OnSocketReceiveListener;
 
 public class PowerStrip {
 	private int id;
@@ -29,11 +28,13 @@ public class PowerStrip {
 							JSONObject JSONsockets = sockets.getJSONObject(i);
 							consumptionList.add(new Consumption(JSONsockets.getString("time"),JSONsockets.getInt("power")));
 						}
+						listener.onConsumptionReceive((Consumption[]) consumptionList.toArray());
+					} else {
+						listener.failed();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-				listener.onConsumptionReceive((Consumption[]) consumptionList.toArray());
 			}
 		});
 	}
@@ -51,16 +52,16 @@ public class PowerStrip {
 							JSONObject JSONsockets = sockets.getJSONObject(i);
 							psSocketList.add(new PsSocket(JSONsockets.getInt("id"),JSONsockets.getString("name"),apiKey));
 						}
+						listener.onSocketReceive((PsSocket[]) psSocketList.toArray());
+					} else {
+						listener.failed();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-				listener.onSocketReceive((PsSocket[]) psSocketList.toArray());
+				
 			}
 		});
 	}
 	
-	public static interface OnSocketReceiveListener {
-		void onSocketReceive(PsSocket[] sockets);
-	}
 }
