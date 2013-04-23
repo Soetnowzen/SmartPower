@@ -58,6 +58,16 @@ public class Server {
 		void failed();
 	}
 	
+	public static interface OnNewGroupReceiveListener {
+		void onNewGroupReceive(Group group);
+		void failed();
+	}
+	
+	public static interface OnGroupsReceiveListener {
+		void onGroupReceive(Group[] groups);
+		void failed();
+	}
+	
 	public static interface OnPowerStripReceiveListener {
 		void onPowerStripReceive(PowerStrip[] powerStrips);
 		void failed();
