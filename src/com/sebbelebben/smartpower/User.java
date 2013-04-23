@@ -1,7 +1,8 @@
 package com.sebbelebben.smartpower;
 
-import java.util.ArrayList;
+import java.util.*;
 import org.json.*;
+import android.util.Log;
 
 import com.sebbelebben.smartpower.Server.OnReceiveListener;
 
@@ -35,14 +36,21 @@ public class User {
 			public void onReceive(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
-					if (data.getString("username") == userName){
+					Log.i("logIn", data.getString("username"));
+					if (data.getString("username").equals(userName)){
 						loggedIn = data.getBoolean("login");
+						Log.i("logIn", String.valueOf(loggedIn));
 						if(loggedIn) {
+							Log.i("logIn", data.getString("apikey"));
+							apiKey = data.getString("apikey");
 							listener.onLoginSuccess();
 						} else {
+							Log.i("logIn", "logIn failed");
 							listener.onLoginFailure();
 						}
-						apiKey = data.getString("apikey");
+					} else {
+						Log.i("logIn", "logIn failed");
+						listener.onLoginFailure();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
