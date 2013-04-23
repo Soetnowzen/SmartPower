@@ -47,4 +47,24 @@ public class Server {
 	public static interface OnReceiveListener {
 		void onReceive(String result);
 	}
+	
+	public static interface OnSocketReceiveListener {
+		void onSocketReceive(PsSocket[] sockets);
+		void failed();
+	}
+	
+	public static interface OnConsumptionReceiveListener {
+		void onConsumptionReceive(Consumption[] consumption);
+		void failed();
+	}
+	
+	public static interface OnPowerStripReceiveListener {
+		void onPowerStripReceive(PowerStrip[] powerStrips);
+		void failed();
+	}
+	
+	public static interface OnLoginListener {
+		void onLoginSuccess();
+		void onLoginFailure();
+	}
 }

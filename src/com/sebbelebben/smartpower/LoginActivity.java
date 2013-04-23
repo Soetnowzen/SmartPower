@@ -12,11 +12,9 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.sebbelebben.smartpower.User.OnLoginListener;
+import com.sebbelebben.smartpower.Server.OnLoginListener;
 
 public class LoginActivity extends Activity {
 	
