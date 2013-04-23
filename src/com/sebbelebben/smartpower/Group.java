@@ -65,8 +65,33 @@ public class Group {
 		});
 	}
 	
+	public void addSocket(PsSocket psSocket, final OnSocketReceiveListener listener){
+		Server.sendAndRecieve("{groupid:"+id+",request:addsocket,apikey:"+apiKey+",socket:"+Integer.toString(psSocket.getId())+"}", new Server.OnReceiveListener() {
+			@Override
+			public void onReceive(String result) {
+				ArrayList<PsSocket> psSocketList = new ArrayList<PsSocket>();
+				try {
+					JSONObject data = new JSONObject(result);
+					if (data.getInt("groupid") == id){
+						JSONArray sockets = data.getJSONArray("sockets");
+						for(int i = 0; i < sockets.length(); i++){
+							JSONObject JSONsockets = sockets.getJSONObject(i);
+							psSocketList.add(new PsSocket(JSONsockets.getInt("id"),JSONsockets.getString("name"),apiKey));
+						}
+					}
+					else if(data.getString("status").equals("failed")) {
+						
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+				listener.onSocketReceive((PsSocket[]) psSocketList.toArray());
+			}
+		});
+	}
+	
 	public void turnOn(){
-		Server.sendAndRecieve("{groupid:"+id+",request:turnoff,apikey:"+apiKey+"}", new OnReceiveListener() {
+		Server.sendAndRecieve("{groupid:"+id+",request:turnon,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
 				try {
@@ -83,7 +108,7 @@ public class Group {
 	}
 	
 	public void turnOff(){
-		Server.sendAndRecieve("{groupid:"+id+",request:turnon,apikey:"+apiKey+"}", new OnReceiveListener() {
+		Server.sendAndRecieve("{groupid:"+id+",request:turnoff,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
 				try {

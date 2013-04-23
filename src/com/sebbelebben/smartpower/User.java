@@ -2,9 +2,7 @@ package com.sebbelebben.smartpower;
 
 import java.util.*;
 import org.json.*;
-import com.sebbelebben.smartpower.Server.OnLoginListener;
-import com.sebbelebben.smartpower.Server.OnPowerStripReceiveListener;
-import com.sebbelebben.smartpower.Server.OnReceiveListener;
+import com.sebbelebben.smartpower.Server.*;
 
 public class User {
 	private String userName;
@@ -73,6 +71,48 @@ public class User {
 							powerStripList.add(new PowerStrip(JSONpowerStrip.getInt("id"),JSONpowerStrip.getString("serialId"),1,apiKey));
 						}
 						listener.onPowerStripReceive((PowerStrip[]) powerStripList.toArray());
+					} else {
+						listener.failed();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	public void createNewGroup(String name, final OnNewGroupReceiveListener listener){
+		Server.sendAndRecieve("{username:"+userName+",request:newgroup,apikey:"+apiKey+",name:"+name+"}", new OnReceiveListener() {
+			@Override
+			public void onReceive(String result) {
+				try {
+					JSONObject data = new JSONObject(result);
+					if (data.getString("username") == userName){
+						listener.onNewGroupReceive(new Group(data.getInt("id"), data.getString("name"), apiKey));
+					} else {
+						listener.failed();
+					}	
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	public void getGroups(final OnGroupsReceiveListener listener){
+		Server.sendAndRecieve("{username:"+userName+",request:groups,apikey:"+apiKey+"}", new OnReceiveListener() {
+			@Override
+			public void onReceive(String result) {
+				ArrayList<Group> groupList = new ArrayList<Group>();
+				try {
+					JSONObject data = new JSONObject(result);
+					if (data.getString("username") == userName){
+						JSONArray groups = data.getJSONArray("groups");
+						for(int i = 0; i < groups.length(); i++){
+							JSONObject JSONgroupList = groups.getJSONObject(i);
+							groupList.add(new Group(JSONgroupList.getInt("id"),JSONgroupList.getString("name"),apiKey));
+						}
+						listener.onGroupReceive((Group[]) groupList.toArray());
 					} else {
 						listener.failed();
 					}

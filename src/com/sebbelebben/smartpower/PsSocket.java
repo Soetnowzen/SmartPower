@@ -62,8 +62,12 @@ public class PsSocket {
 		return name;
 	}
 	
+	public int getId(){
+		return id;
+	}
+	
 	public void turnOn(){
-		Server.sendAndRecieve("{socketid:"+id+",request:turnoff,apikey:"+apiKey+"}", new OnReceiveListener() {
+		Server.sendAndRecieve("{socketid:"+id+",request:turnon,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
 				try {
@@ -83,7 +87,7 @@ public class PsSocket {
 	}
 	
 	public void turnOff(){
-		Server.sendAndRecieve("{socketid:"+id+",request:turnon,apikey:"+apiKey+"}", new OnReceiveListener() {
+		Server.sendAndRecieve("{socketid:"+id+",request:turnoff,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
 				try {
