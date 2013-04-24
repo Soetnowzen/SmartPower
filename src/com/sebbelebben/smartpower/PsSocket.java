@@ -24,12 +24,20 @@ public class PsSocket {
 				try {			
 					JSONObject data = new JSONObject(result);
 					if (data.getInt("socketid") == id){
-						JSONArray sockets = data.getJSONArray("data");
-						for(int i = 0; i < sockets.length(); i++){
-							JSONObject JSONsockets = sockets.getJSONObject(i);
-							consumptionList.add(new Consumption(JSONsockets.getString("time"),JSONsockets.getInt("power")));
+						if (data.has("result")){
+							//This means no data was delivered
+							//Some info code here 
 						}
-						listener.onConsumptionReceive((Consumption[]) consumptionList.toArray());
+						else if (data.has("data")){
+							JSONArray sockets = data.getJSONArray("data");
+							for(int i = 0; i < sockets.length(); i++){
+								JSONObject JSONsockets = sockets.getJSONObject(i);
+								consumptionList.add(new Consumption(JSONsockets.getString("time"),JSONsockets.getInt("power")));
+							}
+							listener.onConsumptionReceive(consumptionList.toArray(new Consumption[0]));
+						} else {
+							//There was something else wrong
+						}
 					} else {
 						listener.failed();
 					}
@@ -105,6 +113,11 @@ public class PsSocket {
 	}
 	
 	public String toString(){
-		return name;
+		if (name.equals("null")) {
+				return Integer.toString(id);
+		} else {
+			return name;
+		}
+		
 	}
 }
