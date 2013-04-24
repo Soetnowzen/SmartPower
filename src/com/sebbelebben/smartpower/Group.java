@@ -35,7 +35,7 @@ public class Group {
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-				listener.onConsumptionReceive((Consumption[]) consumptionList.toArray());
+				listener.onConsumptionReceive(consumptionList.toArray(new Consumption[0]));
 			}
 		});
 	}
@@ -60,7 +60,7 @@ public class Group {
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-				listener.onSocketReceive((PsSocket[]) psSocketList.toArray());
+				listener.onSocketReceive(psSocketList.toArray(new PsSocket[0]));
 			}
 		});
 	}
@@ -85,7 +85,7 @@ public class Group {
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-				listener.onSocketReceive((PsSocket[]) psSocketList.toArray());
+				listener.onSocketReceive(psSocketList.toArray(new PsSocket[0]));
 			}
 		});
 	}
