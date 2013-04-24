@@ -1,6 +1,7 @@
 package com.sebbelebben.smartpower;
 
 import com.sebbelebben.smartpower.fragments.*;
+import com.viewpagerindicator.TitlePageIndicator;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,10 @@ public class MainActivity extends FragmentActivity {
 		mPager = (ViewPager) findViewById(R.id.viewpager);
 		mAdapter = new MainPagerAdapter(getSupportFragmentManager());
 		mPager.setAdapter(mAdapter);
+
+		//Bind the title indicator to the adapter
+		TitlePageIndicator titleIndicator = (TitlePageIndicator)findViewById(R.id.titles);
+		titleIndicator.setViewPager(mPager);
 	}
 
 	@Override
@@ -37,7 +42,8 @@ public class MainActivity extends FragmentActivity {
 			return true;
 	}
 
-	private class MainPagerAdapter extends FragmentStatePagerAdapter {
+	private static class MainPagerAdapter extends FragmentStatePagerAdapter {
+		private static final String[] CONTENT = { "Remote", "User", "Consumption" };
 		private static final int COUNT = 3;
 
 		public MainPagerAdapter(FragmentManager fm) {
@@ -65,6 +71,11 @@ public class MainActivity extends FragmentActivity {
 		@Override
 		public int getCount() {
 			return COUNT;
+		}
+		
+		@Override
+		public CharSequence getPageTitle(int position) {
+			return CONTENT[position % CONTENT.length];
 		}
 
 	}
