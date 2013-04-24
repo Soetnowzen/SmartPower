@@ -70,7 +70,7 @@ public class GraphView extends View {
 		mDataColor = attributes.getColor(R.styleable.GraphView_dataColor, Color.BLACK);
 		mAxisColor = attributes.getColor(R.styleable.GraphView_axisColor, Color.BLACK);
 		mFillData = attributes.getBoolean(R.styleable.GraphView_fillData, false);
-		mFillColor = attributes.getColor(R.styleable.GraphView_fillColor, Color.BLACK);
+		mFillColor = attributes.getColor(R.styleable.GraphView_fillDataColor, Color.BLACK);
 		mAxisBackgroundColor = attributes.getColor(R.styleable.GraphView_axisBackgroundColor, Color.BLACK);
 		mDataBackgroundColor = attributes.getColor(R.styleable.GraphView_dataBackgroundColor, Color.BLACK);
 		mTextColor = attributes.getColor(R.styleable.GraphView_textColor, Color.BLACK);
