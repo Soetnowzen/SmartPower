@@ -9,7 +9,7 @@ public class Consumption {
 	
 	public Consumption(String date, int watt){
 		try {
-			this.date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSZ", Locale.ENGLISH).parse(date);
+			this.date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZZ", Locale.ENGLISH).parse(date);
 			this.watt = watt;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -22,5 +22,8 @@ public class Consumption {
 
 	public Date getDate() {
 		return date;
+	}
+	public String toString(){
+		return ("Date: "+date.toString()+" Watt: "+Integer.toString(watt));
 	}
 }
