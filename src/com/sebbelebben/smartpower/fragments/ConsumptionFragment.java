@@ -19,7 +19,7 @@ public class ConsumptionFragment extends Fragment {
 	}
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.fragment_user, container, false);
+		View view = inflater.inflate(R.layout.fragment_consumption, container, false);
 		return view;
 	}
 }
