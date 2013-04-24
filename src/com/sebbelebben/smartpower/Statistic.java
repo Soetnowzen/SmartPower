@@ -7,6 +7,7 @@ import android.text.format.DateFormat;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.sql.Date;
+import java.text.ParseException;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,6 +41,8 @@ public class Statistic extends AsyncTask<String, Integer, Stats[]>{
 			return result;			
 			
 		}catch(JSONException e){
+			return null;
+		}catch(ParseException e){
 			return null;
 		}
 		
