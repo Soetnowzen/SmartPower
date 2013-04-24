@@ -6,6 +6,6 @@
     <string name="hello_world">Hello world!</string>
     <string name="usernamebox">Username</string>
     <string name="passwordbox">Password</string>
-    <string name="loginbutton">Button</string>
+    <string name="loginbutton">Log in</string>
 
 </resources>
