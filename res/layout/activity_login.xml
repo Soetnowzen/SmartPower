@@ -9,27 +9,27 @@
     tools:context=".MainActivity" >
 
     <EditText
+        android:id="@+id/passwordbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:ems="10"
+        android:inputType="textPassword"
+        android:layout_centerInParent="true"
+        android:hint="@string/passwordbox" />
+    
+    <EditText
         android:id="@+id/usernamebox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:layout_above="@id/passwordbox"
         android:layout_marginBottom="16dp"
         android:ems="10"
         android:hint="@string/usernamebox" >
         
     </EditText>
-
-    <EditText
-        android:id="@+id/passwordbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/usernamebox"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="16dp"
-        android:ems="10"
-        android:inputType="textPassword"
-        android:hint="@string/passwordbox" />
 
     <Button
         android:id="@+id/loginbutton"
