@@ -80,4 +80,42 @@ public class MainActivity extends FragmentActivity {
 
 	}
 
+	private static class MainPagerAdapter extends FragmentStatePagerAdapter {
+		private static final String[] CONTENT = { "Remote", "User", "Consumption" };
+		private static final int COUNT = 3;
+
+		public MainPagerAdapter(FragmentManager fm) {
+			super(fm);
+		}
+
+		@Override
+		public Fragment getItem(int position) {
+			Fragment fragment = null;
+
+		    	switch(position) {
+			case 0:
+				fragment = RemoteFragment.newInstance();
+				break;
+			case 1:
+				fragment = UserFragment.newInstance();
+				break;
+			case 2:
+				fragment = ConsumptionFragment.newInstance();
+				break;
+			}
+			return fragment;
+		}
+
+		@Override
+		public int getCount() {
+			return COUNT;
+		}
+		
+		@Override
+		public CharSequence getPageTitle(int position) {
+			return CONTENT[position % CONTENT.length];
+		}
+
+	}
+
 }
