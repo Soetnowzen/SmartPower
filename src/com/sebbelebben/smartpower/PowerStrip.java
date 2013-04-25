@@ -1,5 +1,6 @@
 package com.sebbelebben.smartpower;
 
+import java.io.Serializable;
 import java.text.*;
 import java.util.*;
 import org.json.*;
@@ -8,7 +9,11 @@ import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
 import com.sebbelebben.smartpower.Server.OnReceiveListener;
 import com.sebbelebben.smartpower.Server.OnSocketReceiveListener;
 
-public class PowerStrip {
+public class PowerStrip implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4087429125837326107L;
 	private int id;
 	private String apiKey;
 	private String serialId;
@@ -19,6 +24,7 @@ public class PowerStrip {
 		this.serialId = serialId;
 	}
 	
+	@Override
 	public String toString(){
 		return serialId;
 	}
@@ -79,6 +85,10 @@ public class PowerStrip {
 				
 			}
 		});
+	}
+
+	public Integer getId() {
+		return id;
 	}
 	
 }

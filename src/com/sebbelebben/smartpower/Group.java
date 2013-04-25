@@ -1,5 +1,6 @@
 package com.sebbelebben.smartpower;
 
+import java.io.Serializable;
 import java.util.*;
 import org.json.*;
 
@@ -7,12 +8,16 @@ import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
 import com.sebbelebben.smartpower.Server.OnReceiveListener;
 import com.sebbelebben.smartpower.Server.OnSocketReceiveListener;
 
-public class Group {
+public class Group implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6987559953747933724L;
 	private int id;
 	private String name;
 	private String apiKey;
 	
-	public Group(int id, String name, String apiKey){
+	public Group(int id, String name, String apiKey) {
 		this.id = id;
 		this.name = name;
 		this.apiKey = apiKey;
