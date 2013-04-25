@@ -6,6 +6,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="usernamebox">Username</string>
     <string name="passwordbox">Password</string>
-    <string name="loginbutton">Log in</string>
+    <string name="loginbutton">Login</string>
+    <string name="UserName">UserName</string>
+    <string name="PowerStripSerialId">PowerStripSerialId</string>
 
 </resources>
