@@ -20,11 +20,15 @@ import android.widget.Toast;
 public class MainActivity extends FragmentActivity {
 	private ViewPager mPager;
 	private MainPagerAdapter mAdapter;
+	private User mUser;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+
+		//Get user from intent
+		mUser = (User) getIntent().getSerializableExtra("User");
 
 		mPager = (ViewPager) findViewById(R.id.viewpager);
 		mAdapter = new MainPagerAdapter(getSupportFragmentManager());
@@ -42,9 +46,9 @@ public class MainActivity extends FragmentActivity {
 			return true;
 	}
 
-	private static class MainPagerAdapter extends FragmentStatePagerAdapter {
-		private static final String[] CONTENT = { "Remote", "User", "Consumption" };
-		private static final int COUNT = 3;
+	private class MainPagerAdapter extends FragmentStatePagerAdapter {
+		private final String[] CONTENT = { "Remote", "User", "Consumption" };
+		private final int COUNT = 3;
 
 		public MainPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -56,7 +60,7 @@ public class MainActivity extends FragmentActivity {
 
 		    	switch(position) {
 			case 0:
-				fragment = RemoteFragment.newInstance();
+				fragment = RemoteFragment.newInstance(mUser);
 				break;
 			case 1:
 				fragment = UserFragment.newInstance();
@@ -79,43 +83,4 @@ public class MainActivity extends FragmentActivity {
 		}
 
 	}
-
-	private static class MainPagerAdapter extends FragmentStatePagerAdapter {
-		private static final String[] CONTENT = { "Remote", "User", "Consumption" };
-		private static final int COUNT = 3;
-
-		public MainPagerAdapter(FragmentManager fm) {
-			super(fm);
-		}
-
-		@Override
-		public Fragment getItem(int position) {
-			Fragment fragment = null;
-
-		    	switch(position) {
-			case 0:
-				fragment = RemoteFragment.newInstance();
-				break;
-			case 1:
-				fragment = UserFragment.newInstance();
-				break;
-			case 2:
-				fragment = ConsumptionFragment.newInstance();
-				break;
-			}
-			return fragment;
-		}
-
-		@Override
-		public int getCount() {
-			return COUNT;
-		}
-		
-		@Override
-		public CharSequence getPageTitle(int position) {
-			return CONTENT[position % CONTENT.length];
-		}
-
-	}
-
 }
