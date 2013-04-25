@@ -28,7 +28,7 @@ public class PowerStrip implements Serializable{
 	public String toString(){
 		return serialId;
 	}
-	
+
 	public void getConsumption(Date start, Date end, final OnConsumptionReceiveListener listener){
 		DateFormat dd = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss.SSSZ", Locale.ENGLISH);
 		Server.sendAndRecieve("{powerstripid:"+id+",request:consumption,apikey:"+apiKey+",startdate:"+dd.format(start)+",enddate:"+dd.format(end)+"}", new OnReceiveListener() {
