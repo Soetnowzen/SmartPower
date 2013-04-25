@@ -16,10 +16,17 @@ public class PowerStrip implements Serializable{
 	private static final long serialVersionUID = 4087429125837326107L;
 	private int id;
 	private String apiKey;
+	private String serialId;
 	
 	public PowerStrip(int id, String serialId, int type, String apiKey){
 		this.id = id;
 		this.apiKey = apiKey;
+		this.serialId = serialId;
+	}
+	
+	@Override
+	public String toString(){
+		return serialId;
 	}
 	
 	@Override
