@@ -56,7 +56,6 @@ public class PowerStripActivity extends Activity{
 			@Override
 			public void failed() {
 				// TODO Auto-generated method stub
-				
 			}
 		});	
 	}
