@@ -19,6 +19,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,7 +42,7 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.activity_login);
 		
 		//Finds the loginbutton on the login screen
-		Button loginButton = (Button) findViewById(R.id.loginbutton);
+		ImageButton loginButton = (ImageButton) findViewById(R.id.loginbutton);
 		mUsernameBox = (EditText) findViewById(R.id.usernamebox);
 		mPasswordBox = (EditText) findViewById(R.id.passwordbox);
 		
