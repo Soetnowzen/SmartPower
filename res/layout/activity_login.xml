@@ -11,7 +11,7 @@
 
     <EditText
         android:id="@+id/passwordbox"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"
@@ -25,7 +25,7 @@
     
     <EditText
         android:id="@+id/usernamebox"
-        android:layout_width="match_parent"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_above="@id/passwordbox"
@@ -60,5 +60,15 @@
         android:layout_below="@+id/passwordbox"
         android:layout_centerHorizontal="true"
         android:background="@drawable/login_button_selector"/>
+    
+    <ProgressBar
+        android:id="@+id/loading_progress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:indeterminateDrawable="@drawable/abs__progress_medium_holo"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"/>
 
 </RelativeLayout>

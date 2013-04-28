@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONException;
@@ -22,6 +23,7 @@ public class LoginActivity extends Activity {
 	
 	private EditText mUsernameBox;
 	private EditText mPasswordBox;
+	private ProgressBar mProgressBar;
 	private User mUser;
 	
 	@Override
@@ -39,6 +41,8 @@ public class LoginActivity extends Activity {
 		loginLabel.setTypeface(robotoThin);
 		mUsernameBox.setTypeface(robotoThin);
 		mPasswordBox.setTypeface(robotoThin);
+		
+		mProgressBar = (ProgressBar) findViewById(R.id.loading_progress);
 
 		//Checks the old preferences
 		loadPrefs();
@@ -56,6 +60,9 @@ public class LoginActivity extends Activity {
 	}
 	
 	private void logIn() {
+		// Show the progress bar
+		mProgressBar.setVisibility(View.VISIBLE);
+		
 		//Initiates the User with the new username & password
 		mUser.logIn(new OnLoginListener() {
 			@Override
