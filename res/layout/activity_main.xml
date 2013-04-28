@@ -11,8 +11,8 @@
     	android:layout_height="wrap_content"
     	android:layout_width="fill_parent"
     	android:background="@drawable/indicator_bg"
-    	app:footerColor="#57808f"
-    	app:selectedColor="#57808f"/>
+    	app:footerColor="#6492a3"
+    	app:selectedColor="#6492a3"/>
     
     <android.support.v4.view.ViewPager
     	android:id="@+id/viewpager"
