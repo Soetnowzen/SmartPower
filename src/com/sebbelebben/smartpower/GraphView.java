@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -179,7 +178,6 @@ public class GraphView extends View {
 	}
 	
 	private void drawText(Canvas canvas) {
-		int w = getWidth();
 		int h = getHeight();
 		for(float i = mXAxisStart - mod(mXAxisStart,mXSegments); i < mXAxisEnd; i+=mXSegments) {
 			Point segmentPoint = new Point(i, h);
