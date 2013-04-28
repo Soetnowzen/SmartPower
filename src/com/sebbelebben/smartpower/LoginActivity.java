@@ -6,11 +6,21 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.PixelFormat;
+import android.graphics.Typeface;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,12 +35,21 @@ public class LoginActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Window window = getWindow();
+		window.setFormat(PixelFormat.RGBA_8888);
+		window.setFlags(WindowManager.LayoutParams.FLAG_DITHER, WindowManager.LayoutParams.FLAG_DITHER);
 		setContentView(R.layout.activity_login);
 		
 		//Finds the loginbutton on the login screen
 		Button loginButton = (Button) findViewById(R.id.loginbutton);
 		mUsernameBox = (EditText) findViewById(R.id.usernamebox);
 		mPasswordBox = (EditText) findViewById(R.id.passwordbox);
+		
+		Typeface robotoThin = Typeface.createFromAsset(getAssets(), "Roboto-Thin.ttf");
+		TextView loginLabel = (TextView) findViewById(R.id.login_label);
+		loginLabel.setTypeface(robotoThin);
+		mUsernameBox.setTypeface(robotoThin);
+		mPasswordBox.setTypeface(robotoThin);
 
 		//Checks the old preferences
 		loadPrefs();
