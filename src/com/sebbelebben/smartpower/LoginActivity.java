@@ -67,6 +67,9 @@ public class LoginActivity extends Activity {
 		mUser.logIn(new OnLoginListener() {
 			@Override
 			public void onLoginSuccess() {
+				// Hide the progress bar
+				mProgressBar.setVisibility(View.GONE);
+				
 				//Creates a JSONObject to save the user so the username & password will be needed to be 
 				//input every time
 				JSONObject jUser = new JSONObject();
@@ -86,6 +89,8 @@ public class LoginActivity extends Activity {
 			
 			@Override
 			public void onLoginFailure() {
+				// Hide the progress bar
+				mProgressBar.setVisibility(View.GONE);
 				Toast.makeText(LoginActivity.this, "Login failed!", Toast.LENGTH_SHORT).show();
 			}
 		});
