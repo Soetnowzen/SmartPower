@@ -19,7 +19,7 @@
         android:textColor="#ffffff"
         android:textColorHint="#526871"
         android:background="@drawable/input_field"
-        android:hint="@string/usernamebox_hint"
+        android:hint="@string/passwordbox_hint"
         android:inputType="textPassword" />
     
     <EditText
@@ -29,7 +29,7 @@
         android:layout_centerHorizontal="true"
         android:layout_above="@id/passwordbox"
         android:layout_marginBottom="6dp"
-        android:hint="@string/passwordbox_hint"
+        android:hint="@string/usernamebox_hint"
         android:textColor="#ffffff"
         android:textColorHint="#526871"
         android:background="@drawable/input_field"/>
