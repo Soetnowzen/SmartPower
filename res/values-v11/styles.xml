@@ -1,7 +1,4 @@
 <resources>
-    <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
-    </style>
-
     <style name="AppTheme" parent="AppBaseTheme">
         <item name="android:actionBarStyle">@style/AppTheme.ActionBar</item>
         <item name="android:titleTextStyle">@style/AppTheme.ActionBar.Text</item>
