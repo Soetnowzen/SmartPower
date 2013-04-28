@@ -20,6 +20,7 @@
         android:textColorHint="#526871"
         android:background="@drawable/input_field"
         android:hint="@string/passwordbox_hint"
+        android:singleLine="true"
         android:inputType="textPassword" />
     
     <EditText
@@ -32,6 +33,7 @@
         android:hint="@string/usernamebox_hint"
         android:textColor="#ffffff"
         android:textColorHint="#526871"
+        android:singleLine="true"
         android:background="@drawable/input_field"/>
     
     <TextView 
