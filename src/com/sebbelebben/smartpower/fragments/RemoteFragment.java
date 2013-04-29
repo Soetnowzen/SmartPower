@@ -12,7 +12,10 @@ import com.sebbelebben.smartpower.User;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -20,6 +23,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 public class RemoteFragment extends Fragment {
     	private ListView mListView;
@@ -76,6 +80,37 @@ public class RemoteFragment extends Fragment {
 				startActivity(intent);
 			}
 		});
+		
+		//Registers that this item has a contextMenu
+		registerForContextMenu(mListView);
+		
 		return view;
+	}
+	
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		menu.add(0, v.getId(), 0, "Change Name");
+		menu.add(0, v.getId(), 0, "Group together with...");
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		if(item.getTitle() == "Change Name") {
+			//function1(item.getItemId());
+		} else if(item.getTitle() == "Group together with...") {
+			//function2(item.getItemId());
+		} else {
+			return false;
+		}
+		return true;
+	}
+	
+	private void function1(int id) {
+		Toast.makeText(getActivity(), "Function1 was called", Toast.LENGTH_SHORT).show();
+	}
+	
+	private void function2(int id) {
+		Toast.makeText(getActivity(), "Function2 was called", Toast.LENGTH_SHORT).show();
 	}
 }
