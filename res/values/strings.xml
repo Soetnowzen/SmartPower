@@ -4,10 +4,11 @@
     <string name="app_name">SmartPower</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="usernamebox">Username</string>
-    <string name="passwordbox">Password</string>
+    <string name="usernamebox_hint">Username</string>
+    <string name="passwordbox_hint">Password</string>
     <string name="loginbutton">Login</string>
     <string name="UserName">UserName</string>
     <string name="PowerStripSerialId">PowerStripSerialId</string>
+    <string name="login_label">Please log in to your SmartPower account</string>
 
 </resources>

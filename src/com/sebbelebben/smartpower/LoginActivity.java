@@ -6,11 +6,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Typeface;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,6 +23,7 @@ public class LoginActivity extends Activity {
 	
 	private EditText mUsernameBox;
 	private EditText mPasswordBox;
+	private ProgressBar mProgressBar;
 	private User mUser;
 	
 	@Override
@@ -28,9 +32,17 @@ public class LoginActivity extends Activity {
 		setContentView(R.layout.activity_login);
 		
 		//Finds the loginbutton on the login screen
-		Button loginButton = (Button) findViewById(R.id.loginbutton);
+		ImageButton loginButton = (ImageButton) findViewById(R.id.loginbutton);
 		mUsernameBox = (EditText) findViewById(R.id.usernamebox);
 		mPasswordBox = (EditText) findViewById(R.id.passwordbox);
+		
+		Typeface robotoThin = Typeface.createFromAsset(getAssets(), "Roboto-Thin.ttf");
+		TextView loginLabel = (TextView) findViewById(R.id.login_label);
+		loginLabel.setTypeface(robotoThin);
+		mUsernameBox.setTypeface(robotoThin);
+		mPasswordBox.setTypeface(robotoThin);
+		
+		mProgressBar = (ProgressBar) findViewById(R.id.loading_progress);
 
 		//Checks the old preferences
 		loadPrefs();
@@ -48,10 +60,16 @@ public class LoginActivity extends Activity {
 	}
 	
 	private void logIn() {
+		// Show the progress bar
+		mProgressBar.setVisibility(View.VISIBLE);
+		
 		//Initiates the User with the new username & password
 		mUser.logIn(new OnLoginListener() {
 			@Override
 			public void onLoginSuccess() {
+				// Hide the progress bar
+				mProgressBar.setVisibility(View.GONE);
+				
 				//Creates a JSONObject to save the user so the username & password will be needed to be 
 				//input every time
 				JSONObject jUser = new JSONObject();
@@ -71,6 +89,8 @@ public class LoginActivity extends Activity {
 			
 			@Override
 			public void onLoginFailure() {
+				// Hide the progress bar
+				mProgressBar.setVisibility(View.GONE);
 				Toast.makeText(LoginActivity.this, "Login failed!", Toast.LENGTH_SHORT).show();
 			}
 		});

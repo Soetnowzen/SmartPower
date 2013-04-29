@@ -3,13 +3,11 @@ package com.sebbelebben.smartpower.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.sebbelebben.smartpower.MainActivity;
 import com.sebbelebben.smartpower.PowerStrip;
 import com.sebbelebben.smartpower.PowerStripActivity;
 import com.sebbelebben.smartpower.R;
 import com.sebbelebben.smartpower.Server.OnPowerStripReceiveListener;
 import com.sebbelebben.smartpower.User;
-import com.sebbelebben.smartpower.UserActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 public class RemoteFragment extends Fragment {
     	private ListView mListView;
@@ -63,6 +62,8 @@ public class RemoteFragment extends Fragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_remote, container, false);
 		mListView = (ListView) view.findViewById(R.id.listview);
+		ProgressBar loadingView = (ProgressBar) view.findViewById(R.id.loading_progress);
+		mListView.setEmptyView(loadingView);
 		mAdapter = new ArrayAdapter<PowerStrip>(getActivity(), android.R.layout.simple_list_item_1, mPowerStrips);
 		mListView.setAdapter(mAdapter);
 
