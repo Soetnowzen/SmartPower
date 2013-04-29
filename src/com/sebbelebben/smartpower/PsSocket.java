@@ -1,12 +1,16 @@
 package com.sebbelebben.smartpower;
 
+import java.io.Serializable;
 import java.util.*;
-
 import org.json.*;
-
+import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
 import com.sebbelebben.smartpower.Server.OnReceiveListener;
 
-public class PsSocket {
+public class PsSocket implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2749123692313834401L;
 	private int id;
 	private String name;
 	private String apiKey;
@@ -25,22 +29,28 @@ public class PsSocket {
 				try {			
 					JSONObject data = new JSONObject(result);
 					if (data.getInt("socketid") == id){
-						JSONArray sockets = data.getJSONArray("data");
-						for(int i = 0; i < sockets.length(); i++){
-							JSONObject JSONsockets = sockets.getJSONObject(i);
-							consumptionList.add(new Consumption(JSONsockets.getString("time"),JSONsockets.getInt("power")));
+						if (data.has("result")){
+							//This means no data was delivered
+							//Some info code here 
 						}
+						else if (data.has("data")){
+							JSONArray sockets = data.getJSONArray("data");
+							for(int i = 0; i < sockets.length(); i++){
+								JSONObject JSONsockets = sockets.getJSONObject(i);
+								consumptionList.add(new Consumption(JSONsockets.getString("time"),JSONsockets.getInt("power")));
+							}
+							listener.onConsumptionReceive(consumptionList.toArray(new Consumption[0]));
+						} else {
+							//There was something else wrong
+						}
+					} else {
+						listener.failed();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
-				listener.onConsumptionReceive((Consumption[]) consumptionList.toArray());
 			}
 		});
-	}
-	
-	public static interface OnConsumptionReceiveListener {
-		void onConsumptionReceive(Consumption[] consumption);
 	}
 	
 	public void setName(String name){
@@ -51,6 +61,8 @@ public class PsSocket {
 					JSONObject data = new JSONObject(result);
 					if (data.getInt("socketid") == id){
 						//check if it was successful
+					} else {
+						//report unsuccessful 
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -63,14 +75,21 @@ public class PsSocket {
 		return name;
 	}
 	
+	public int getId(){
+		return id;
+	}
+	
 	public void turnOn(){
-		Server.sendAndRecieve("{socketid:"+id+",request:turnoff,apikey:"+apiKey+"}", new OnReceiveListener() {
+		Server.sendAndRecieve("{socketid:"+id+",request:turnon,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getInt("socketid") == id){
 						//check if it was successful
+					}
+					else {
+						//report unsuccessful
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -81,18 +100,30 @@ public class PsSocket {
 	}
 	
 	public void turnOff(){
-		Server.sendAndRecieve("{socketid:"+id+",request:turnon,apikey:"+apiKey+"}", new OnReceiveListener() {
+		Server.sendAndRecieve("{socketid:"+id+",request:turnoff,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getInt("socketid") == id){
 						//check if it was successful
+					} else {
+						//report unsuccessful
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 			}
 		});
+	}
+	
+	@Override
+	public String toString(){
+		if (name.equals("null")) {
+				return Integer.toString(id);
+		} else {
+			return name;
+		}
+		
 	}
 }

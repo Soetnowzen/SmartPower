@@ -10,7 +10,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -70,7 +69,7 @@ public class GraphView extends View {
 		mDataColor = attributes.getColor(R.styleable.GraphView_dataColor, Color.BLACK);
 		mAxisColor = attributes.getColor(R.styleable.GraphView_axisColor, Color.BLACK);
 		mFillData = attributes.getBoolean(R.styleable.GraphView_fillData, false);
-		mFillColor = attributes.getColor(R.styleable.GraphView_fillColor, Color.BLACK);
+		mFillColor = attributes.getColor(R.styleable.GraphView_fillDataColor, Color.BLACK);
 		mAxisBackgroundColor = attributes.getColor(R.styleable.GraphView_axisBackgroundColor, Color.BLACK);
 		mDataBackgroundColor = attributes.getColor(R.styleable.GraphView_dataBackgroundColor, Color.BLACK);
 		mTextColor = attributes.getColor(R.styleable.GraphView_textColor, Color.BLACK);
@@ -179,7 +178,6 @@ public class GraphView extends View {
 	}
 	
 	private void drawText(Canvas canvas) {
-		int w = getWidth();
 		int h = getHeight();
 		for(float i = mXAxisStart - mod(mXAxisStart,mXSegments); i < mXAxisEnd; i+=mXSegments) {
 			Point segmentPoint = new Point(i, h);
