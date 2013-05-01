@@ -11,9 +11,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.actionbarsherlock.app.SherlockActivity;
 import com.sebbelebben.smartpower.Server.*;
 
-public class UserActivity extends Activity {
+public class UserActivity extends SherlockActivity {
 	private User user;
 	private ListView powerStripList;
 	private TextView userName;
