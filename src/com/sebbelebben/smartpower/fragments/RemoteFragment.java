@@ -3,6 +3,7 @@ package com.sebbelebben.smartpower.fragments;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.actionbarsherlock.app.SherlockFragment;
 import com.sebbelebben.smartpower.PowerStrip;
 import com.sebbelebben.smartpower.PowerStripActivity;
 import com.sebbelebben.smartpower.R;
@@ -21,7 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
-public class RemoteFragment extends Fragment {
+public class RemoteFragment extends SherlockFragment {
     	private ListView mListView;
 	private List<PowerStrip> mPowerStrips = new ArrayList<PowerStrip>();
 	private ArrayAdapter<PowerStrip> mAdapter;
