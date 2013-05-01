@@ -1,5 +1,5 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
-    <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
+    <style name="AppBaseTheme" parent="Theme.Sherlock.Light">
         <item name="android:windowBackground">@drawable/login_bg</item>
     </style>
 

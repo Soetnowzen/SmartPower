@@ -2,7 +2,6 @@ package com.sebbelebben.smartpower;
 
 import java.util.ArrayList;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,9 +10,11 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.actionbarsherlock.app.SherlockActivity;
 import com.sebbelebben.smartpower.Server.*;
 
-public class UserActivity extends Activity {
+public class UserActivity extends SherlockActivity {
 	private User user;
 	private ListView powerStripList;
 	private TextView userName;

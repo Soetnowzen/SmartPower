@@ -2,9 +2,10 @@ package com.sebbelebben.smartpower;
 
 import java.util.ArrayList;
 
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
 import com.sebbelebben.smartpower.Server.*;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -14,7 +15,7 @@ import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Toast;
 
-public class PowerStripActivity extends Activity{
+public class PowerStripActivity extends SherlockActivity {
 	private PowerStrip powerStrip;
 	private ListView psSocketList;
 	private TextView powerStripSerialId;
@@ -59,5 +60,12 @@ public class PowerStripActivity extends Activity{
 				
 			}
 		});	
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		// Inflate the menu; this adds items to the action bar if it is present.
+			getSupportMenuInflater().inflate(R.menu.main, menu);
+			return true;
 	}
 }
