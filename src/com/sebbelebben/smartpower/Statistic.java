@@ -13,12 +13,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Statistic extends AsyncTask<String, Integer, Stats[]>{
+public class Statistic extends AsyncTask<String, Integer, Consumption[]>{
 
 	//make sure param[0] == ip, param[1] = port;
 	//all together its 7 params we need
 	@Override
-	protected Stats[] doInBackground(String... params) {
+	protected Consumption[] doInBackground(String... params) {
 		// TODO Auto-generated method stub
 
 		try{
@@ -31,23 +31,18 @@ public class Statistic extends AsyncTask<String, Integer, Stats[]>{
 
 			JSONObject js = new JSONObject(reply);
 			JSONArray dataArray = js.getJSONArray("data");
-			Stats[] result = new Stats[dataArray.length()];
+			Consumption[] result = new Consumption[dataArray.length()];
 			for(int i = 0; i < dataArray.length(); i++){
 				JSONObject jo = dataArray.getJSONObject(i);
 				int power = jo.getInt("power");
 				String time = jo.getString("time");
-				result[i] = new Stats(power, time);
+				result[i] = new Consumption(time,power);
 			}
 			return result;			
 			
 		}catch(JSONException e){
 			return null;
-		}catch(ParseException e){
-			return null;
-		}
-		
-
-		
+		}		
 	}
 	
 	
