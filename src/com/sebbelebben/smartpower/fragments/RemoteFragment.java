@@ -9,6 +9,9 @@ import com.sebbelebben.smartpower.R;
 import com.sebbelebben.smartpower.Server.OnPowerStripReceiveListener;
 import com.sebbelebben.smartpower.User;
 
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -22,6 +25,7 @@ import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -30,7 +34,8 @@ public class RemoteFragment extends Fragment {
     	private ListView mListView;
 	private List<PowerStrip> mPowerStrips = new ArrayList<PowerStrip>();
 	private ArrayAdapter<PowerStrip> mAdapter;
-
+	private EditText mResult;
+	
 	public static RemoteFragment newInstance(User user) {
 		RemoteFragment f = new RemoteFragment();
 		Bundle args = new Bundle();
@@ -71,7 +76,7 @@ public class RemoteFragment extends Fragment {
 		mListView.setEmptyView(loadingView);
 		mAdapter = new ArrayAdapter<PowerStrip>(getActivity(), android.R.layout.simple_list_item_1, mPowerStrips);
 		mListView.setAdapter(mAdapter);
-
+	    
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 		        @Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
@@ -111,12 +116,47 @@ public class RemoteFragment extends Fragment {
 	}
 	
 	private void changeName(int position) {
-		//mPowerStrips
-		//Get name in a pop-up box & set name to powerstrip bellow
-		mPowerStrips.get(position).setName("Hello");
+		//EditText result = (EditText) view.findViewById(R.id.editTextDialogUserInput);
+		
+		// get prompts.xml view
+		Context context = getActivity();
+		LayoutInflater li = LayoutInflater.from(context);
+		View promptsView = li.inflate(R.layout.popup, null);
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+
+		// set prompts.xml to alertdialog builder
+		alertDialogBuilder.setView(promptsView);
+		final EditText userInput = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput);
+		String s;
+		
+		// set dialog message
+		alertDialogBuilder.setCancelable(false).setPositiveButton("OK",
+			  new DialogInterface.OnClickListener() {
+			    public void onClick(DialogInterface dialog, int id) {
+				// get user input and set it to mResult
+				// edit text
+			    	String s = userInput.getText().toString();
+			    	mPowerStrips.get(position);
+				//mResult.setText(userInput.getText());
+			    }
+			  })
+			.setNegativeButton("Cancel",
+			  new DialogInterface.OnClickListener() {
+			    public void onClick(DialogInterface dialog,int id) {
+				dialog.cancel();
+			    }
+			  });
+
+		// create alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+
+		// show it
+		alertDialog.show();
+		
+		//mPowerStrips.get(position).setName("Hello");
 		//Ändra namn på itemet
 		mAdapter.notifyDataSetChanged();
-		Toast.makeText(getActivity(), "Function1 was called", Toast.LENGTH_SHORT).show();
+		//Toast.makeText(getActivity(), "Function1 was called", Toast.LENGTH_SHORT).show();
 	}
 	
 	private void groupOutlets(int id) {
