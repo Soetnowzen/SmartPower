@@ -97,20 +97,20 @@ public class RemoteFragment extends Fragment {
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		if(item.getTitle() == "Change Name") {
-			//function1(item.getItemId());
+			changeName(item.getItemId());
 		} else if(item.getTitle() == "Group together with...") {
-			//function2(item.getItemId());
+			groupOutlets(item.getItemId());
 		} else {
 			return false;
 		}
 		return true;
 	}
 	
-	private void function1(int id) {
+	private void changeName(int id) {
 		Toast.makeText(getActivity(), "Function1 was called", Toast.LENGTH_SHORT).show();
 	}
 	
-	private void function2(int id) {
+	private void groupOutlets(int id) {
 		Toast.makeText(getActivity(), "Function2 was called", Toast.LENGTH_SHORT).show();
 	}
 }
