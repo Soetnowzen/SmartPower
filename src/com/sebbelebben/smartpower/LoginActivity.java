@@ -76,7 +76,7 @@ public class LoginActivity extends Activity {
 				try {
 					jUser.put("Username", mUser.getUserName());
 					jUser.put("Password", mUser.getPassword());
-					jUser.put("Loggged in", mUser.loginStatus());
+					jUser.put("Logged in", mUser.loginStatus());
 					savePrefs(jUser.toString());
 					Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 					intent.putExtra("User", mUser);

@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -96,6 +97,9 @@ public class RemoteFragment extends Fragment {
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+		int position = info.position;
+		//Long id = getListAdapter().getItemId(info.position);
 		if(item.getTitle() == "Change Name") {
 			changeName(item.getItemId());
 		} else if(item.getTitle() == "Group together with...") {
@@ -106,7 +110,12 @@ public class RemoteFragment extends Fragment {
 		return true;
 	}
 	
-	private void changeName(int id) {
+	private void changeName(int position) {
+		//mPowerStrips
+		//Get name in a pop-up box & set name to powerstrip bellow
+		mPowerStrips.get(position).setName("Hello");
+		//Ändra namn på itemet
+		mAdapter.notifyDataSetChanged();
 		Toast.makeText(getActivity(), "Function1 was called", Toast.LENGTH_SHORT).show();
 	}
 	
