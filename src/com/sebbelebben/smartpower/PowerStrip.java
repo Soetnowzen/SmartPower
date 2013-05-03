@@ -28,6 +28,24 @@ public class PowerStrip implements Serializable{
 	public String toString(){
 		return serialId;
 	}
+	
+	public void setName(String name){
+		Server.sendAndRecieve("{powerstripid:"+id+",request:setname,apikey:"+apiKey+",newname:"+name+"}", new OnReceiveListener() {
+			@Override
+			public void onReceive(String result) {
+				try {
+					JSONObject data = new JSONObject(result);
+					if (data.getInt("powerstripid") == id){
+						//check if it was successful
+					} else {
+						//report unsuccessful 
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
 		
 	public void getConsumption(Date start, Date end, final OnConsumptionReceiveListener listener){
 		DateFormat dd = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss.SSSZ", Locale.ENGLISH);
