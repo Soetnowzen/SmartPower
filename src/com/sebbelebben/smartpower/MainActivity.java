@@ -1,12 +1,18 @@
 package com.sebbelebben.smartpower;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.sebbelebben.smartpower.fragments.*;
 import com.viewpagerindicator.TitlePageIndicator;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -48,10 +54,13 @@ public class MainActivity extends SherlockFragmentActivity {
 	    // Handle item selection
 	    switch (item.getItemId()) {
 	        case R.id.action_logout:
+	        	// Create a new Intent so that history is cleared
 	        	Intent loginIntent = new Intent(this, LoginActivity.class);
 	        	loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 	        	loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 	        	mUser.logOut();
+	        	// Write empty user details to SharedPreferences
+	        	saveUserToPreferences();
 	        	startActivity(loginIntent);
 	            return true;
 	        default:
@@ -96,4 +105,21 @@ public class MainActivity extends SherlockFragmentActivity {
 		}
 
 	}
+	
+	private void saveUserToPreferences() {
+		JSONObject jUser = new JSONObject();
+		try {
+			jUser.put("Username", mUser.getUserName());
+			jUser.put("Password", mUser.getPassword());
+			jUser.put("Loggged in", mUser.loginStatus());
+			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+    		Editor edit = sp.edit();
+    		edit.putString("USER", jUser.toString());
+    		edit.commit();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+	}
+
 }
