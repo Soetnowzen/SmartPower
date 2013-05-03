@@ -60,7 +60,9 @@ public class LoginActivity extends Activity {
 					jUser.put("Password", mUser.getPassword());
 					jUser.put("Loggged in", mUser.loginStatus());
 					savePrefs(jUser.toString());
-					startActivity(new Intent(LoginActivity.this, GraphActivity.class));
+					Intent intent = new Intent(LoginActivity.this, UserActivity.class);
+					intent.putExtra("User", mUser);
+					startActivity(intent);
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

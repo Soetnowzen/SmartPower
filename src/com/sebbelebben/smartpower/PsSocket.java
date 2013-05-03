@@ -1,11 +1,16 @@
 package com.sebbelebben.smartpower;
 
+import java.io.Serializable;
 import java.util.*;
 import org.json.*;
 import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
 import com.sebbelebben.smartpower.Server.OnReceiveListener;
 
-public class PsSocket {
+public class PsSocket implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2749123692313834401L;
 	private int id;
 	private String name;
 	private String apiKey;
@@ -112,6 +117,7 @@ public class PsSocket {
 		});
 	}
 	
+	@Override
 	public String toString(){
 		if (name.equals("null")) {
 				return Integer.toString(id);

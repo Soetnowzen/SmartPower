@@ -70,12 +70,16 @@ public class User implements Serializable   {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getString("username").equals(userName)){
-						JSONArray powerStrips = data.getJSONArray("powerstrips");
-						for(int i = 0; i < powerStrips.length(); i++){
-							JSONObject JSONpowerStrip = powerStrips.getJSONObject(i);
-							powerStripList.add(new PowerStrip(JSONpowerStrip.getInt("id"),JSONpowerStrip.getString("serialid"),1,apiKey));
+						if(!data.get("powerstrips").equals(null)){
+							JSONArray powerStrips = data.getJSONArray("powerstrips");
+							for(int i = 0; i < powerStrips.length(); i++){
+								JSONObject JSONpowerStrip = powerStrips.getJSONObject(i);
+								powerStripList.add(new PowerStrip(JSONpowerStrip.getInt("id"),JSONpowerStrip.getString("serialid"),1,apiKey));
+							}
+							listener.onPowerStripReceive(powerStripList.toArray(new PowerStrip[0]));
+						} else {
+							listener.failed();
 						}
-						listener.onPowerStripReceive(powerStripList.toArray(new PowerStrip[0]));
 					} else {
 						listener.failed();
 					}
