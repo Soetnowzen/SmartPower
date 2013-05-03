@@ -5,11 +5,14 @@ import com.actionbarsherlock.view.Menu;
 import com.sebbelebben.smartpower.fragments.*;
 import com.viewpagerindicator.TitlePageIndicator;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+
+import android.view.MenuItem;
 
 public class MainActivity extends SherlockFragmentActivity {
 	private ViewPager mPager;
@@ -38,6 +41,22 @@ public class MainActivity extends SherlockFragmentActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 			getSupportMenuInflater().inflate(R.menu.main, menu);
 			return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
+	    // Handle item selection
+	    switch (item.getItemId()) {
+	        case R.id.action_logout:
+	        	Intent loginIntent = new Intent(this, LoginActivity.class);
+	        	loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	        	loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	        	mUser.logOut();
+	        	startActivity(loginIntent);
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
 	}
 
 	private class MainPagerAdapter extends FragmentPagerAdapter {
