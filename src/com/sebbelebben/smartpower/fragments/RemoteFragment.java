@@ -1,6 +1,7 @@
 package com.sebbelebben.smartpower.fragments;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -68,9 +69,9 @@ public class RemoteFragment extends SherlockFragment {
 		mListView = (ListView) view.findViewById(R.id.listview);
 		ProgressBar loadingView = (ProgressBar) view.findViewById(R.id.loading_progress);
 		mListView.setEmptyView(loadingView);
-		//mAdapter = new PowerStripAdapter(getActivity(), R.layout.remote_item, (PowerStrip[])mPowerStrips.toArray());
-		mAdapter = new ArrayAdapter<PowerStrip>(getActivity(), android.R.layout.simple_list_item_1, mPowerStrips);
-		mListView.setAdapter(mAdapter);
+		mAdapter = new PowerStripAdapter(getActivity(), R.layout.remote_item, mPowerStrips);
+		//mAdapter = new ArrayAdapter<PowerStrip>(getActivity(), android.R.layout.simple_list_item_1, mPowerStrips);
+		mListView.setAdapter(new SlideExpandableListAdapter(mAdapter, R.id.text, R.id.expandable));
 
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 		        @Override
@@ -87,9 +88,9 @@ public class RemoteFragment extends SherlockFragment {
 	public static class PowerStripAdapter extends ArrayAdapter<PowerStrip>{
 	    Context context; 
 	    int layoutResourceId;    
-	    PowerStrip data[] = null;
+	    List<PowerStrip> data = null;
 	    
-	    public PowerStripAdapter(Context context, int layoutResourceId, PowerStrip[] data) {
+	    public PowerStripAdapter(Context context, int layoutResourceId, List<PowerStrip> data) {
 	        super(context, layoutResourceId, data);
 	        this.layoutResourceId = layoutResourceId;
 	        this.context = context;
@@ -116,7 +117,7 @@ public class RemoteFragment extends SherlockFragment {
 	            holder = (PowerStripHolder)row.getTag();
 	        }
 	        
-	        PowerStrip powerStrip = data[position];
+	        PowerStrip powerStrip = data.get(position);
 	        holder.txtTitle.setText(powerStrip.toString());
 	        
 	        return row;
