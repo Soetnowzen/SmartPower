@@ -70,7 +70,6 @@ public class RemoteFragment extends SherlockFragment {
 		ProgressBar loadingView = (ProgressBar) view.findViewById(R.id.loading_progress);
 		mListView.setEmptyView(loadingView);
 		mAdapter = new PowerStripAdapter(getActivity(), R.layout.remote_item, mPowerStrips);
-		//mAdapter = new ArrayAdapter<PowerStrip>(getActivity(), android.R.layout.simple_list_item_1, mPowerStrips);
 		mListView.setAdapter(new SlideExpandableListAdapter(mAdapter, R.id.text, R.id.expandable));
 
 		mListView.setOnItemClickListener(new OnItemClickListener() {

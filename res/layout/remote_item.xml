@@ -35,7 +35,9 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:orientation="horizontal"
-            android:id="@+id/expandable">
+            android:id="@+id/expandable"
+            android:padding="16dp"
+            android:background="@drawable/expandable_bg">
 
         <!-- put whatever you want in the expandable view -->
         <Button
