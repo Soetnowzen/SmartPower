@@ -18,13 +18,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class RemoteFragment extends SherlockFragment {
     	private ListView mListView;
@@ -108,6 +111,9 @@ public class RemoteFragment extends SherlockFragment {
 	            
 	            holder = new PowerStripHolder();
 	            holder.txtTitle = (TextView)row.findViewById(R.id.text);
+	            holder.toggleButton = (Button)row.findViewById(R.id.toggle_button);
+	            holder.actionAButton = (Button)row.findViewById(R.id.action_a_button);
+	            holder.actionBButton = (Button)row.findViewById(R.id.action_b_button);
 	            
 	            row.setTag(holder);
 	        }
@@ -119,6 +125,26 @@ public class RemoteFragment extends SherlockFragment {
 	        PowerStrip powerStrip = data.get(position);
 	        holder.txtTitle.setText(powerStrip.toString());
 	        
+	        
+	        holder.toggleButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Toast.makeText(context, "TOGGLE", Toast.LENGTH_SHORT).show();
+				}
+			});
+	        holder.actionAButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Toast.makeText(context, "ACTION A", Toast.LENGTH_SHORT).show();
+				}
+			});
+	        holder.actionBButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Toast.makeText(context, "ACTION B", Toast.LENGTH_SHORT).show();
+				}
+			});
+	        
 	        return row;
 	    }
 	}
@@ -126,5 +152,8 @@ public class RemoteFragment extends SherlockFragment {
 	static class PowerStripHolder
     {
         TextView txtTitle;
+        Button toggleButton;
+        Button actionAButton;
+        Button actionBButton;
     }
 }

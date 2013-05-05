@@ -18,9 +18,8 @@
                 android:minHeight="40dp"
                 android:layout_margin="4dp"/>
 
-        <!-- this is the button that will trigger sliding of the expandable view -->
         <Button
-                android:id="@+id/expandable_toggle_button"
+                android:id="@+id/toggle_button"
                 android:text="Toggle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -41,13 +40,14 @@
 
         <!-- put whatever you want in the expandable view -->
         <Button
+            android:id="@+id/action_a_button"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="0.5"
                 android:text="Action A" />
 
         <Button
-                android:id="@+id/details"
+            android:id="@+id/action_b_button"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="0.5"
