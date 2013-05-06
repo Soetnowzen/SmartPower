@@ -1,7 +1,6 @@
 package com.sebbelebben.smartpower.fragments;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -16,7 +15,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -84,6 +86,10 @@ public class RemoteFragment extends SherlockFragment {
 				startActivity(intent);
 			}
 		});
+		
+		//Registers that this item has a contextMenu
+		registerForContextMenu(mListView);
+		
 		return view;
 	}
 	
@@ -156,4 +162,38 @@ public class RemoteFragment extends SherlockFragment {
         Button actionAButton;
         Button actionBButton;
     }
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		menu.add(0, v.getId(), 0, "Change Name");
+		menu.add(0, v.getId(), 0, "Group together with...");
+	}
+	
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+		int position = info.position;
+		//Long id = getListAdapter().getItemId(info.position);
+		if(item.getTitle() == "Change Name") {
+			changeName(item.getItemId());
+		} else if(item.getTitle() == "Group together with...") {
+			groupOutlets(item.getItemId());
+		} else {
+			return false;
+		}
+		return true;
+	}
+	
+	private void changeName(int position) {
+		//mPowerStrips
+		//Get name in a pop-up box & set name to powerstrip bellow
+		mPowerStrips.get(position).setName("Hello");
+		//Ändra namn på itemet
+		mAdapter.notifyDataSetChanged();
+		Toast.makeText(getActivity(), "Function1 was called", Toast.LENGTH_SHORT).show();
+	}
+	
+	private void groupOutlets(int id) {
+		Toast.makeText(getActivity(), "Function2 was called", Toast.LENGTH_SHORT).show();
+	}
 }
