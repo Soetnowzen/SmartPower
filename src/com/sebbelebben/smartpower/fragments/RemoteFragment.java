@@ -4,10 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.sebbelebben.smartpower.Consumption;
 import com.sebbelebben.smartpower.PowerStrip;
 import com.sebbelebben.smartpower.PowerStripActivity;
 import com.sebbelebben.smartpower.R;
+import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
 import com.sebbelebben.smartpower.Server.OnPowerStripReceiveListener;
+import com.sebbelebben.smartpower.Statistic;
 import com.sebbelebben.smartpower.User;
 import com.tjerkw.slideexpandable.library.SlideExpandableListAdapter;
 
@@ -96,7 +99,7 @@ public class RemoteFragment extends SherlockFragment {
 		return view;
 	}
 	
-	public static class PowerStripAdapter extends ArrayAdapter<PowerStrip>{
+	public class PowerStripAdapter extends ArrayAdapter<PowerStrip>{
 	    Context context; 
 	    int layoutResourceId;    
 	    List<PowerStrip> data = null;
@@ -109,7 +112,7 @@ public class RemoteFragment extends SherlockFragment {
 	    }
 
 	    @Override
-	    public View getView(int position, View convertView, ViewGroup parent) {
+	    public View getView(final int position, View convertView, ViewGroup parent) {
 	        View row = convertView;
 	        PowerStripHolder holder = null;
 	        
@@ -144,7 +147,8 @@ public class RemoteFragment extends SherlockFragment {
 	        holder.actionAButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Toast.makeText(context, "ACTION A", Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, "Rename", Toast.LENGTH_SHORT).show();
+					RemoteFragment.this.changeName(position);
 				}
 			});
 	        holder.actionBButton.setOnClickListener(new OnClickListener() {
