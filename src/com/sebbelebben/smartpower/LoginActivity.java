@@ -81,6 +81,7 @@ public class LoginActivity extends Activity {
 					Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 					intent.putExtra("User", mUser);
 					startActivity(intent);
+					finish();
 				} catch (JSONException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
