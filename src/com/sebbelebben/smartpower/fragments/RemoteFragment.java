@@ -147,7 +147,7 @@ public class RemoteFragment extends SherlockFragment {
 	        holder.actionAButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Toast.makeText(context, "ACTION A", Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, "Rename", Toast.LENGTH_SHORT).show();
 					RemoteFragment.this.changeName(position);
 				}
 			});
