@@ -21,7 +21,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -34,7 +33,6 @@ public class RemoteFragment extends Fragment {
     	private ListView mListView;
 	private List<PowerStrip> mPowerStrips = new ArrayList<PowerStrip>();
 	private ArrayAdapter<PowerStrip> mAdapter;
-	private EditText mResult;
 	
 	public static RemoteFragment newInstance(User user) {
 		RemoteFragment f = new RemoteFragment();
@@ -106,7 +104,7 @@ public class RemoteFragment extends Fragment {
 		int position = info.position;
 		//Long id = getListAdapter().getItemId(info.position);
 		if(item.getTitle() == "Change Name") {
-			changeName(item.getItemId());
+			changeName(position);
 		} else if(item.getTitle() == "Group together with...") {
 			groupOutlets(item.getItemId());
 		} else {
@@ -115,29 +113,28 @@ public class RemoteFragment extends Fragment {
 		return true;
 	}
 	
-	private void changeName(int position) {
-		//EditText result = (EditText) view.findViewById(R.id.editTextDialogUserInput);
-		
+	private void changeName(final int position) {
 		// get prompts.xml view
 		Context context = getActivity();
 		LayoutInflater li = LayoutInflater.from(context);
-		View promptsView = li.inflate(R.layout.popup, null);
+		View promptsView = li.inflate(R.layout.popup_rename, null);
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+		
+		final EditText result = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput);
 
-		// set prompts.xml to alertdialog builder
+		// set popup_rename.xml to alertdialog builder
 		alertDialogBuilder.setView(promptsView);
-		final EditText userInput = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput);
-		String s;
 		
 		// set dialog message
-		alertDialogBuilder.setCancelable(false).setPositiveButton("OK",
+		alertDialogBuilder.setCancelable(true).setPositiveButton("OK",
 			  new DialogInterface.OnClickListener() {
 			    public void onClick(DialogInterface dialog, int id) {
 				// get user input and set it to mResult
 				// edit text
-			    	String s = userInput.getText().toString();
-			    	mPowerStrips.get(position);
-				//mResult.setText(userInput.getText());
+			    	//String s = result.getText().toString();
+			    	//mPowerStrips.get(position);
+			    	//mPowerStrips.get(position).setName(result.getText().toString();
+					mAdapter.notifyDataSetChanged();
 			    }
 			  })
 			.setNegativeButton("Cancel",
@@ -152,14 +149,36 @@ public class RemoteFragment extends Fragment {
 
 		// show it
 		alertDialog.show();
-		
-		//mPowerStrips.get(position).setName("Hello");
-		//Ändra namn på itemet
-		mAdapter.notifyDataSetChanged();
-		//Toast.makeText(getActivity(), "Function1 was called", Toast.LENGTH_SHORT).show();
 	}
 	
-	private void groupOutlets(int id) {
-		Toast.makeText(getActivity(), "Function2 was called", Toast.LENGTH_SHORT).show();
+	private void groupOutlets(final int position) {
+		Context context = getActivity();
+		LayoutInflater li = LayoutInflater.from(context);
+		View promptsView = li.inflate(R.layout.popup_group,null);
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+		
+		final EditText result = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput);
+		
+		//set popup_group.xml to alertDialog builder
+		alertDialogBuilder.setView(promptsView);
+		//set dialog message
+		alertDialogBuilder.setCancelable(true).setPositiveButton("Add",
+				new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						mAdapter.notifyDataSetChanged();
+					}
+				})
+				.setNegativeButton("Cancel",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								dialog.cancel();
+							}
+						});
+		
+		Toast.makeText(getActivity(), "groupOutlets was called", Toast.LENGTH_SHORT).show();
 	}
 }
