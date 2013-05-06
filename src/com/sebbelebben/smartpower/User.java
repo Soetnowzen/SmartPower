@@ -74,7 +74,7 @@ public class User implements Serializable   {
 							JSONArray powerStrips = data.getJSONArray("powerstrips");
 							for(int i = 0; i < powerStrips.length(); i++){
 								JSONObject JSONpowerStrip = powerStrips.getJSONObject(i);
-								powerStripList.add(new PowerStrip(JSONpowerStrip.getInt("id"),JSONpowerStrip.getString("serialid"),1,apiKey));
+								powerStripList.add(new PowerStrip(JSONpowerStrip.getInt("id"),JSONpowerStrip.getString("serialid"),1,apiKey,JSONpowerStrip.getString("name")));
 							}
 							listener.onPowerStripReceive(powerStripList.toArray(new PowerStrip[0]));
 						} else {

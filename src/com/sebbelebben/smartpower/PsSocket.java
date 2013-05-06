@@ -40,7 +40,7 @@ public class PsSocket implements Serializable {
 								consumptionList.add(new Consumption(JSONsockets.getString("time"),JSONsockets.getInt("power")));
 							}
 							listener.onConsumptionReceive(consumptionList.toArray(new Consumption[0]));
-						} else {
+						} else { //TODO
 							//There was something else wrong
 						}
 					} else {
@@ -59,9 +59,9 @@ public class PsSocket implements Serializable {
 			public void onReceive(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
-					if (data.getInt("socketid") == id){
+					if (data.getInt("socketid") == id){ //TODO
 						//check if it was successful
-					} else {
+					} else { //TODO
 						//report unsuccessful 
 					}
 				} catch (JSONException e) {
