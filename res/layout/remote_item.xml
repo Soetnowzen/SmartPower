@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+    <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+        <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/text"
+                android:clickable="true"
+                android:text="Hello World"
+                android:gravity="center_vertical"
+                android:minHeight="40dp"
+                android:layout_margin="4dp"/>
+
+        <Button
+                android:id="@+id/toggle_button"
+                android:text="Toggle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/text"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/text"/>
+
+    </RelativeLayout>
+
+    <!-- this is the expandable view that is initially hidden and will slide out when the more button is pressed -->
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="horizontal"
+            android:id="@+id/expandable"
+            android:padding="16dp"
+            android:background="@drawable/expandable_bg">
+
+        <!-- put whatever you want in the expandable view -->
+        <Button
+            android:id="@+id/action_a_button"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.5"
+                android:text="Action A" />
+
+        <Button
+            android:id="@+id/action_b_button"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="0.5"
+                android:text="Action B"/>
+
+    </LinearLayout>
+</LinearLayout>
