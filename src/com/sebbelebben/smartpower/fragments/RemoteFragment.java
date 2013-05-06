@@ -13,6 +13,9 @@ import com.tjerkw.slideexpandable.library.SlideExpandableListAdapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -26,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -35,7 +39,7 @@ public class RemoteFragment extends SherlockFragment {
     	private ListView mListView;
 	private List<PowerStrip> mPowerStrips = new ArrayList<PowerStrip>();
 	private ArrayAdapter<PowerStrip> mAdapter;
-
+	
 	public static RemoteFragment newInstance(User user) {
 		RemoteFragment f = new RemoteFragment();
 		Bundle args = new Bundle();
@@ -76,7 +80,6 @@ public class RemoteFragment extends SherlockFragment {
 		mListView.setEmptyView(loadingView);
 		mAdapter = new PowerStripAdapter(getActivity(), R.layout.remote_item, mPowerStrips);
 		mListView.setAdapter(new SlideExpandableListAdapter(mAdapter, R.id.text, R.id.expandable));
-
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 		        @Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
@@ -175,7 +178,7 @@ public class RemoteFragment extends SherlockFragment {
 		int position = info.position;
 		//Long id = getListAdapter().getItemId(info.position);
 		if(item.getTitle() == "Change Name") {
-			changeName(item.getItemId());
+			changeName(position);
 		} else if(item.getTitle() == "Group together with...") {
 			groupOutlets(item.getItemId());
 		} else {
@@ -184,16 +187,72 @@ public class RemoteFragment extends SherlockFragment {
 		return true;
 	}
 	
-	private void changeName(int position) {
-		//mPowerStrips
-		//Get name in a pop-up box & set name to powerstrip bellow
-		mPowerStrips.get(position).setName("Hello");
-		//Ändra namn på itemet
-		mAdapter.notifyDataSetChanged();
-		Toast.makeText(getActivity(), "Function1 was called", Toast.LENGTH_SHORT).show();
+	private void changeName(final int position) {
+		// get prompts.xml view
+		Context context = getActivity();
+		LayoutInflater li = LayoutInflater.from(context);
+		View promptsView = li.inflate(R.layout.popup_rename, null);
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+		
+		final EditText result = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput);
+
+		// set popup_rename.xml to alertdialog builder
+		alertDialogBuilder.setView(promptsView);
+		
+		// set dialog message
+		alertDialogBuilder.setCancelable(true).setPositiveButton("OK",
+			  new DialogInterface.OnClickListener() {
+			    public void onClick(DialogInterface dialog, int id) {
+				// get user input and set it to mResult
+				// edit text
+			    	//String s = result.getText().toString();
+			    	//mPowerStrips.get(position);
+			    	mPowerStrips.get(position).setName(result.getText().toString());
+					mAdapter.notifyDataSetChanged();
+			    }
+			  })
+			.setNegativeButton("Cancel",
+			  new DialogInterface.OnClickListener() {
+			    public void onClick(DialogInterface dialog,int id) {
+				dialog.cancel();
+			    }
+			  });
+
+		// create alert dialog
+		AlertDialog alertDialog = alertDialogBuilder.create();
+
+		// show it
+		alertDialog.show();
 	}
 	
-	private void groupOutlets(int id) {
-		Toast.makeText(getActivity(), "Function2 was called", Toast.LENGTH_SHORT).show();
+	private void groupOutlets(final int position) {
+		Context context = getActivity();
+		LayoutInflater li = LayoutInflater.from(context);
+		View promptsView = li.inflate(R.layout.popup_group,null);
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+		
+		final EditText result = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput);
+		
+		//set popup_group.xml to alertDialog builder
+		alertDialogBuilder.setView(promptsView);
+		//set dialog message
+		alertDialogBuilder.setCancelable(true).setPositiveButton("Add",
+				new DialogInterface.OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						mAdapter.notifyDataSetChanged();
+					}
+				})
+				.setNegativeButton("Cancel",
+						new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface dialog, int which) {
+								dialog.cancel();
+							}
+						});
+		
+		Toast.makeText(getActivity(), "groupOutlets was called", Toast.LENGTH_SHORT).show();
 	}
 }

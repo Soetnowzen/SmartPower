@@ -11,5 +11,6 @@
     <string name="UserName">UserName</string>
     <string name="PowerStripSerialId">PowerStripSerialId</string>
     <string name="login_label">Please log in to your SmartPower account</string>
+    <string name="popupMessage">Type Your Message : </string>
 
 </resources>
