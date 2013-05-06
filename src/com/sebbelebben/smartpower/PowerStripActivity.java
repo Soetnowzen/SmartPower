@@ -57,7 +57,6 @@ public class PowerStripActivity extends SherlockActivity {
 			@Override
 			public void failed() {
 				// TODO Auto-generated method stub
-				
 			}
 		});	
 	}
