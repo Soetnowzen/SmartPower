@@ -44,7 +44,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_weight="0.5"
-                android:text="Action A" />
+                android:text="@string/renamingButtonText" />
 
         <Button
             android:id="@+id/action_b_button"
