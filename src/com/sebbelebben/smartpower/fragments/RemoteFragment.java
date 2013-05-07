@@ -10,7 +10,6 @@ import com.sebbelebben.smartpower.PowerStripActivity;
 import com.sebbelebben.smartpower.R;
 import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
 import com.sebbelebben.smartpower.Server.OnPowerStripReceiveListener;
-import com.sebbelebben.smartpower.Statistic;
 import com.sebbelebben.smartpower.User;
 import com.tjerkw.slideexpandable.library.SlideExpandableListAdapter;
 
