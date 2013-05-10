@@ -88,7 +88,7 @@ public class MainActivity extends SherlockFragmentActivity {
 				fragment = UserFragment.newInstance();
 				break;
 			case 2:
-				fragment = ConsumptionFragment.newInstance();
+				fragment = ConsumptionFragment.newInstance(mUser);
 				break;
 			}
 			return fragment;
