@@ -38,7 +38,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class RemoteFragment extends SherlockFragment {
-    	private ListView mListView;
+    private ListView mListView;
 	private List<PowerStrip> mPowerStrips = new ArrayList<PowerStrip>();
 	private ArrayAdapter<PowerStrip> mAdapter;
 	
