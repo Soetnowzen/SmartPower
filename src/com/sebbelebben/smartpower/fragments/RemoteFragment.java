@@ -1,5 +1,6 @@
 package com.sebbelebben.smartpower.fragments;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -153,7 +155,40 @@ public class RemoteFragment extends SherlockFragment {
 	        holder.actionBButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Toast.makeText(context, "ACTION B", Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, "NEW ACTION B", Toast.LENGTH_SHORT).show();
+					Date start = new Date(2013, 05, 9);
+					Date end = new Date(2013, 05, 10);
+					//input dialog
+					AlertDialog.Builder alert = new AlertDialog.Builder(context);
+					final EditText input = new EditText(context);
+					alert.setView(input);
+					alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+						  String value = input.getText().toString();
+						  // Do something with value!
+						  }
+						});
+
+						alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+						  public void onClick(DialogInterface dialog, int whichButton) {
+						    // Canceled.
+						  }
+						});
+						alert.show();
+					mPowerStrips.get(0).getConsumption(start, end, new OnConsumptionReceiveListener() {
+						
+						@Override
+						public void onConsumptionReceive(Consumption[] consumption) {
+							Toast.makeText(context,"OnConsumptionReceiveListener", Toast.LENGTH_SHORT).show();
+							
+						}
+						
+						@Override
+						public void failed() {
+							// TODO Auto-generated method stub
+							Toast.makeText(context, "FAILED TO GET CONSUMPTION", Toast.LENGTH_SHORT).show();
+						}
+					});
 				}
 			});
 	        
