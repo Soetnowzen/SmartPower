@@ -135,7 +135,7 @@ public class RemoteFragment extends SherlockFragment {
 	        }
 	        
 	        PowerStrip powerStrip = data.get(position);
-	        holder.txtTitle.setText(powerStrip.toString());
+	        holder.txtTitle.setText(powerStrip.getName());
 	        
 	        
 	        holder.toggleButton.setOnClickListener(new OnClickListener() {
