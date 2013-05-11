@@ -160,11 +160,14 @@ public class RemoteFragment extends SherlockFragment {
 					Date end = new Date(2013, 05, 10);
 					//input dialog
 					AlertDialog.Builder alert = new AlertDialog.Builder(context);
-					final EditText input = new EditText(context);
+//					final EditText input = new EditText(context);
+					LayoutInflater factory = LayoutInflater.from(context);
+					final View input = factory.inflate(R.layout.doubleinput_remote, null);
 					alert.setView(input);
+					
 					alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int whichButton) {
-						  String value = input.getText().toString();
+//						  String value = input.getText().toString();
 						  // Do something with value!
 						  }
 						});
