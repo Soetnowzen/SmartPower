@@ -8,8 +8,7 @@ import com.sebbelebben.smartpower.Consumption;
 import com.sebbelebben.smartpower.PowerStrip;
 import com.sebbelebben.smartpower.PowerStripActivity;
 import com.sebbelebben.smartpower.R;
-import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
-import com.sebbelebben.smartpower.Server.OnPowerStripReceiveListener;
+import com.sebbelebben.smartpower.Server.*;
 import com.sebbelebben.smartpower.User;
 import com.tjerkw.slideexpandable.library.SlideExpandableListAdapter;
 
@@ -210,7 +209,20 @@ public class RemoteFragment extends SherlockFragment {
 				// edit text
 			    	//String s = result.getText().toString();
 			    	//mPowerStrips.get(position);
-			    	mPowerStrips.get(position).setName(result.getText().toString());
+			    	mPowerStrips.get(position).setName(result.getText().toString(), new OnSetNameReceiveListener() {
+						
+						@Override
+						public void onSetNameReceived(String name) {
+							// TODO Auto-generated method stub
+							
+						}
+						
+						@Override
+						public void failed() {
+							// TODO Auto-generated method stub
+							
+						}
+					});
 					mAdapter.notifyDataSetChanged();
 			    }
 			  })
