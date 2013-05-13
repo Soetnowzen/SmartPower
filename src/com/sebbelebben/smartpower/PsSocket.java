@@ -60,7 +60,7 @@ public class PsSocket implements Serializable {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getInt("socketid") == id){ //TODO
-						//check if it was successful
+						
 					} else { //TODO
 						//report unsuccessful 
 					}
@@ -69,6 +69,7 @@ public class PsSocket implements Serializable {
 				}
 			}
 		});
+		this.name = name;
 	}
 	
 	public String getName(){

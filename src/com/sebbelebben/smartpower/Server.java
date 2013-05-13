@@ -44,6 +44,11 @@ public class Server {
 		}
 	}
 	
+	public static interface OnSetNameReceiveListener{
+		void onSetNameReceived(String name);
+		void failed();
+	}
+	
 	public static interface OnReceiveListener {
 		void onReceive(String result);
 	}
