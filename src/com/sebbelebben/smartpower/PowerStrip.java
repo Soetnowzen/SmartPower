@@ -5,9 +5,7 @@ import java.text.*;
 import java.util.*;
 import org.json.*;
 
-import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
-import com.sebbelebben.smartpower.Server.OnReceiveListener;
-import com.sebbelebben.smartpower.Server.OnSocketReceiveListener;
+import com.sebbelebben.smartpower.Server.*;
 
 public class PowerStrip implements Serializable{
 	/**
@@ -31,16 +29,16 @@ public class PowerStrip implements Serializable{
 		return serialId;
 	}
 	
-	public void setName(String name){
+	public void setName(String name, final OnSetNameReceiveListener listener){
 		Server.sendAndRecieve("{powerstripid:"+id+",request:setname,apikey:"+apiKey+",newname:"+name+"}", new OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getInt("powerstripid") == id){
-						//check if it was successful //TODO
+						listener.onSetNameReceived(data.getString("newname"));
 					} else {
-						//report unsuccessful //TODO
+						listener.failed();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
