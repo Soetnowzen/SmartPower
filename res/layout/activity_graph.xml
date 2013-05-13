@@ -24,7 +24,7 @@
         app:dataColor="#FF3333"
         app:axisColor="#000000"
         app:fillData="true"
-        app:fillColor="#70FF0000"
+        app:fillDataColor="#40FF0000"
         app:axisBackgroundColor="#FFFFFF"
         app:dataBackgroundColor="#000000"
         app:textColor="#000000"

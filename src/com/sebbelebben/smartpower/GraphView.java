@@ -82,9 +82,9 @@ public class GraphView extends View {
 		mDataPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		mDataPaint.setColor(mDataColor);
 		mDataPaint.setStyle(Paint.Style.STROKE);
-		mDataPaint.setStrokeWidth(2f);
+		mDataPaint.setStrokeWidth(4f);
 		
-		mDataFillPaint = new Paint();
+		mDataFillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		mDataFillPaint.setColor(mFillColor);
 		mDataFillPaint.setStyle(Paint.Style.FILL);
 		
@@ -282,6 +282,14 @@ public class GraphView extends View {
 	
 	public void setYAxisEnd(float yAxisEnd) {
 		mYAxisEnd = yAxisEnd;
+	}
+	
+	public void setXSegments(int xSegments) {
+		mXSegments = xSegments;
+	}
+	
+	public void setYSegments(int ySegments) {
+		mYSegments = ySegments;
 	}
 	
 	public static class Point {
