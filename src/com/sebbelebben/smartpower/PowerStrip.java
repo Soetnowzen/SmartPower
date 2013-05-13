@@ -5,9 +5,7 @@ import java.text.*;
 import java.util.*;
 import org.json.*;
 
-import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
-import com.sebbelebben.smartpower.Server.OnReceiveListener;
-import com.sebbelebben.smartpower.Server.OnSocketReceiveListener;
+import com.sebbelebben.smartpower.Server.*;
 
 public class PowerStrip implements Serializable{
 	/**
@@ -17,11 +15,13 @@ public class PowerStrip implements Serializable{
 	private int id;
 	private String apiKey;
 	private String serialId;
+	private String name;
 	
-	public PowerStrip(int id, String serialId, int type, String apiKey){
+	public PowerStrip(int id, String serialId, int type, String apiKey, String name){
 		this.id = id;
 		this.apiKey = apiKey;
 		this.serialId = serialId;
+		this.name = name;
 	}
 	
 	@Override
@@ -29,22 +29,26 @@ public class PowerStrip implements Serializable{
 		return serialId;
 	}
 	
-	public void setName(String name){
+	public void setName(String name, final OnSetNameReceiveListener listener){
 		Server.sendAndRecieve("{powerstripid:"+id+",request:setname,apikey:"+apiKey+",newname:"+name+"}", new OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getInt("powerstripid") == id){
-						//check if it was successful
+						listener.onSetNameReceived(data.getString("newname"));
 					} else {
-						//report unsuccessful 
+						listener.failed();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 			}
 		});
+	}
+	
+	public String getName(){
+		return this.name;
 	}
 		
 	public void getConsumption(Date start, Date end, final OnConsumptionReceiveListener listener){
@@ -56,8 +60,8 @@ public class PowerStrip implements Serializable{
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getInt("powerstripid") == id){
-						if (data.has("result")){
-							//This means no data was delivered
+						if (data.has("result")){ //TODO
+							//This means no data was delivered 
 							//Some info code here 
 						}
 						else if (data.has("data")){
@@ -67,7 +71,7 @@ public class PowerStrip implements Serializable{
 								consumptionList.add(new Consumption(JSONsockets.getString("timestamp"),JSONsockets.getInt("activepower")));
 							}
 							listener.onConsumptionReceive(consumptionList.toArray(new Consumption[0]));
-						} else {
+						} else { //TODO
 							//There was something else wrong
 						}	
 					} else {
