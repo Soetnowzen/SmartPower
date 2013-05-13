@@ -6,18 +6,16 @@
 
         <EditText
             android:id="@+id/startDate"
-            android:inputType="datetime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="this is a bad hint" >
+            android:hint="use format below" >
 
         </EditText>
         <EditText
         android:id="@+id/endDate"
-        android:inputType="datetime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="this hint is not better" >
+        android:hint="2013-05-13 18:35:10+00" >
     	</EditText>
 
 </LinearLayout>
