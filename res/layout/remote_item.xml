@@ -3,6 +3,10 @@
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical">
+              <ViewFlipper
+                  android:id="@+id/viewflipper"
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent">
     <RelativeLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
@@ -28,6 +32,10 @@
                 android:layout_alignTop="@id/text"/>
 
     </RelativeLayout>
+    
+    <include layout="@layout/options_item" />
+    
+    </ViewFlipper>
 
     <!-- this is the expandable view that is initially hidden and will slide out when the more button is pressed -->
     <LinearLayout
