@@ -44,6 +44,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewFlipper;
 
 public class RemoteFragment extends SherlockFragment {
 	private ListView mListView;
@@ -137,6 +138,8 @@ public class RemoteFragment extends SherlockFragment {
 	            holder.toggleButton = (Button)row.findViewById(R.id.toggle_button);
 	            holder.actionAButton = (Button)row.findViewById(R.id.action_a_button);
 	            holder.actionBButton = (Button)row.findViewById(R.id.action_b_button);
+	            holder.outletList = (ListView)row.findViewById(R.id.outletlist);
+	            holder.viewFlipper = (ViewFlipper)row.findViewById(R.id.viewpager);
 	            
 	            row.setTag(holder);
 	        }
@@ -177,20 +180,29 @@ public class RemoteFragment extends SherlockFragment {
 
 				}
 			});
-
-			return row;
-		}
-
+	        holder.outletList.setOnItemClickListener(new OnItemClickListener() {
+				@Override
+				public void onItemClick(AdapterView<?> arg0, View arg1,
+						int arg2, long arg3) {
+					Log.i("SmartPower", "PRESSED " + arg2);
+					
+				}
+			});
+	        
+	        return row;
+	    }
 	}
 
 
 	static class PowerStripHolder
-	{
-		TextView txtTitle;
-		Button toggleButton;
-		Button actionAButton;
-		Button actionBButton;
-	}
+    {
+        TextView txtTitle;
+        Button toggleButton;
+        Button actionAButton;
+        Button actionBButton;
+        ListView outletList;
+        ViewFlipper viewFlipper;
+    }
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
