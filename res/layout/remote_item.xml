@@ -33,7 +33,7 @@
     <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:id="@+id/expandable"
             android:padding="16dp"
             android:background="@drawable/expandable_bg">
@@ -42,16 +42,20 @@
         <Button
             android:id="@+id/action_a_button"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:text="@string/renamingButtonText" />
 
         <Button
             android:id="@+id/action_b_button"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:text="Action B"/>
+        <ListView
+            android:id="@+id/outletlist"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" />
 
     </LinearLayout>
 </LinearLayout>
