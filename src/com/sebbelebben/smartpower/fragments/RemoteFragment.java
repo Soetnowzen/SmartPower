@@ -138,8 +138,10 @@ public class RemoteFragment extends SherlockFragment {
 	            holder.toggleButton = (Button)row.findViewById(R.id.toggle_button);
 	            holder.actionAButton = (Button)row.findViewById(R.id.action_a_button);
 	            holder.actionBButton = (Button)row.findViewById(R.id.action_b_button);
+	            holder.optionsButton = (Button)row.findViewById(R.id.options_button);
+	            holder.backButton = (Button)row.findViewById(R.id.back_btn);
 	            holder.outletList = (ListView)row.findViewById(R.id.outletlist);
-	            holder.viewFlipper = (ViewFlipper)row.findViewById(R.id.viewpager);
+	            holder.viewFlipper = (ViewFlipper)row.findViewById(R.id.viewflipper);
 	            
 	            row.setTag(holder);
 	        }
@@ -151,7 +153,7 @@ public class RemoteFragment extends SherlockFragment {
 	        PowerStrip powerStrip = data.get(position);
 	        holder.txtTitle.setText(powerStrip.getName());
 	        
-	        
+	        final ViewFlipper flipper = holder.viewFlipper;
 	        holder.toggleButton.setOnClickListener(new OnClickListener() {
 
 
@@ -160,7 +162,23 @@ public class RemoteFragment extends SherlockFragment {
 					Toast.makeText(context, "TOGGLE", Toast.LENGTH_SHORT).show();
 				}
 			});
-			holder.actionAButton.setOnClickListener(new OnClickListener() {
+	        holder.optionsButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					flipper.setInAnimation(getActivity(), R.anim.slide_in_left);
+					flipper.setOutAnimation(getActivity(), R.anim.slide_out_right);
+					flipper.setDisplayedChild(1);
+				}
+			});
+	        holder.backButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					flipper.setInAnimation(getActivity(), R.anim.slide_in_right);
+					flipper.setOutAnimation(getActivity(), R.anim.slide_out_left);
+					flipper.setDisplayedChild(0);
+				}
+			});
+	        holder.actionAButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					Toast.makeText(context, "Rename", Toast.LENGTH_SHORT).show();
@@ -200,6 +218,8 @@ public class RemoteFragment extends SherlockFragment {
         Button toggleButton;
         Button actionAButton;
         Button actionBButton;
+        Button optionsButton;
+        Button backButton;
         ListView outletList;
         ViewFlipper viewFlipper;
     }
