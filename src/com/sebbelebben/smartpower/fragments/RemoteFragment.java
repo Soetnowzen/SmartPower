@@ -177,9 +177,7 @@ public class RemoteFragment extends SherlockFragment {
 			return row;
 		}
 	}
-	private void alertDoubleInput(){
 
-	}
 	static class PowerStripHolder
 	{
 		TextView txtTitle;
