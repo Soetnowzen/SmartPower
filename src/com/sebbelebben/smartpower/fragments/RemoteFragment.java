@@ -165,7 +165,7 @@ public class RemoteFragment extends SherlockFragment {
 				public void onClick(View v) {
 					Toast.makeText(context, "NEW ACTION B", Toast.LENGTH_SHORT).show();
 					Intent intent = new Intent(context, GraphActivity.class);
-					intent.putExtra("user",mUser);
+					intent.putExtra("PowerStrip",mPowerStrips.get(position));
 					startActivity(intent);
 
 
