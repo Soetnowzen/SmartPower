@@ -51,6 +51,7 @@ public class RemoteFragment extends SherlockFragment {
 	private ArrayAdapter<PowerStrip> mAdapter;
 	private User mUser;
 
+
 	public static RemoteFragment newInstance(User user) {
 		RemoteFragment f = new RemoteFragment();
 		Bundle args = new Bundle();
@@ -65,9 +66,11 @@ public class RemoteFragment extends SherlockFragment {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		mUser = (User) getArguments().getSerializable("User");
 		if(mUser != null) {
 			mUser.getPowerStrips(new OnPowerStripReceiveListener() {
+
 				@Override
 				public void onPowerStripReceive(PowerStrip[] powerStrips) {
 					for(int i=0; i < powerStrips.length; i++){
@@ -148,6 +151,7 @@ public class RemoteFragment extends SherlockFragment {
 	        
 	        holder.toggleButton.setOnClickListener(new OnClickListener() {
 
+
 				@Override
 				public void onClick(View v) {
 					Toast.makeText(context, "TOGGLE", Toast.LENGTH_SHORT).show();
@@ -176,7 +180,9 @@ public class RemoteFragment extends SherlockFragment {
 
 			return row;
 		}
+
 	}
+
 
 	static class PowerStripHolder
 	{
@@ -226,6 +232,7 @@ public class RemoteFragment extends SherlockFragment {
 				// get user input and set it to mResult
 				// edit text
 
+
 			    	//String s = result.getText().toString();
 			    	//mPowerStrips.get(position);
 			    	mPowerStrips.get(position).setName(result.getText().toString(), new OnSetNameReceiveListener() {
@@ -248,6 +255,7 @@ public class RemoteFragment extends SherlockFragment {
 			.setNegativeButton("Cancel",
 			  new DialogInterface.OnClickListener() {
 			    public void onClick(DialogInterface dialog,int id) {
+
 				dialog.cancel();
 			}
 		});
