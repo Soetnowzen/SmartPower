@@ -10,6 +10,7 @@ import java.util.Locale;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.sebbelebben.smartpower.Consumption;
+import com.sebbelebben.smartpower.GraphActivity;
 import com.sebbelebben.smartpower.PowerStrip;
 import com.sebbelebben.smartpower.PowerStripActivity;
 import com.sebbelebben.smartpower.R;
@@ -48,6 +49,7 @@ public class RemoteFragment extends SherlockFragment {
 	private ListView mListView;
 	private List<PowerStrip> mPowerStrips = new ArrayList<PowerStrip>();
 	private ArrayAdapter<PowerStrip> mAdapter;
+	private User mUser;
 
 	public static RemoteFragment newInstance(User user) {
 		RemoteFragment f = new RemoteFragment();
@@ -63,9 +65,9 @@ public class RemoteFragment extends SherlockFragment {
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		User user = (User) getArguments().getSerializable("User");
-		if(user != null) {
-			user.getPowerStrips(new OnPowerStripReceiveListener() {
+		mUser = (User) getArguments().getSerializable("User");
+		if(mUser != null) {
+			mUser.getPowerStrips(new OnPowerStripReceiveListener() {
 				@Override
 				public void onPowerStripReceive(PowerStrip[] powerStrips) {
 					for(int i=0; i < powerStrips.length; i++){
@@ -162,86 +164,9 @@ public class RemoteFragment extends SherlockFragment {
 				@Override
 				public void onClick(View v) {
 					Toast.makeText(context, "NEW ACTION B", Toast.LENGTH_SHORT).show();
-
-
-		
-
-						//input dialog
-						final AlertDialog.Builder alert = new AlertDialog.Builder(context);
-						LayoutInflater factory = LayoutInflater.from(context);
-						final View input = factory.inflate(R.layout.doubleinput_remote, null);
-						alert.setView(input);
-
-						alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int whichButton) {
-								SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZZ", Locale.ENGLISH);
-								Calendar cal = Calendar.getInstance();								 
-								Date start;
-								Date end;
-								EditText sta = (EditText) input.findViewById(R.id.startDate);
-								EditText en = (EditText) input.findViewById(R.id.endDate);
-
-
-
-
-								try {
-									start = sdf.parse(sta.toString());
-									end = sdf.parse(en.toString());
-									mPowerStrips.get(0).getConsumption(start, end, new OnConsumptionReceiveListener() {
-
-										@Override
-										public void onConsumptionReceive(Consumption[] consumption) {
-											Toast.makeText(context,"OnConsumptionReceiveListener", Toast.LENGTH_SHORT).show();
-
-										}
-
-										@Override
-										public void failed() {
-											// TODO Auto-generated method stub
-											Toast.makeText(context, "FAILED TO GET CONSUMPTION", Toast.LENGTH_SHORT).show();
-										}
-									});
-								} catch (ParseException e) {
-									try {
-										//Set Default value
-										end = sdf.parse(sdf.format(cal.getTime()));
-										cal.setTimeInMillis(cal.getTimeInMillis()-3600000); //3600 000 = 1 hour
-										start = sdf.parse(sdf.format(cal.getTime()));
-										mPowerStrips.get(0).getConsumption(start, end, new OnConsumptionReceiveListener() {
-
-											@Override
-											public void onConsumptionReceive(Consumption[] consumption) {
-												Toast.makeText(context,"Default OnConsumptionReceiveListener", Toast.LENGTH_SHORT).show();
-
-											}
-
-											@Override
-											public void failed() {
-												// TODO Auto-generated method stub
-												Toast.makeText(context, "FAILED TO GET CONSUMPTION", Toast.LENGTH_SHORT).show();
-											}
-										});
-									} catch (ParseException e2) {
-										// TODO Auto-generated catch block
-										e2.printStackTrace();
-									}									
-								}
-
-								//							  String value = input.getText().toString();
-								// Do something with value!
-							}
-						});
-
-						alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
-							public void onClick(DialogInterface dialog, int whichButton) {
-								// Canceled.
-							}
-
-						});
-						alert.show();
-
-
+					Intent intent = new Intent(context, GraphActivity.class);
+					intent.putExtra("user",mUser);
+					startActivity(intent);
 
 
 
