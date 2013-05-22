@@ -1,10 +1,16 @@
 package com.sebbelebben.smartpower.fragments;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.sebbelebben.smartpower.Consumption;
+import com.sebbelebben.smartpower.GraphActivity;
 import com.sebbelebben.smartpower.PowerStrip;
 import com.sebbelebben.smartpower.PowerStripActivity;
 import com.sebbelebben.smartpower.R;
@@ -19,6 +25,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -26,6 +34,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
@@ -37,10 +46,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class RemoteFragment extends SherlockFragment {
-    	private ListView mListView;
+	private ListView mListView;
 	private List<PowerStrip> mPowerStrips = new ArrayList<PowerStrip>();
 	private ArrayAdapter<PowerStrip> mAdapter;
-	
+	private User mUser;
+
+
 	public static RemoteFragment newInstance(User user) {
 		RemoteFragment f = new RemoteFragment();
 		Bundle args = new Bundle();
@@ -54,24 +65,26 @@ public class RemoteFragment extends SherlockFragment {
 
 
 	public void onCreate(Bundle savedInstanceState) {
-	    super.onCreate(savedInstanceState);
-	    User user = (User) getArguments().getSerializable("User");
-	    if(user != null) {
-		user.getPowerStrips(new OnPowerStripReceiveListener() {
-			@Override
-			public void onPowerStripReceive(PowerStrip[] powerStrips) {
-				for(int i=0; i < powerStrips.length; i++){
-					mPowerStrips.add(powerStrips[i]);
+		super.onCreate(savedInstanceState);
+
+		mUser = (User) getArguments().getSerializable("User");
+		if(mUser != null) {
+			mUser.getPowerStrips(new OnPowerStripReceiveListener() {
+
+				@Override
+				public void onPowerStripReceive(PowerStrip[] powerStrips) {
+					for(int i=0; i < powerStrips.length; i++){
+						mPowerStrips.add(powerStrips[i]);
+					}
+					mAdapter.notifyDataSetChanged();
 				}
-				mAdapter.notifyDataSetChanged();
-			}
-			
-			@Override
-			public void failed() {
-				// TODO Auto-generated method stub
-			}
-		});
-	    }
+
+				@Override
+				public void failed() {
+					// TODO Auto-generated method stub
+				}
+			});
+		}
 	}
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -82,7 +95,7 @@ public class RemoteFragment extends SherlockFragment {
 		mAdapter = new PowerStripAdapter(getActivity(), R.layout.remote_item, mPowerStrips);
 		mListView.setAdapter(new SlideExpandableListAdapter(mAdapter, R.id.text, R.id.expandable));
 		mListView.setOnItemClickListener(new OnItemClickListener() {
-		        @Override
+			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 				PowerStrip powerStrip = (PowerStrip) arg0.getItemAtPosition(arg2);
 				Intent intent = new Intent(getActivity(), PowerStripActivity.class);
@@ -90,13 +103,13 @@ public class RemoteFragment extends SherlockFragment {
 				startActivity(intent);
 			}
 		});
-		
+
 		//Registers that this item has a contextMenu
 		registerForContextMenu(mListView);
-		
+
 		return view;
 	}
-	
+
 	public class PowerStripAdapter extends ArrayAdapter<PowerStrip>{
 	    Context context; 
 	    int layoutResourceId;    
@@ -137,43 +150,54 @@ public class RemoteFragment extends SherlockFragment {
 	        
 	        
 	        holder.toggleButton.setOnClickListener(new OnClickListener() {
+
+
 				@Override
 				public void onClick(View v) {
 					Toast.makeText(context, "TOGGLE", Toast.LENGTH_SHORT).show();
 				}
 			});
-	        holder.actionAButton.setOnClickListener(new OnClickListener() {
+			holder.actionAButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					Toast.makeText(context, "Rename", Toast.LENGTH_SHORT).show();
 					RemoteFragment.this.changeName(position);
 				}
 			});
-	        holder.actionBButton.setOnClickListener(new OnClickListener() {
+			holder.actionBButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					Toast.makeText(context, "ACTION B", Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, "NEW ACTION B", Toast.LENGTH_SHORT).show();
+					Intent intent = new Intent(context, GraphActivity.class);
+					intent.putExtra("PowerStrip",mPowerStrips.get(position));
+					startActivity(intent);
+
+
+
+
 				}
 			});
-	        
-	        return row;
-	    }
+
+			return row;
+		}
+
 	}
-	
+
+
 	static class PowerStripHolder
-    {
-        TextView txtTitle;
-        Button toggleButton;
-        Button actionAButton;
-        Button actionBButton;
-    }
+	{
+		TextView txtTitle;
+		Button toggleButton;
+		Button actionAButton;
+		Button actionBButton;
+	}
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		menu.add(0, v.getId(), 0, "Change Name");
 		menu.add(0, v.getId(), 0, "Group together with...");
 	}
-	
+
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -188,25 +212,27 @@ public class RemoteFragment extends SherlockFragment {
 		}
 		return true;
 	}
-	
+
 	private void changeName(final int position) {
 		// get prompts.xml view
 		Context context = getActivity();
 		LayoutInflater li = LayoutInflater.from(context);
 		View promptsView = li.inflate(R.layout.popup_rename, null);
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-		
+
 		final EditText result = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput);
 
 		// set popup_rename.xml to alertdialog builder
 		alertDialogBuilder.setView(promptsView);
-		
+
 		// set dialog message
 		alertDialogBuilder.setCancelable(true).setPositiveButton("OK",
-			  new DialogInterface.OnClickListener() {
-			    public void onClick(DialogInterface dialog, int id) {
+				new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
 				// get user input and set it to mResult
 				// edit text
+
+
 			    	//String s = result.getText().toString();
 			    	//mPowerStrips.get(position);
 			    	mPowerStrips.get(position).setName(result.getText().toString(), new OnSetNameReceiveListener() {
@@ -229,9 +255,10 @@ public class RemoteFragment extends SherlockFragment {
 			.setNegativeButton("Cancel",
 			  new DialogInterface.OnClickListener() {
 			    public void onClick(DialogInterface dialog,int id) {
+
 				dialog.cancel();
-			    }
-			  });
+			}
+		});
 
 		// create alert dialog
 		AlertDialog alertDialog = alertDialogBuilder.create();
@@ -239,35 +266,35 @@ public class RemoteFragment extends SherlockFragment {
 		// show it
 		alertDialog.show();
 	}
-	
+
 	private void groupOutlets(final int position) {
 		Context context = getActivity();
 		LayoutInflater li = LayoutInflater.from(context);
 		View promptsView = li.inflate(R.layout.popup_group,null);
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
-		
+
 		final EditText result = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput);
-		
+
 		//set popup_group.xml to alertDialog builder
 		alertDialogBuilder.setView(promptsView);
 		//set dialog message
 		alertDialogBuilder.setCancelable(true).setPositiveButton("Add",
 				new DialogInterface.OnClickListener() {
-					
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						// TODO Auto-generated method stub
-						mAdapter.notifyDataSetChanged();
-					}
-				})
-				.setNegativeButton("Cancel",
-						new DialogInterface.OnClickListener() {
-							@Override
-							public void onClick(DialogInterface dialog, int which) {
-								dialog.cancel();
-							}
-						});
-		
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				mAdapter.notifyDataSetChanged();
+			}
+		})
+		.setNegativeButton("Cancel",
+				new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.cancel();
+			}
+		});
+
 		Toast.makeText(getActivity(), "groupOutlets was called", Toast.LENGTH_SHORT).show();
 	}
 }
