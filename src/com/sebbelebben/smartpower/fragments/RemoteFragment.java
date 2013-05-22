@@ -32,6 +32,7 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView.FindListener;
@@ -40,6 +41,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -136,8 +138,7 @@ public class RemoteFragment extends SherlockFragment {
 	            holder = new PowerStripHolder();
 	            holder.txtTitle = (TextView)row.findViewById(R.id.text);
 	            holder.toggleButton = (Button)row.findViewById(R.id.toggle_button);
-	            holder.actionAButton = (Button)row.findViewById(R.id.action_a_button);
-	            holder.actionBButton = (Button)row.findViewById(R.id.action_b_button);
+	            holder.renameButton = (Button)row.findViewById(R.id.rename_btn);
 	            holder.optionsButton = (Button)row.findViewById(R.id.options_button);
 	            holder.backButton = (Button)row.findViewById(R.id.back_btn);
 	            holder.outletList = (ListView)row.findViewById(R.id.outletlist);
@@ -178,24 +179,11 @@ public class RemoteFragment extends SherlockFragment {
 					flipper.setDisplayedChild(0);
 				}
 			});
-	        holder.actionAButton.setOnClickListener(new OnClickListener() {
+	        holder.renameButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					Toast.makeText(context, "Rename", Toast.LENGTH_SHORT).show();
 					RemoteFragment.this.changeName(position);
-				}
-			});
-			holder.actionBButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Toast.makeText(context, "NEW ACTION B", Toast.LENGTH_SHORT).show();
-					Intent intent = new Intent(context, GraphActivity.class);
-					intent.putExtra("PowerStrip",mPowerStrips.get(position));
-					startActivity(intent);
-
-
-
-
 				}
 			});
 	        holder.outletList.setOnItemClickListener(new OnItemClickListener() {
@@ -207,6 +195,16 @@ public class RemoteFragment extends SherlockFragment {
 				}
 			});
 	        
+	        String[] items = { "Heju", "lols", "yolo", "weeii", "hehge" };
+	        holder.outletList.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, items));
+	        View expLayout = row.findViewById(R.id.expandable);
+	        
+	        final float scale = getContext().getResources().getDisplayMetrics().density;
+	        int pixels = (int) (items.length*50 * scale + 0.5f);
+	        
+	        expLayout.getLayoutParams().height = pixels;
+	        expLayout.requestLayout();
+
 	        return row;
 	    }
 	}
@@ -216,8 +214,7 @@ public class RemoteFragment extends SherlockFragment {
     {
         TextView txtTitle;
         Button toggleButton;
-        Button actionAButton;
-        Button actionBButton;
+        Button renameButton;
         Button optionsButton;
         Button backButton;
         ListView outletList;
