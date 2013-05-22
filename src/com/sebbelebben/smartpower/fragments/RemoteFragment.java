@@ -11,17 +11,16 @@ import java.util.Locale;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.sebbelebben.smartpower.Consumption;
 import com.sebbelebben.smartpower.GraphActivity;
+
+import com.actionbarsherlock.app.SherlockFragment;
 import com.sebbelebben.smartpower.PowerStrip;
 import com.sebbelebben.smartpower.PowerStripActivity;
 import com.sebbelebben.smartpower.R;
 import com.sebbelebben.smartpower.Server.*;
 import com.sebbelebben.smartpower.User;
-import com.tjerkw.slideexpandable.library.SlideExpandableListAdapter;
 
-import android.app.Activity;
 import android.content.Context;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -33,26 +32,23 @@ import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.MeasureSpec;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
+import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 public class RemoteFragment extends SherlockFragment {
-    	private ExpandableListView mListView;
+    private ExpandableListView mListView;
 	private ArrayList<PowerStrip> mPowerStrips = new ArrayList<PowerStrip>();
 	private ExpandablePowerStripAdapter mAdapter;
 	
@@ -64,35 +60,39 @@ public class RemoteFragment extends SherlockFragment {
 		return f;
 	}
 
-	public RemoteFragment() {
-	}
-
+	public RemoteFragment() {}
 
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-
-		mUser = (User) getArguments().getSerializable("User");
-		if(mUser != null) {
-			mUser.getPowerStrips(new OnPowerStripReceiveListener() {
-
-				@Override
-				public void onPowerStripReceive(PowerStrip[] powerStrips) {
-					for(int i=0; i < powerStrips.length; i++){
-						mPowerStrips.add(powerStrips[i]);
-					}
-					mAdapter.notifyDataSetChanged();
+	    super.onCreate(savedInstanceState);
+	    
+	    // Retrieve the user from the intent
+	    User user = (User) getArguments().getSerializable("User");
+	    
+	    // If a user was provided, get the powerstrips
+	    if(user != null) {
+		user.getPowerStrips(new OnPowerStripReceiveListener() {
+			@Override
+			public void onPowerStripReceive(PowerStrip[] powerStrips) {
+				// Add the power strips to the list
+				for(int i=0; i < powerStrips.length; i++){
+					mPowerStrips.add(powerStrips[i]);
 				}
-
-				@Override
-				public void failed() {
-					// TODO Auto-generated method stub
-				}
-			});
-		}
+				mAdapter.notifyDataSetChanged();
+			}
+			
+			@Override
+			public void failed() {
+				Toast.makeText(getActivity(), "Failed to connect to the internet. Please check your internet connectivity.", Toast.LENGTH_SHORT).show();
+			}
+		});
+	    }
 	}
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		// Inflate the view
 		View view = inflater.inflate(R.layout.fragment_remote, container, false);
+		
+		
 		mListView = (ExpandableListView) view.findViewById(R.id.listview);
 		ProgressBar loadingView = (ProgressBar) view.findViewById(R.id.loading_progress);
 		mListView.setEmptyView(loadingView);
@@ -120,49 +120,59 @@ public class RemoteFragment extends SherlockFragment {
 			this.context = context;
 			this.groups = groups;
 		}
-		/*
-		public void addItem(PowerStrip item, ExpandListGroup group) {
-			if (!groups.contains(group)) {
-				groups.add(group);
-			}
-			int index = groups.indexOf(group);
-			ArrayList<ExpandListChild> ch = groups.get(index).getItems();
-			ch.add(item);
-			groups.get(index).setItems(ch);
-		}
-		*/
+
 		public Object getChild(int groupPosition, int childPosition) {
 			String sockets[] = groups.get(groupPosition).sockets;
 			return sockets[childPosition];
 		}
 
 		public long getChildId(int groupPosition, int childPosition) {
-			// TODO Auto-generated method stub
 			return childPosition;
 		}
 
-		public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View view,
-				ViewGroup parent) {
+		public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View view, ViewGroup parent) {
 			String child = (String) getChild(groupPosition, childPosition);
 			if (view == null) {
-				LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-				view = infalInflater.inflate(R.layout.remote_item, null);
+				LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				view = infalInflater.inflate(R.layout.socket_item, null);
 			}
 			TextView tv = (TextView) view.findViewById(R.id.text);
 			tv.setText(child);
+			tv.setTextColor(Color.WHITE);
+			
+			// If the child is at top, set the background to the drawable with shadow.
 			if(childPosition == 0) {
-				tv.setBackgroundResource(R.drawable.expandable_bg);
-			} else {
-				tv.setBackgroundColor(0xFF1F2E33);
+				view.setBackgroundResource(R.drawable.expandable_bg);
 			}
-			// TODO Auto-generated method stub
+			
+			setupRemoteItem(view);
+			
 			return view;
+		}
+		private void setupRemoteItem(View view) {
+			ImageButton optionsButton = (ImageButton) view.findViewById(R.id.options_button);
+			ImageButton backButton = (ImageButton) view.findViewById(R.id.back_btn);
+			final ViewFlipper flipper = (ViewFlipper) view.findViewById(R.id.viewflipper);
+			optionsButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					flipper.setInAnimation(getActivity(), R.anim.slide_in_right);
+					flipper.setOutAnimation(getActivity(), R.anim.slide_out_left);
+					flipper.setDisplayedChild(1);
+				}
+			});
+		    backButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					flipper.setInAnimation(getActivity(), R.anim.slide_in_left);
+					flipper.setOutAnimation(getActivity(), R.anim.slide_out_right);
+					flipper.setDisplayedChild(0);
+				}
+			});
 		}
 
 		public int getChildrenCount(int groupPosition) {
-
 			return groups.get(groupPosition).sockets.length;
-
 		}
 
 		public Object getGroup(int groupPosition) {
@@ -185,7 +195,7 @@ public class RemoteFragment extends SherlockFragment {
 			PowerStrip group = (PowerStrip) getGroup(groupPosition);
 			if (view == null) {
 				LayoutInflater inf = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
-				view = inf.inflate(R.layout.remote_item, null);
+				view = inf.inflate(R.layout.powerstrip_item, null);
 			}
 			TextView tv = (TextView) view.findViewById(R.id.text);
 			tv.setText(group.getName());
@@ -201,6 +211,8 @@ public class RemoteFragment extends SherlockFragment {
 					}
 				}
 			});
+			
+			setupRemoteItem(view);
 			// TODO Auto-generated method stub
 			return view;
 		}
