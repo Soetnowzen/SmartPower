@@ -210,7 +210,6 @@ public class RemoteFragment extends SherlockFragment {
 			    	//String s = result.getText().toString();
 			    	//mPowerStrips.get(position);
 			    	mPowerStrips.get(position).setName(result.getText().toString(), new OnSetNameReceiveListener() {
-			    		String oldName = mPowerStrips.get(position).getName();
 						
 						@Override
 						public void onSetNameReceived(String name) {
