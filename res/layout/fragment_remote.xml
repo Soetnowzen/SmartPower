@@ -6,8 +6,10 @@
     <ExpandableListView android:id="@+id/listview"
     	android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:dividerHeight="0dp"
-		android:divider="#000000"
+		android:divider="#FFDDDDDD"
+		android:dividerHeight="1px"
+		android:childDivider="#FF000000"
+		android:groupIndicator="@null"
 		/>
     
      <ProgressBar
