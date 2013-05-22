@@ -18,6 +18,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -31,8 +32,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -41,9 +44,9 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 public class RemoteFragment extends SherlockFragment {
-    	private ListView mListView;
-	private List<PowerStrip> mPowerStrips = new ArrayList<PowerStrip>();
-	private ArrayAdapter<PowerStrip> mAdapter;
+    	private ExpandableListView mListView;
+	private ArrayList<PowerStrip> mPowerStrips = new ArrayList<PowerStrip>();
+	private ExpandablePowerStripAdapter mAdapter;
 	
 	public static RemoteFragment newInstance(User user) {
 		RemoteFragment f = new RemoteFragment();
@@ -80,11 +83,11 @@ public class RemoteFragment extends SherlockFragment {
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		View view = inflater.inflate(R.layout.fragment_remote, container, false);
-		mListView = (ListView) view.findViewById(R.id.listview);
+		mListView = (ExpandableListView) view.findViewById(R.id.listview);
 		ProgressBar loadingView = (ProgressBar) view.findViewById(R.id.loading_progress);
 		mListView.setEmptyView(loadingView);
-		mAdapter = new PowerStripAdapter(getActivity(), R.layout.remote_item, mPowerStrips);
-		mListView.setAdapter(new SlideExpandableListAdapter(mAdapter, R.id.text, R.id.expandable));
+		mAdapter = new ExpandablePowerStripAdapter(getActivity(), mPowerStrips);
+		mListView.setAdapter(mAdapter);
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 		        @Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
@@ -100,111 +103,109 @@ public class RemoteFragment extends SherlockFragment {
 		
 		return view;
 	}
-	
-	public class PowerStripAdapter extends ArrayAdapter<PowerStrip>{
-	    Context context; 
-	    int layoutResourceId;    
-	    List<PowerStrip> data = null;
-	    
-	    public PowerStripAdapter(Context context, int layoutResourceId, List<PowerStrip> data) {
-	        super(context, layoutResourceId, data);
-	        this.layoutResourceId = layoutResourceId;
-	        this.context = context;
-	        this.data = data;
-	    }
+	public class ExpandablePowerStripAdapter extends BaseExpandableListAdapter {
+		private Context context;
+		private ArrayList<PowerStrip> groups;
+		public ExpandablePowerStripAdapter(Context context, ArrayList<PowerStrip> groups) {
+			this.context = context;
+			this.groups = groups;
+		}
+		/*
+		public void addItem(PowerStrip item, ExpandListGroup group) {
+			if (!groups.contains(group)) {
+				groups.add(group);
+			}
+			int index = groups.indexOf(group);
+			ArrayList<ExpandListChild> ch = groups.get(index).getItems();
+			ch.add(item);
+			groups.get(index).setItems(ch);
+		}
+		*/
+		public Object getChild(int groupPosition, int childPosition) {
+			String sockets[] = groups.get(groupPosition).sockets;
+			return sockets[childPosition];
+		}
 
-	    @Override
-	    public View getView(final int position, View convertView, ViewGroup parent) {
-	        View row = convertView;
-	        PowerStripHolder holder = null;
-	        
-	        if(row == null)
-	        {
-	            LayoutInflater inflater = ((Activity)context).getLayoutInflater();
-	            row = inflater.inflate(layoutResourceId, parent, false);
-	            
-	            holder = new PowerStripHolder();
-	            holder.txtTitle = (TextView)row.findViewById(R.id.text);
-	            holder.toggleButton = (Button)row.findViewById(R.id.toggle_button);
-	            holder.renameButton = (Button)row.findViewById(R.id.rename_btn);
-	            holder.optionsButton = (Button)row.findViewById(R.id.options_button);
-	            holder.backButton = (Button)row.findViewById(R.id.back_btn);
-	            holder.outletList = (ListView)row.findViewById(R.id.outletlist);
-	            holder.viewFlipper = (ViewFlipper)row.findViewById(R.id.viewflipper);
-	            
-	            row.setTag(holder);
-	        }
-	        else
-	        {
-	            holder = (PowerStripHolder)row.getTag();
-	        }
-	        
-	        PowerStrip powerStrip = data.get(position);
-	        holder.txtTitle.setText(powerStrip.getName());
-	        
-	        final ViewFlipper flipper = holder.viewFlipper;
-	        holder.toggleButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Toast.makeText(context, "TOGGLE", Toast.LENGTH_SHORT).show();
-				}
-			});
-	        holder.optionsButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					flipper.setInAnimation(getActivity(), R.anim.slide_in_left);
-					flipper.setOutAnimation(getActivity(), R.anim.slide_out_right);
-					flipper.setDisplayedChild(1);
-				}
-			});
-	        holder.backButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					flipper.setInAnimation(getActivity(), R.anim.slide_in_right);
-					flipper.setOutAnimation(getActivity(), R.anim.slide_out_left);
-					flipper.setDisplayedChild(0);
-				}
-			});
-	        holder.renameButton.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					Toast.makeText(context, "Rename", Toast.LENGTH_SHORT).show();
-					RemoteFragment.this.changeName(position);
-				}
-			});
-	        holder.outletList.setOnItemClickListener(new OnItemClickListener() {
-				@Override
-				public void onItemClick(AdapterView<?> arg0, View arg1,
-						int arg2, long arg3) {
-					Log.i("SmartPower", "PRESSED " + arg2);
-					
-				}
-			});
-	        
-	        String[] items = { "Heju", "lols", "yolo", "weeii", "hehge" };
-	        holder.outletList.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, items));
-	        View expLayout = row.findViewById(R.id.expandable);
-	        
-	        final float scale = getContext().getResources().getDisplayMetrics().density;
-	        int pixels = (int) (items.length*50 * scale + 0.5f);
-	        
-	        expLayout.getLayoutParams().height = pixels;
-	        expLayout.requestLayout();
+		public long getChildId(int groupPosition, int childPosition) {
+			// TODO Auto-generated method stub
+			return childPosition;
+		}
 
-	        return row;
-	    }
+		public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View view,
+				ViewGroup parent) {
+			String child = (String) getChild(groupPosition, childPosition);
+			if (view == null) {
+				LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+				view = infalInflater.inflate(R.layout.remote_item, null);
+			}
+			TextView tv = (TextView) view.findViewById(R.id.text);
+			tv.setText(child);
+			if(childPosition == 0) {
+				tv.setBackgroundResource(R.drawable.expandable_bg);
+			} else {
+				tv.setBackgroundColor(0xFF1F2E33);
+			}
+			// TODO Auto-generated method stub
+			return view;
+		}
+
+		public int getChildrenCount(int groupPosition) {
+
+			return groups.get(groupPosition).sockets.length;
+
+		}
+
+		public Object getGroup(int groupPosition) {
+			// TODO Auto-generated method stub
+			return groups.get(groupPosition);
+		}
+
+		public int getGroupCount() {
+			// TODO Auto-generated method stub
+			return groups.size();
+		}
+
+		public long getGroupId(int groupPosition) {
+			// TODO Auto-generated method stub
+			return groupPosition;
+		}
+
+		public View getGroupView(final int groupPosition, boolean isLastChild, View view,
+				ViewGroup parent) {
+			PowerStrip group = (PowerStrip) getGroup(groupPosition);
+			if (view == null) {
+				LayoutInflater inf = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+				view = inf.inflate(R.layout.remote_item, null);
+			}
+			TextView tv = (TextView) view.findViewById(R.id.text);
+			tv.setText(group.getName());
+			tv.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					if(!mListView.isGroupExpanded(groupPosition)) {
+						mListView.expandGroup(groupPosition);
+					} else {
+						mListView.collapseGroup(groupPosition);
+					}
+				}
+			});
+			// TODO Auto-generated method stub
+			return view;
+		}
+
+		public boolean hasStableIds() {
+			// TODO Auto-generated method stub
+			return true;
+		}
+
+		public boolean isChildSelectable(int arg0, int arg1) {
+			// TODO Auto-generated method stub
+			return true;
+		}
 	}
 	
-	static class PowerStripHolder
-    {
-        TextView txtTitle;
-        Button toggleButton;
-        Button renameButton;
-        Button optionsButton;
-        Button backButton;
-        ListView outletList;
-        ViewFlipper viewFlipper;
-    }
+
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);

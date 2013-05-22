@@ -22,7 +22,7 @@
                 android:text="Hello World"
                 android:gravity="center_vertical"
                 android:minHeight="40dp"
-                android:layout_margin="4dp"/>
+                android:layout_margin="0dp"/>
         <Button
                 android:id="@+id/options_button"
                 android:text="..."
@@ -46,8 +46,7 @@
     <include layout="@layout/options_item" />
     
     </ViewFlipper>
-
-    <!-- this is the expandable view that is initially hidden and will slide out when the more button is pressed -->
+<!-- 
     <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
@@ -56,11 +55,11 @@
             android:padding="16dp"
             android:background="@drawable/expandable_bg">
 
-        <!-- put whatever you want in the expandable view -->
         <ListView
             android:id="@+id/outletlist"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
 
     </LinearLayout>
+     -->
 </LinearLayout>
