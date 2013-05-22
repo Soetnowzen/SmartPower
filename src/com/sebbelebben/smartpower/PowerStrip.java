@@ -16,12 +16,14 @@ public class PowerStrip implements Serializable{
 	private String apiKey;
 	private String serialId;
 	private String name;
+	private String previousName; // The previous name, for rolling back failed name changes
 	
 	public PowerStrip(int id, String serialId, int type, String apiKey, String name){
 		this.id = id;
 		this.apiKey = apiKey;
 		this.serialId = serialId;
 		this.name = name;
+		this.previousName = name;
 	}
 	
 	@Override
@@ -29,14 +31,18 @@ public class PowerStrip implements Serializable{
 		return serialId;
 	}
 	public void setName(String name, final OnSetNameReceiveListener listener){
+		this.previousName = this.name;
+		this.name = name;
 		Server.sendAndRecieve("{powerstripid:"+id+",request:setname,apikey:"+apiKey+",newname:"+name+"}", new OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getInt("powerstripid") == id){
+						PowerStrip.this.name = data.getString("newname");
 						listener.onSetNameReceived(data.getString("newname"));
 					} else {
+						PowerStrip.this.name = PowerStrip.this.previousName;
 						listener.failed();
 					}
 				} catch (JSONException e) {

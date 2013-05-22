@@ -210,17 +210,17 @@ public class RemoteFragment extends SherlockFragment {
 			    	//String s = result.getText().toString();
 			    	//mPowerStrips.get(position);
 			    	mPowerStrips.get(position).setName(result.getText().toString(), new OnSetNameReceiveListener() {
+			    		String oldName = mPowerStrips.get(position).getName();
 						
 						@Override
 						public void onSetNameReceived(String name) {
-							// TODO Auto-generated method stub
-							
+							mAdapter.notifyDataSetChanged();
 						}
 						
 						@Override
 						public void failed() {
-							// TODO Auto-generated method stub
-							
+							mAdapter.notifyDataSetChanged();
+							Toast.makeText(getActivity(), "Rename failed", Toast.LENGTH_SHORT).show();
 						}
 					});
 					mAdapter.notifyDataSetChanged();
