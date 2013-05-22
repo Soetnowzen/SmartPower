@@ -3,19 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
-        <EditText
-            android:id="@+id/startDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="use format below" >
-
-        </EditText>
-        <EditText
-        android:id="@+id/endDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="2013-05-13 18:35:10+00" >
-    	</EditText>
-
+	        <DatePicker
+            android:id="@+id/datePicker1"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:calendarViewShown="false" />
 </LinearLayout>

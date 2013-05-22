@@ -14,6 +14,7 @@ import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
 import com.sebbelebben.smartpower.PowerStrip;
 
 import android.os.Bundle;
+import android.os.Debug;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -23,11 +24,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
 public class GraphActivity extends Activity {
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -35,8 +37,8 @@ public class GraphActivity extends Activity {
 		final GraphView graphView = (GraphView) findViewById(R.id.graphview);
 		Intent intent = getIntent();
 		final PowerStrip mPowerStrip = (PowerStrip) intent.getSerializableExtra("PowerStrip");
-		
-		
+
+
 		/*
 		List<Point> data = new ArrayList<Point>();
 		// TODO: Use real implementation - this is only test data
@@ -49,80 +51,53 @@ public class GraphActivity extends Activity {
 		data.add(new Point(5.0f, 1.0f));
 		data.add(new Point(6.0f, 0.0f));
 		data.add(new Point(7.5f, 3.0f));
-		*/
-		
+		 */
+
 		final AlertDialog.Builder alert = new AlertDialog.Builder(this);
 		LayoutInflater factory = LayoutInflater.from(this);
 		final View input = factory.inflate(R.layout.doubleinput_remote, null);
 		final Context context = this;
 		final List<Consumption> data = new ArrayList<Consumption>();
-		alert.setView(input);
-		
-		alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+		final DatePicker dp = new DatePicker(context);
+
+
+		alert.setView(dp);
+
+		alert.setPositiveButton("Send", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZZ", Locale.ENGLISH);
-				Calendar cal = Calendar.getInstance();								 
-				Date start;
-				Date end;
-				EditText sta = (EditText) input.findViewById(R.id.startDate);
-				EditText en = (EditText) input.findViewById(R.id.endDate);
-				
+				Calendar cal = Calendar.getInstance();
 
 
+				//DatePicker dp = (DatePicker) findViewById(R.id.datePicker1);
+				int day = dp.getDayOfMonth();
+				int year = dp.getYear();
+				int month = dp.getMonth();
+
+				String start = String.format("%s-%s-%s 00:00:00+00",year,month,day);
 				
-				try {
-					start = sdf.parse(sta.toString());
-					end = sdf.parse(en.toString());
+				
+
+				try{
 					Toast.makeText(context,"try nr 1", Toast.LENGTH_SHORT).show();
-					mPowerStrip.getConsumption(start, end, new OnConsumptionReceiveListener() {
-						
+					Log.d("bug", start);
+					mPowerStrip.getConsumption(sdf.parse(start), new Date(System.currentTimeMillis()), new OnConsumptionReceiveListener() {
+
 						@Override
 						public void onConsumptionReceive(Consumption[] consumption) {
 							Toast.makeText(context,"OnConsumptionReceiveListener", Toast.LENGTH_SHORT).show();
 							Collections.addAll(data, consumption);
+							display(data, graphView);
 						}
 
 						@Override
 						public void failed() {
-							// TODO Auto-generated method stub
 							Toast.makeText(context, "FAILED TO GET CONSUMPTION", Toast.LENGTH_SHORT).show();
 						}
 					});
-				} catch (ParseException e) {
-					try {
-						//Set Default value
-						end = sdf.parse(sdf.format(cal.getTime()));
-						cal.setTimeInMillis(cal.getTimeInMillis()-1003600000); //3600 000 = 1 hour
-						start = sdf.parse(sdf.format(cal.getTime()));
-						Toast.makeText(context,"try nr 2", Toast.LENGTH_SHORT).show();
-						mPowerStrip.getConsumption(start, end, new OnConsumptionReceiveListener() {
-
-							@Override
-							public void onConsumptionReceive(Consumption[] consumption) {
-								Toast.makeText(context,"Default " + consumption.length, Toast.LENGTH_SHORT).show();
-								Collections.addAll(data, consumption);
-								List<Point> points = transform(data);
-								graphView.SetDataPoints(points);
-								graphView.setYAxisEnd(getMaxWatt(data));
-								graphView.setXAxisEnd(points.get(points.size()-1).x);
-								graphView.setXSegments((int)(points.get(points.size()-1).x - points.get(0).x)/4);
-								graphView.setYSegments((int)(getMaxWatt(data)/4)); 
-							}
-
-							@Override
-							public void failed() {
-								// TODO Auto-generated method stub
-								Toast.makeText(context, "FAILED TO GET CONSUMPTION", Toast.LENGTH_SHORT).show();
-							}
-						});
-					} catch (ParseException e2) {
-						// TODO Auto-generated catch block
-						e2.printStackTrace();
-					}									
+				}catch(ParseException e){
+					Log.d("bug", "Error with parsing: " + e.getStackTrace());
 				}
-
-				//							  String value = input.getText().toString();
-				// Do something with value!
 			}
 		});
 
@@ -134,7 +109,7 @@ public class GraphActivity extends Activity {
 
 		});
 		alert.show();
-		
+
 		/*
 		data.add(new Consumption("2010-05-23 12:05:13+02", 100));
 		data.add(new Consumption("2010-05-24 12:05:13+02", 123));
@@ -142,10 +117,18 @@ public class GraphActivity extends Activity {
 		data.add(new Consumption("2010-05-26 12:05:13+02", 68));
 		data.add(new Consumption("2010-05-27 12:05:13+02", 100));
 		//Todo: sort data
-		*/
+		 */
 
 	}
-	
+	private void display(List<Consumption> data, GraphView graphView){
+		List<Point> points = transform(data);
+		graphView.SetDataPoints(points);
+		graphView.setYAxisEnd(getMaxWatt(data));
+		graphView.setXAxisEnd(points.get(points.size()-1).x);
+		graphView.setXSegments((int)(points.get(points.size()-1).x - points.get(0).x)/4);
+		graphView.setYSegments((int)(getMaxWatt(data)/4)); 
+		
+	}
 	private List<Point> transform(List<Consumption> data) {
 		List<Point> points = new ArrayList<Point>();
 		long firstTime = data.get(0).getDate().getTime();
@@ -155,10 +138,10 @@ public class GraphActivity extends Activity {
 			Point point = new Point(time, c.getWatt());
 			points.add(point);
 		}
-		
+
 		return points;
 	}
-	
+
 	private int getMaxWatt(List<Consumption> data) {
 		int maxWatt = 0;
 		for(Consumption c : data) {
@@ -166,7 +149,7 @@ public class GraphActivity extends Activity {
 				maxWatt = c.getWatt();
 			}
 		}
-		
+
 		return maxWatt;
 	}
 
