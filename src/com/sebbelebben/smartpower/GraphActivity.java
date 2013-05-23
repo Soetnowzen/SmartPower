@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.os.Debug;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,6 +27,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 public class GraphActivity extends Activity {
@@ -58,18 +60,21 @@ public class GraphActivity extends Activity {
 		final View input = factory.inflate(R.layout.doubleinput_remote, null);
 		final Context context = this;
 		final List<Consumption> data = new ArrayList<Consumption>();
-		final DatePicker dp = new DatePicker(context);
-
-
-		alert.setView(dp);
+//		DatePickerDialog dpg = new DatePickerDialog(this, null, 1931, 03, 24);
+//		dpg.show();
+		//final DatePicker dp = (DatePicker) findViewById(R.id.datePicker1); //new DatePicker(context);
+		alert.setView(input);
+		
 
 		alert.setPositiveButton("Send", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZZ", Locale.ENGLISH);
 				Calendar cal = Calendar.getInstance();
 
-
-				//DatePicker dp = (DatePicker) findViewById(R.id.datePicker1);
+				DatePicker dp = (DatePicker) input.findViewById(R.id.datePicker1);
+				final ProgressBar pb = (ProgressBar) findViewById(R.id.loading_progress);
+				pb.setVisibility(ProgressBar.VISIBLE);
+				
 				int day = dp.getDayOfMonth();
 				int year = dp.getYear();
 				int month = dp.getMonth();
@@ -77,22 +82,23 @@ public class GraphActivity extends Activity {
 				String start = String.format("%s-%s-%s 00:00:00+00",year,month,day);
 				
 				
-
 				try{
-					Toast.makeText(context,"try nr 1", Toast.LENGTH_SHORT).show();
-					Log.d("bug", start);
 					mPowerStrip.getConsumption(sdf.parse(start), new Date(System.currentTimeMillis()), new OnConsumptionReceiveListener() {
 
 						@Override
 						public void onConsumptionReceive(Consumption[] consumption) {
 							Toast.makeText(context,"OnConsumptionReceiveListener", Toast.LENGTH_SHORT).show();
 							Collections.addAll(data, consumption);
+							
 							display(data, graphView);
+							pb.setVisibility(ProgressBar.GONE);
+							
 						}
 
 						@Override
 						public void failed() {
 							Toast.makeText(context, "FAILED TO GET CONSUMPTION", Toast.LENGTH_SHORT).show();
+							pb.setVisibility(ProgressBar.GONE);
 						}
 					});
 				}catch(ParseException e){
