@@ -5,22 +5,36 @@ import java.util.*;
 import org.json.*;
 import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
 import com.sebbelebben.smartpower.Server.OnReceiveListener;
+import com.sebbelebben.smartpower.Server.OnSetNameReceiveListener;
 
+
+/**
+ * 
+ * @author Johan Bregell
+ *
+ */
 public class PsSocket implements Serializable,Graphable {
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 2749123692313834401L;
 	private int id;
 	private String name;
 	private String apiKey;
 	
+	/**
+	 * Creates a PsSocket.
+	 * @param id
+	 * @param name
+	 * @param apiKey
+	 */
 	public PsSocket(int id, String name, String apiKey){
 		this.id = id;
 		this.name = name;
 		this.apiKey = apiKey;
 	}
 	
+	/**
+	 * Creates a listener that waits for the server to supply the PsSocket's consumption between the given dates.
+	 */
 	public void getConsumption(Date start, Date end, final OnConsumptionReceiveListener listener){
 		Server.sendAndRecieve("{socketid:"+id+",request:consumption,apikey:"+apiKey+",startdate:"+start+",enddate:"+end+"}", new OnReceiveListener() {
 			@Override
@@ -30,8 +44,7 @@ public class PsSocket implements Serializable,Graphable {
 					JSONObject data = new JSONObject(result);
 					if (data.getInt("socketid") == id){
 						if (data.has("result")){
-							//This means no data was delivered
-							//Some info code here 
+							listener.failed();
 						}
 						else if (data.has("data")){
 							JSONArray sockets = data.getJSONArray("data");
@@ -41,7 +54,7 @@ public class PsSocket implements Serializable,Graphable {
 							}
 							listener.onConsumptionReceive(consumptionList.toArray(new Consumption[0]));
 						} else { //TODO
-							//There was something else wrong
+							listener.failed();
 						}
 					} else {
 						listener.failed();
@@ -53,16 +66,21 @@ public class PsSocket implements Serializable,Graphable {
 		});
 	}
 	
-	public void setName(String name){
+	/**
+	 * Sets a new name on the PsSocket.
+	 * @param name
+	 * @param listener
+	 */
+	public void setName(String name, final OnSetNameReceiveListener listener){
 		Server.sendAndRecieve("{socketid:"+id+",request:setname,apikey:"+apiKey+",newname:"+name+"}", new OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
-					if (data.getInt("socketid") == id){ //TODO
-						
-					} else { //TODO
-						//report unsuccessful 
+					if (data.getInt("socketid") == id){
+						listener.onSetNameReceived(data.getString("newname"));
+					} else {
+						listener.failed();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -72,14 +90,25 @@ public class PsSocket implements Serializable,Graphable {
 		this.name = name;
 	}
 	
+	/**
+	 * Returns the name of the PsSocket.
+	 * @return
+	 */
 	public String getName(){
 		return name;
 	}
 	
+	/**
+	 * Returns the id of the PsSocket.
+	 * @return
+	 */
 	public int getId(){
 		return id;
 	}
 	
+	/**
+	 * Sends a turn on packet to the server.
+	 */
 	public void turnOn(){
 		Server.sendAndRecieve("{socketid:"+id+",request:turnon,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
@@ -100,6 +129,9 @@ public class PsSocket implements Serializable,Graphable {
 		
 	}
 	
+	/**
+	 * Sends a turn off packet to the server.
+	 */
 	public void turnOff(){
 		Server.sendAndRecieve("{socketid:"+id+",request:turnoff,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
@@ -118,6 +150,9 @@ public class PsSocket implements Serializable,Graphable {
 		});
 	}
 	
+	/**
+	 * Converts the PsSocket into a printable string.
+	 */
 	@Override
 	public String toString(){
 		if (name.equals("null")) {
