@@ -21,6 +21,7 @@ public class PowerStrip implements Serializable, Graphable{
 	private String name;
 	private String previousName; // The previous name, for rolling back failed name changes
 	private PsSocket[] psSockets;
+	public String sockets[] = {"Ett", "Två", "Tre", "Fyra"}; //Temporary list for trying out expandablelistview
 	
 	/**
 	 * Creates a PowerStrip with the list of PsSockets supplied for faster handling.
@@ -60,15 +61,12 @@ public class PowerStrip implements Serializable, Graphable{
 	public String toString(){
 		return serialId;
 	}
-<<<<<<< HEAD
-=======
 	
 	/**
 	 * Sets a new name on the PowerStrip.
 	 * @param name
 	 * @param listener
 	 */
->>>>>>> origin/API
 	public void setName(String name, final OnSetNameReceiveListener listener){
 		this.previousName = this.name;
 		this.name = name;

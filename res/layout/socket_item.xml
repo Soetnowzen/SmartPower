@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="fill_parent"
               android:layout_height="wrap_content"
-              android:padding="0dp"
+              android:paddingTop="4dp"
+              android:paddingBottom="4dp"
               android:background="#FF1F2E33"
               android:orientation="vertical">
 	<ViewFlipper
@@ -32,6 +33,7 @@
                 android:layout_alignBottom="@+id/text"
                 android:layout_alignParentRight="true"
                 android:layout_alignTop="@id/text"
+                android:padding="4dp"
                 android:src="@drawable/ic_options_light"
                 android:background="@null"/>
 
