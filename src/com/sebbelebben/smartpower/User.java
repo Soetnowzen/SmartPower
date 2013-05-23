@@ -14,7 +14,7 @@ import com.sebbelebben.smartpower.Server.*;
  * @author Johan Bregell
  *
  */
-public class User implements Serializable   {
+public class User implements Serializable, Graphable   {
 	
 	private static final long serialVersionUID = 5952542690960401843L;
 	private String userName;
