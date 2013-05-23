@@ -1,15 +1,21 @@
 package com.sebbelebben.smartpower;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import org.json.*;
+
 import com.sebbelebben.smartpower.Server.*;
 
-public class User implements Serializable   {
-	/**
-	 * 
-	 */
+/**
+ * 
+ * @author Johan Bregell
+ *
+ */
+public class User implements Serializable, Graphable   {
+	
 	private static final long serialVersionUID = 5952542690960401843L;
 	private String userName;
 	private String password;
@@ -17,24 +23,45 @@ public class User implements Serializable   {
 	private String apiKey;
 	private PowerStrip[] powerStrips;
 	
+	/**
+	 * Creates a User with the supplied name and password.
+	 * @param userName
+	 * @param password
+	 */
 	public User(String userName, String password){
 		this.loggedIn = false;
 		this.userName = userName;
 		this.password = password;
 	}
 	
+	/**
+	 * Returns the username of the User.
+	 * @return
+	 */
 	public String getUserName(){
 		return this.userName;
 	}
 	
+	/**
+	 * Returns the password of the User.
+	 * @return
+	 */
 	public String getPassword() {
 		return this.password;
 	}
 	
+	/**
+	 * Returns the login status of the User.
+	 * @return
+	 */
 	public boolean loginStatus(){
 		return this.loggedIn;
 	}
 	
+	/**
+	 * Log in the User by supplying a listener to the server class and the string to send to the server.
+	 * @param listener
+	 */
 	public void logIn(final OnLoginListener listener){
 		Server.sendAndRecieve("{username:"+userName+",request:login,password:"+password+"}", new OnReceiveListener() {
 			@Override
@@ -60,10 +87,18 @@ public class User implements Serializable   {
 		
 	}
 	
+	/**
+	 * Logs out the User
+	 */
 	public void logOut(){
 		loggedIn = false;
 	}
 	
+	/**
+	 * Returns the saved list of PowerStrips connected to the User, or updates the list and then returns it.
+	 * @param update If set to true the list will be updated.
+	 * @return  
+	 */
 	public PowerStrip[] getPowerStrips(Boolean update){
 		if(this.powerStrips.equals(null) || update){
 			this.getPowerStrips(new OnPowerStripReceiveListener() {
@@ -75,14 +110,19 @@ public class User implements Serializable   {
 				
 				@Override
 				public void failed() {
-					
+					User.this.powerStrips = null;
 				}
+
 			});
 		}
 		return powerStrips;
 	}
 	
-	public void getPowerStrips(final OnPowerStripReceiveListener listener){
+	/**
+	 * Creates a listener that waits for the server to supply the User's connected PowerStrips.
+	 * @param listener
+	 */
+	private void getPowerStrips(final OnPowerStripReceiveListener listener){
 		Server.sendAndRecieve("{username:"+userName+",request:powerstrips,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
@@ -110,7 +150,35 @@ public class User implements Serializable   {
 		});
 	}
 	
-	public void getPowerStripsAndSockets(final OnPowerStripAndSocketReceiveListener listener){
+	/**
+	 * Returns the saved list of PowerStrips connected to the User with their Sockets set, or updates the list and then returns it.
+	 * @param update If set to true the list will be updated.
+	 * @return
+	 */
+	public PowerStrip[] getPowerStripsAndSockets(Boolean update){
+		if(this.powerStrips.equals(null) || update){
+			this.getPowerStrips(new OnPowerStripReceiveListener() {
+				
+				@Override
+				public void onPowerStripReceive(PowerStrip[] powerStrips) {
+					User.this.powerStrips  = powerStrips;
+				}
+				
+				@Override
+				public void failed() {
+					User.this.powerStrips = null;
+				}
+
+			});
+		}
+		return powerStrips;
+	}
+	
+	/**
+	 * Creates a listener that waits for the server to supply the User's connected PowerStrips with their PsSockets.
+	 * @param listener
+	 */
+	private void getPowerStripsAndSockets(final OnPowerStripAndSocketReceiveListener listener){
 		Server.sendAndRecieve("{username:"+userName+",request:powerstripsandsockets,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
@@ -144,6 +212,11 @@ public class User implements Serializable   {
 		});
 	}
 	
+	/**
+	 * Creates a new group connected to the User on the server.
+	 * @param name
+	 * @param listener
+	 */
 	public void createNewGroup(String name, final OnNewGroupReceiveListener listener){
 		Server.sendAndRecieve("{username:"+userName+",request:newgroup,apikey:"+apiKey+",name:"+name+"}", new OnReceiveListener() {
 			@Override
@@ -162,6 +235,10 @@ public class User implements Serializable   {
 		});
 	}
 	
+	/**
+	 * Creates a listener that waits for the server to supply the User's groups.
+	 * @param listener
+	 */
 	public void getGroups(final OnGroupsReceiveListener listener){
 		Server.sendAndRecieve("{username:"+userName+",request:groups,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
@@ -176,6 +253,44 @@ public class User implements Serializable   {
 							groupList.add(new Group(JSONgroupList.getInt("id"),JSONgroupList.getString("name"),apiKey));
 						}
 						listener.onGroupReceive(groupList.toArray(new Group[0]));
+					} else {
+						listener.failed();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	/**
+	 * Creates a listener that waits for the server to supply the User's consumption between the given dates.
+	 * @param start
+	 * @param end
+	 * @param listener
+	 */
+	public void getConsumption(Date start, Date end, final OnConsumptionReceiveListener listener){
+		DateFormat dd = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss.SSSZ", Locale.ENGLISH);
+		Server.sendAndRecieve("{username:"+userName+",request:consumption,apikey:"+apiKey+",startdate:"+dd.format(start)+",enddate:"+dd.format(end)+"}", new OnReceiveListener() {
+			@Override
+			public void onReceive(String result) {
+				ArrayList<Consumption> consumptionList = new ArrayList<Consumption>();
+				try {
+					JSONObject data = new JSONObject(result);
+					if (data.getString("username").equals(userName)){
+						if (data.has("result")){ 
+							listener.failed(); 
+						}
+						else if (data.has("data")){
+							JSONArray sockets = data.getJSONArray("data");
+							for(int i = 0; i < sockets.length(); i++){
+								JSONObject JSONsockets = sockets.getJSONObject(i);
+								consumptionList.add(new Consumption(JSONsockets.getString("timestamp"),JSONsockets.getInt("activepower")));
+							}
+							listener.onConsumptionReceive(consumptionList.toArray(new Consumption[0]));
+						} else {
+							listener.failed();
+						}	
 					} else {
 						listener.failed();
 					}
