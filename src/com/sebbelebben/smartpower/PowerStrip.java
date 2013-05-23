@@ -155,7 +155,7 @@ public class PowerStrip implements Serializable, Graphable{
 	 * Creates a listener that waits for the server to supply the PowerStrips's connected PsSockets.
 	 * @param listener
 	 */
-	public void getSockets(final OnSocketReceiveListener listener){
+	private void getSockets(final OnSocketReceiveListener listener){
 		Server.sendAndRecieve("{powerstripid:"+id+",request:sockets,apikey:"+apiKey+"}", new Server.OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {

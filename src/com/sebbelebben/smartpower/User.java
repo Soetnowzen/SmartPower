@@ -122,7 +122,7 @@ public class User implements Serializable, Graphable   {
 	 * Creates a listener that waits for the server to supply the User's connected PowerStrips.
 	 * @param listener
 	 */
-	public void getPowerStrips(final OnPowerStripReceiveListener listener){
+	private void getPowerStrips(final OnPowerStripReceiveListener listener){
 		Server.sendAndRecieve("{username:"+userName+",request:powerstrips,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
@@ -151,10 +151,34 @@ public class User implements Serializable, Graphable   {
 	}
 	
 	/**
+	 * Returns the saved list of PowerStrips connected to the User with their Sockets set, or updates the list and then returns it.
+	 * @param update If set to true the list will be updated.
+	 * @return
+	 */
+	public PowerStrip[] getPowerStripsAndSockets(Boolean update){
+		if(this.powerStrips.equals(null) || update){
+			this.getPowerStrips(new OnPowerStripReceiveListener() {
+				
+				@Override
+				public void onPowerStripReceive(PowerStrip[] powerStrips) {
+					User.this.powerStrips  = powerStrips;
+				}
+				
+				@Override
+				public void failed() {
+					User.this.powerStrips = null;
+				}
+
+			});
+		}
+		return powerStrips;
+	}
+	
+	/**
 	 * Creates a listener that waits for the server to supply the User's connected PowerStrips with their PsSockets.
 	 * @param listener
 	 */
-	public void getPowerStripsAndSockets(final OnPowerStripAndSocketReceiveListener listener){
+	private void getPowerStripsAndSockets(final OnPowerStripAndSocketReceiveListener listener){
 		Server.sendAndRecieve("{username:"+userName+",request:powerstripsandsockets,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
