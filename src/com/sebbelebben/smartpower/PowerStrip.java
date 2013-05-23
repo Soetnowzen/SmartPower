@@ -7,7 +7,7 @@ import org.json.*;
 
 import com.sebbelebben.smartpower.Server.*;
 
-public class PowerStrip implements Serializable{
+public class PowerStrip implements Serializable, Graphable{
 	/**
 	 * 
 	 */
@@ -16,8 +16,17 @@ public class PowerStrip implements Serializable{
 	private String apiKey;
 	private String serialId;
 	private String name;
+	private PsSocket[] psSockets;
 	
-	public PowerStrip(int id, String serialId, int type, String apiKey, String name){
+	public PowerStrip(int id, String serialId, String apiKey, String name, PsSocket[] psSocekts){
+		this.id = id;
+		this.apiKey = apiKey;
+		this.serialId = serialId;
+		this.name = name;
+		this.psSockets = psSocekts;
+	}
+	
+	public PowerStrip(int id, String serialId, String apiKey, String name){
 		this.id = id;
 		this.apiKey = apiKey;
 		this.serialId = serialId;
@@ -84,6 +93,23 @@ public class PowerStrip implements Serializable{
 		});
 	}
 	
+	public PsSocket[] getSockets(Boolean update){
+		if(this.psSockets.equals(null) || update){
+			this.getSockets(new OnSocketReceiveListener() {
+				
+				@Override
+				public void onSocketReceive(PsSocket[] sockets) {
+					PowerStrip.this.psSockets = sockets;
+				}
+				
+				@Override
+				public void failed() {
+					
+				}
+			});
+		}
+		return this.psSockets;
+	}
 	public void getSockets(final OnSocketReceiveListener listener){
 		Server.sendAndRecieve("{powerstripid:"+id+",request:sockets,apikey:"+apiKey+"}", new Server.OnReceiveListener() {
 			@Override

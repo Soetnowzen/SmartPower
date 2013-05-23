@@ -6,7 +6,7 @@ import org.json.*;
 import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
 import com.sebbelebben.smartpower.Server.OnReceiveListener;
 
-public class PsSocket implements Serializable {
+public class PsSocket implements Serializable,Graphable {
 	/**
 	 * 
 	 */
@@ -21,7 +21,7 @@ public class PsSocket implements Serializable {
 		this.apiKey = apiKey;
 	}
 	
-	public void getConsumption(final OnConsumptionReceiveListener listener, Date start, Date end){
+	public void getConsumption(Date start, Date end, final OnConsumptionReceiveListener listener){
 		Server.sendAndRecieve("{socketid:"+id+",request:consumption,apikey:"+apiKey+",startdate:"+start+",enddate:"+end+"}", new OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
