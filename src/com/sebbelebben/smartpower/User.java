@@ -2,6 +2,7 @@ package com.sebbelebben.smartpower;
 
 import java.io.Serializable;
 import java.util.*;
+
 import org.json.*;
 import com.sebbelebben.smartpower.Server.*;
 
@@ -14,6 +15,7 @@ public class User implements Serializable   {
 	private String password;
 	private boolean loggedIn;
 	private String apiKey;
+	private PowerStrip[] powerStrips;
 	
 	public User(String userName, String password){
 		this.loggedIn = false;
@@ -62,6 +64,24 @@ public class User implements Serializable   {
 		loggedIn = false;
 	}
 	
+	public PowerStrip[] getPowerStrips(Boolean update){
+		if(this.powerStrips.equals(null) || update){
+			this.getPowerStrips(new OnPowerStripReceiveListener() {
+				
+				@Override
+				public void onPowerStripReceive(PowerStrip[] powerStrips) {
+					User.this.powerStrips  = powerStrips;
+				}
+				
+				@Override
+				public void failed() {
+					
+				}
+			});
+		}
+		return powerStrips;
+	}
+	
 	public void getPowerStrips(final OnPowerStripReceiveListener listener){
 		Server.sendAndRecieve("{username:"+userName+",request:powerstrips,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
@@ -74,9 +94,43 @@ public class User implements Serializable   {
 							JSONArray powerStrips = data.getJSONArray("powerstrips");
 							for(int i = 0; i < powerStrips.length(); i++){
 								JSONObject JSONpowerStrip = powerStrips.getJSONObject(i);
-								powerStripList.add(new PowerStrip(JSONpowerStrip.getInt("id"),JSONpowerStrip.getString("serialid"),1,apiKey,JSONpowerStrip.getString("name")));
+								powerStripList.add(new PowerStrip(JSONpowerStrip.getInt("id"),JSONpowerStrip.getString("serialid"),apiKey,JSONpowerStrip.getString("name")));
 							}
 							listener.onPowerStripReceive(powerStripList.toArray(new PowerStrip[0]));
+						} else {
+							listener.failed();
+						}
+					} else {
+						listener.failed();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
+	public void getPowerStripsAndSockets(final OnPowerStripAndSocketReceiveListener listener){
+		Server.sendAndRecieve("{username:"+userName+",request:powerstripsandsockets,apikey:"+apiKey+"}", new OnReceiveListener() {
+			@Override
+			public void onReceive(String result) {
+				ArrayList<PowerStrip> powerStripList = new ArrayList<PowerStrip>();
+				ArrayList<PsSocket> psSocketList = new ArrayList<PsSocket>();
+				try {
+					JSONObject data = new JSONObject(result);
+					if (data.getString("username").equals(userName)){
+						if(!data.get("powerstrips").equals(null)){
+							JSONArray powerStrips = data.getJSONArray("powerstrips");
+							for(int i = 0; i < powerStrips.length(); i++){
+								JSONObject JSONpowerStrip = powerStrips.getJSONObject(i);
+								JSONArray psSockets = JSONpowerStrip.getJSONArray("sockets");
+								for(int j = 0; j < psSockets.length(); j++){
+									JSONObject JSONsocket = psSockets.getJSONObject(j);
+									psSocketList.add(new PsSocket(JSONsocket.getInt("socketid"), JSONsocket.getString("name"), apiKey));
+								}
+								powerStripList.add(new PowerStrip(JSONpowerStrip.getInt("id"),JSONpowerStrip.getString("serialid"),apiKey,JSONpowerStrip.getString("name"),psSocketList.toArray(new PsSocket[0])));
+							}
+							listener.onPowerStripAndSocketReceive(powerStripList.toArray(new PowerStrip[0]));
 						} else {
 							listener.failed();
 						}

@@ -79,6 +79,11 @@ public class Server {
 		void failed();
 	}
 	
+	public static interface OnPowerStripAndSocketReceiveListener {
+		void onPowerStripAndSocketReceive(PowerStrip[] powerStrips);
+		void failed();
+	}
+	
 	public static interface OnLoginListener {
 		void onLoginSuccess();
 		void onLoginFailure();
