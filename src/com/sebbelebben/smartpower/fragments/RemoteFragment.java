@@ -2,6 +2,7 @@ package com.sebbelebben.smartpower.fragments;
 
 import java.util.ArrayList;
 
+import android.util.Log;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.sebbelebben.smartpower.PowerStrip;
 import com.sebbelebben.smartpower.PowerStripActivity;
@@ -25,7 +26,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
@@ -34,11 +34,21 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+/**
+ * Fragment to display {@link PowerStrip} and {@link com.sebbelebben.smartpower.PsSocket}.
+ */
 public class RemoteFragment extends SherlockFragment {
     private ExpandableListView mListView;
 	private ArrayList<PowerStrip> mPowerStrips = new ArrayList<PowerStrip>();
 	private ExpandablePowerStripAdapter mAdapter;
-	
+
+    /**
+     * Creates a new instance of this fragment, using the provided {@link User} to list the {@link PowerStrip} and
+     * {@link com.sebbelebben.smartpower.PsSocket}.
+     *
+     * @param user The User used to display information.
+     * @return A new instance of RemoteFragment.
+     */
 	public static RemoteFragment newInstance(User user) {
 		RemoteFragment f = new RemoteFragment();
 		Bundle args = new Bundle();
@@ -46,8 +56,6 @@ public class RemoteFragment extends SherlockFragment {
 		f.setArguments(args);
 		return f;
 	}
-
-	public RemoteFragment() {}
 
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
@@ -57,33 +65,34 @@ public class RemoteFragment extends SherlockFragment {
 	    
 	    // If a user was provided, get the powerstrips
 	    if(user != null) {
-		user.getPowerStrips(new OnPowerStripReceiveListener() {
-			@Override
-			public void onPowerStripReceive(PowerStrip[] powerStrips) {
-				// Add the power strips to the list
-				for(int i=0; i < powerStrips.length; i++){
-					mPowerStrips.add(powerStrips[i]);
-				}
-				mAdapter.notifyDataSetChanged();
-			}
-			
-			@Override
-			public void failed() {
-				Toast.makeText(getActivity(), "Failed to connect to the internet. Please check your internet connectivity.", Toast.LENGTH_SHORT).show();
-			}
-		});
+            user.getPowerStrips(new OnPowerStripReceiveListener() {
+                @Override
+                public void onPowerStripReceive(PowerStrip[] powerStrips) {
+                    // Add the power strips to the list
+                    for(int i=0; i < powerStrips.length; i++){
+                        mPowerStrips.add(powerStrips[i]);
+                    }
+                    mAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void failed() {
+                    Toast.makeText(getActivity(), "Failed to connect to the internet. Please check your internet " +
+                            "connectivity.", Toast.LENGTH_SHORT).show();
+                }
+            });
 	    }
 	}
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// Inflate the view
-		View view = inflater.inflate(R.layout.fragment_remote, container, false);
-		
-		
+		View view = inflater.inflate(R.layout.fragment_remote,
+                container, false);
+
 		mListView = (ExpandableListView) view.findViewById(R.id.listview);
 		ProgressBar loadingView = (ProgressBar) view.findViewById(R.id.loading_progress);
 		mListView.setEmptyView(loadingView);
-		mAdapter = new ExpandablePowerStripAdapter(getActivity(), mPowerStrips);
+		mAdapter = new ExpandablePowerStripAdapter(getActivity(),mPowerStrips);
 		mListView.setAdapter(mAdapter);
 		mListView.setOnItemClickListener(new OnItemClickListener() {
 		        @Override
@@ -100,6 +109,10 @@ public class RemoteFragment extends SherlockFragment {
 		
 		return view;
 	}
+
+    /**
+     * Adapter for displaying a {@link PowerStrip}.
+     */
 	public class ExpandablePowerStripAdapter extends BaseExpandableListAdapter {
 		private Context context;
 		private ArrayList<PowerStrip> groups;
@@ -117,22 +130,25 @@ public class RemoteFragment extends SherlockFragment {
 			return childPosition;
 		}
 
-		public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View view, ViewGroup parent) {
-			String child = (String) getChild(groupPosition, childPosition);
+		public View getChildView(int groupPos, int childPos, boolean isLastChild, View view, ViewGroup parent) {
+			String child = (String) getChild(groupPos, childPos);
 			if (view == null) {
-				LayoutInflater infalInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				view = infalInflater.inflate(R.layout.socket_item, null);
+				LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				view = inflater.inflate(R.layout.socket_item, null);
 			}
+
 			TextView tv = (TextView) view.findViewById(R.id.text);
 			tv.setText(child);
 			tv.setTextColor(Color.WHITE);
 			
 			// If the child is at top, set the background to the drawable with shadow.
-			if(childPosition == 0) {
-				view.setBackgroundResource(R.drawable.expandable_bg);
+			if(childPos == 0) {
+                Log.i("SmartPower", child);
+                view.setBackgroundResource(R.drawable.expandable_bg);
 			}
 			
 			setupRemoteItem(view);
+            setupOptionsItem(view);
 			
 			return view;
 		}
@@ -143,6 +159,7 @@ public class RemoteFragment extends SherlockFragment {
 			optionsButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
+                    // Flip over to the Options view with the correct animations.
 					flipper.setInAnimation(getActivity(), R.anim.slide_in_right);
 					flipper.setOutAnimation(getActivity(), R.anim.slide_out_left);
 					flipper.setDisplayedChild(1);
@@ -151,6 +168,7 @@ public class RemoteFragment extends SherlockFragment {
 		    backButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
+                    // Flip back to the Remote view with the correct animations.
 					flipper.setInAnimation(getActivity(), R.anim.slide_in_left);
 					flipper.setOutAnimation(getActivity(), R.anim.slide_out_right);
 					flipper.setDisplayedChild(0);
@@ -158,62 +176,89 @@ public class RemoteFragment extends SherlockFragment {
 			});
 		}
 
+        private void setupOptionsItem(View view) {
+            ImageButton renameButton = (ImageButton) view.findViewById(R.id.rename_btn);
+            ImageButton favoriteButton = (ImageButton) view.findViewById(R.id.favorite_btn);
+            ImageButton consumptionButton = (ImageButton) view.findViewById(R.id.consumption_btn);
+
+            renameButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(), "Rename", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            favoriteButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            consumptionButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+        }
+
 		public int getChildrenCount(int groupPosition) {
 			return groups.get(groupPosition).sockets.length;
 		}
 
 		public Object getGroup(int groupPosition) {
-			// TODO Auto-generated method stub
 			return groups.get(groupPosition);
 		}
 
 		public int getGroupCount() {
-			// TODO Auto-generated method stub
 			return groups.size();
 		}
 
 		public long getGroupId(int groupPosition) {
-			// TODO Auto-generated method stub
 			return groupPosition;
 		}
 
-		public View getGroupView(final int groupPosition, boolean isLastChild, View view,
+		public View getGroupView(final int groupPos, boolean isLastChild, View view,
 				ViewGroup parent) {
-			PowerStrip group = (PowerStrip) getGroup(groupPosition);
+			PowerStrip group = (PowerStrip) getGroup(groupPos);
+
+            // If view is null, inflate it.
 			if (view == null) {
 				LayoutInflater inf = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
 				view = inf.inflate(R.layout.powerstrip_item, null);
 			}
+
+            // Set the text of the textview to the powerstrip name.
 			TextView tv = (TextView) view.findViewById(R.id.text);
 			tv.setText(group.getName());
 			tv.setOnClickListener(new OnClickListener() {
 				
 				@Override
 				public void onClick(View v) {
-					if(!mListView.isGroupExpanded(groupPosition)) {
-						mListView.expandGroup(groupPosition);
+                    // Expand or collapse group when textview is pressed.
+					if(!mListView.isGroupExpanded(groupPos)) {
+						mListView.expandGroup(groupPos);
 					} else {
-						mListView.collapseGroup(groupPosition);
+						mListView.collapseGroup(groupPos);
 					}
 				}
 			});
 			
 			setupRemoteItem(view);
-			// TODO Auto-generated method stub
+            setupOptionsItem(view);
+
 			return view;
 		}
 
 		public boolean hasStableIds() {
-			// TODO Auto-generated method stub
 			return true;
 		}
 
 		public boolean isChildSelectable(int arg0, int arg1) {
-			// TODO Auto-generated method stub
 			return true;
 		}
 	}
-	
 
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
@@ -226,7 +271,6 @@ public class RemoteFragment extends SherlockFragment {
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 		int position = info.position;
-		//Long id = getListAdapter().getItemId(info.position);
 		if(item.getTitle() == "Change Name") {
 			changeName(position);
 		} else if(item.getTitle() == "Group together with...") {
@@ -262,13 +306,11 @@ public class RemoteFragment extends SherlockFragment {
 						@Override
 						public void onSetNameReceived(String name) {
 							// TODO Auto-generated method stub
-							
 						}
 						
 						@Override
 						public void failed() {
 							// TODO Auto-generated method stub
-							
 						}
 					});
 					mAdapter.notifyDataSetChanged();
@@ -291,7 +333,7 @@ public class RemoteFragment extends SherlockFragment {
 	private void groupOutlets(final int position) {
 		Context context = getActivity();
 		LayoutInflater li = LayoutInflater.from(context);
-		View promptsView = li.inflate(R.layout.popup_group,null);
+		View promptsView = li.inflate(R.layout.popup_group, null);
 		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 		
 		final EditText result = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput);

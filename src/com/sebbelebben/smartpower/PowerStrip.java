@@ -16,7 +16,7 @@ public class PowerStrip implements Serializable{
 	private String apiKey;
 	private String serialId;
 	private String name;
-	public String sockets[] = {"Ett", "Två", "Tre", "Fyra"}; //Temporary list for trying out expandablelistview
+	public String sockets[] = {"Ett", "TvÃ¥", "Tre", "Fyra"}; //Temporary list for trying out expandablelistview
 	
 	public PowerStrip(int id, String serialId, int type, String apiKey, String name){
 		this.id = id;
