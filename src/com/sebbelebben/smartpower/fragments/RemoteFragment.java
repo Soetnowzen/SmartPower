@@ -239,14 +239,13 @@ public class RemoteFragment extends SherlockFragment {
 						
 						@Override
 						public void onSetNameReceived(String name) {
-							// TODO Auto-generated method stub
-							
+							mAdapter.notifyDataSetChanged();
 						}
 						
 						@Override
 						public void failed() {
-							// TODO Auto-generated method stub
-							
+							mAdapter.notifyDataSetChanged();
+							Toast.makeText(getActivity(), "Rename failed", Toast.LENGTH_SHORT).show();
 						}
 					});
 					mAdapter.notifyDataSetChanged();
