@@ -18,8 +18,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
-import android.view.MenuItem;
-
 public class MainActivity extends SherlockFragmentActivity {
 	private ViewPager mPager;
 	private MainPagerAdapter mAdapter;
