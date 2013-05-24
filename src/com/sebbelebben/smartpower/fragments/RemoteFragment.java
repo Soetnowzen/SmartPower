@@ -213,7 +213,7 @@ public class RemoteFragment extends SherlockFragment {
 
 		public View getGroupView(final int groupPos, boolean isLastChild, View view,
 				ViewGroup parent) {
-			PowerStrip group = (PowerStrip) getGroup(groupPos);
+			final PowerStrip group = (PowerStrip) getGroup(groupPos);
 
             // If view is null, inflate it.
 			if (view == null) {
@@ -238,7 +238,32 @@ public class RemoteFragment extends SherlockFragment {
 			});
 			
 			setupRemoteItem(view);
-            setupOptionsItem(view);
+
+            ImageButton renameButton = (ImageButton) view.findViewById(R.id.rename_btn);
+            ImageButton favoriteButton = (ImageButton) view.findViewById(R.id.favorite_btn);
+            ImageButton consumptionButton = (ImageButton) view.findViewById(R.id.consumption_btn);
+
+            renameButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(), "Rename", Toast.LENGTH_SHORT).show();
+                    changeName(group);
+                }
+            });
+
+            favoriteButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            consumptionButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
 			return view;
 		}
@@ -264,7 +289,7 @@ public class RemoteFragment extends SherlockFragment {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 		int position = info.position;
 		if(item.getTitle() == "Change Name") {
-			changeName(position);
+			//changeName(position);
 		} else if(item.getTitle() == "Group together with...") {
 			groupOutlets(item.getItemId());
 		} else {
@@ -273,6 +298,59 @@ public class RemoteFragment extends SherlockFragment {
 		return true;
 	}
 
+    private void changeName(final PowerStrip ps) {
+        // get prompts.xml view
+        Context context = getActivity();
+        LayoutInflater li = LayoutInflater.from(context);
+        View promptsView = li.inflate(R.layout.popup_rename, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+
+        final EditText result = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput);
+
+        // set popup_rename.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
+
+        // set dialog message
+        alertDialogBuilder.setCancelable(true).setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // get user input and set it to mResult
+                        // edit text
+
+
+                        //String s = result.getText().toString();
+                        //mPowerStrips.get(position);
+                        ps.setName(result.getText().toString(), new OnSetNameReceiveListener() {
+
+                            @Override
+                            public void onSetNameReceived(String name) {
+                                mAdapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void failed() {
+                                mAdapter.notifyDataSetChanged();
+                                Toast.makeText(getActivity(), "Rename failed", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        mAdapter.notifyDataSetChanged();
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+
+                                dialog.cancel();
+                            }
+                        });
+
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        // show it
+        alertDialog.show();
+    }
+/*
 	private void changeName(final int position) {
 		// get prompts.xml view
 		Context context = getActivity();
@@ -325,6 +403,7 @@ public class RemoteFragment extends SherlockFragment {
 		// show it
 		alertDialog.show();
 	}
+	*/
 
 	private void groupOutlets(final int position) {
 		Context context = getActivity();
