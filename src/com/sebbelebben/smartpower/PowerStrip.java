@@ -28,7 +28,7 @@ public class PowerStrip implements Serializable, Graphable{
 	 * @param serialId
 	 * @param apiKey
 	 * @param name
-	 * @param psSocekts
+	 * @param psSockets
 	 */
 	public PowerStrip(int id, String serialId, String apiKey, String name, PsSocket[] psSockets){
 		this.id = id;

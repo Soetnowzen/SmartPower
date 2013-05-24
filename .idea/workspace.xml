@@ -20,18 +20,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0a7ae240-92d4-45ae-bd4e-f001117d0c0f" name="Default" comment="">
+      <change type="DELETED" beforePath="C:\Users\Andreas\Documents\git\SmartPower\src\com\sebbelebben\smartpower\PowerStripActivity.java" afterPath="" />
+      <change type="DELETED" beforePath="C:\Users\Andreas\Documents\git\SmartPower\src\com\sebbelebben\smartpower\UserActivity.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/res/drawable-hdpi/Thumbs.db" afterPath="$PROJECT_DIR$/res/drawable-hdpi/Thumbs.db" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/AndroidManifest.xml" afterPath="$PROJECT_DIR$/AndroidManifest.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sebbelebben/smartpower/PowerStrip.java" afterPath="$PROJECT_DIR$/src/com/sebbelebben/smartpower/PowerStrip.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sebbelebben/smartpower/fragments/RemoteFragment.java" afterPath="$PROJECT_DIR$/src/com/sebbelebben/smartpower/fragments/RemoteFragment.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="SmartPower.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/Dummy.txt" changelist="0a7ae240-92d4-45ae-bd4e-f001117d0c0f" time="1369407267780" ignored="false" />
+    <file path="/Dummy.txt" changelist="0a7ae240-92d4-45ae-bd4e-f001117d0c0f" time="1369415483823" ignored="false" />
     <file path="/fragment.java" changelist="0a7ae240-92d4-45ae-bd4e-f001117d0c0f" time="1369335568779" ignored="false" />
     <file path="/a.xml" changelist="0a7ae240-92d4-45ae-bd4e-f001117d0c0f" time="1369336276515" ignored="false" />
     <file path="/socket_item.xml" changelist="0a7ae240-92d4-45ae-bd4e-f001117d0c0f" time="1369304267052" ignored="false" />
     <file path="/powerstrip_options_item.xml" changelist="0a7ae240-92d4-45ae-bd4e-f001117d0c0f" time="1369304210927" ignored="false" />
-    <file path="/RemoteFragment.java" changelist="0a7ae240-92d4-45ae-bd4e-f001117d0c0f" time="1369407282390" ignored="false" />
+    <file path="/RemoteFragment.java" changelist="0a7ae240-92d4-45ae-bd4e-f001117d0c0f" time="1369421315629" ignored="false" />
+    <file path="/PowerStrip.java" changelist="0a7ae240-92d4-45ae-bd4e-f001117d0c0f" time="1369407625617" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -97,7 +102,7 @@
           <file leaf-file-name="RemoteFragment.java" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/com/sebbelebben/smartpower/fragments/RemoteFragment.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="86" column="26" selection-start="2881" selection-end="2881" vertical-scroll-proportion="0.1556064">
+                <state line="67" column="14" selection-start="2261" selection-end="2261" vertical-scroll-proportion="0.24655963">
                   <folding />
                 </state>
               </provider>
@@ -146,7 +151,7 @@
           <file leaf-file-name="powerstrip_options_item.xml" pinned="false" current="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/res/layout/powerstrip_options_item.xml">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="18" column="30" selection-start="716" selection-end="716" vertical-scroll-proportion="0.36042404">
+                <state line="18" column="30" selection-start="716" selection-end="716" vertical-scroll-proportion="0.36127508">
                   <folding />
                 </state>
               </provider>
@@ -175,11 +180,13 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/sebbelebben/smartpower/PowerStrip.java" />
         <option value="$PROJECT_DIR$/res/layout/socket_item.xml" />
         <option value="$PROJECT_DIR$/res/layout/powerstrip_item.xml" />
         <option value="$PROJECT_DIR$/res/layout/socket_options_item.xml" />
         <option value="$PROJECT_DIR$/res/layout/powerstrip_options_item.xml" />
+        <option value="$PROJECT_DIR$/src/com/sebbelebben/smartpower/PowerStrip.java" />
+        <option value="$PROJECT_DIR$/src/com/sebbelebben/smartpower/UserActivity.java" />
+        <option value="$PROJECT_DIR$/src/com/sebbelebben/smartpower/PowerStripActivity.java" />
         <option value="$PROJECT_DIR$/src/com/sebbelebben/smartpower/fragments/RemoteFragment.java" />
       </list>
     </option>
@@ -217,6 +224,7 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -277,7 +285,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -292,11 +299,11 @@
     <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
     <property name="restartRequiresConfirmation" value="true" />
-    <property name="MemberChooser.showClasses" value="true" />
     <property name="FullScreen" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RunManager" selected="Android Application.SmartPower">
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Tests">
@@ -449,12 +456,13 @@
       <workItem from="1369303688321" duration="2249000" />
       <workItem from="1369316694428" duration="5425000" />
       <workItem from="1369397911114" duration="4017000" />
-      <workItem from="1369407267358" duration="123000" />
+      <workItem from="1369407267358" duration="1423000" />
+      <workItem from="1369415480925" duration="1704000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11814000" />
+    <option name="totallyTimeSpent" value="14818000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -483,25 +491,25 @@
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977587" sideWeight="0.6703786" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Android" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3288889" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.15901814" sideWeight="0.6703786" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3288889" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32850778" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977587" sideWeight="0.6703786" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32977587" sideWeight="0.6703786" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
     </layout>
@@ -567,36 +575,6 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/res/layout/socket_options_item.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="14" column="29" selection-start="605" selection-end="605" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/powerstrip_item.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="34" column="37" selection-start="1498" selection-end="1498" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/powerstrip_options_item.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="15" column="36" selection-start="638" selection-end="638" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sebbelebben/smartpower/fragments/RemoteFragment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="132" column="24" selection-start="4663" selection-end="4663" vertical-scroll-proportion="0.0">
@@ -605,80 +583,73 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/socket_item.xml">
-      <provider editor-type-id="android-designer">
-        <state />
-      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state line="35" column="16" selection-start="1522" selection-end="1543" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/socket_options_item.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/socket_options_item.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="14" column="29" selection-start="605" selection-end="605" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/powerstrip_item.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/powerstrip_item.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="34" column="37" selection-start="1498" selection-end="1498" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/powerstrip_options_item.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/powerstrip_options_item.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="14" column="29" selection-start="604" selection-end="604" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/sebbelebben/smartpower/PowerStrip.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="5" selection-start="227" selection-end="227" vertical-scroll-proportion="0.17708333">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/socket_item.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/socket_item.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="35" column="16" selection-start="1522" selection-end="1543" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/powerstrip_item.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/powerstrip_item.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="34" column="37" selection-start="1498" selection-end="1498" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/res/layout/socket_options_item.xml">
       <provider editor-type-id="android-designer">
         <state />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/res/layout/socket_options_item.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state line="14" column="29" selection-start="605" selection-end="605" vertical-scroll-proportion="0.0">
           <folding />
         </state>
+      </provider>
+      <provider editor-type-id="android-designer">
+        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sebbelebben/smartpower/fragments/UserFragment.java">
@@ -696,18 +667,32 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/res/layout/powerstrip_options_item.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="18" column="30" selection-start="716" selection-end="716" vertical-scroll-proportion="0.36127508">
+          <folding />
+        </state>
+      </provider>
       <provider editor-type-id="android-designer">
         <state />
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sebbelebben/smartpower/User.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="18" column="30" selection-start="716" selection-end="716" vertical-scroll-proportion="0.36042404">
+        <state line="195" column="37" selection-start="5394" selection-end="5394" vertical-scroll-proportion="3.5622816">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/sebbelebben/smartpower/PowerStrip.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="161" column="22" selection-start="4398" selection-end="4398" vertical-scroll-proportion="1.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sebbelebben/smartpower/fragments/RemoteFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="86" column="26" selection-start="2881" selection-end="2881" vertical-scroll-proportion="0.1556064">
+        <state line="67" column="14" selection-start="2261" selection-end="2261" vertical-scroll-proportion="0.24655963">
           <folding />
         </state>
       </provider>

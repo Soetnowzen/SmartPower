@@ -1,22 +1,11 @@
 package com.sebbelebben.smartpower.fragments;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 import android.util.Log;
 import com.actionbarsherlock.app.SherlockFragment;
-import com.sebbelebben.smartpower.Consumption;
-import com.sebbelebben.smartpower.GraphActivity;
 
-import android.util.Log;
-import com.actionbarsherlock.app.SherlockFragment;
 import com.sebbelebben.smartpower.PowerStrip;
-import com.sebbelebben.smartpower.PowerStripActivity;
 import com.sebbelebben.smartpower.R;
 import com.sebbelebben.smartpower.Server.*;
 import com.sebbelebben.smartpower.User;
@@ -27,8 +16,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -36,7 +23,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseExpandableListAdapter;
@@ -79,6 +65,7 @@ public class RemoteFragment extends SherlockFragment {
 	    
 	    // If a user was provided, get the powerstrips
 	    if(user != null) {
+            /*
             user.getPowerStrips(new OnPowerStripReceiveListener() {
                 @Override
                 public void onPowerStripReceive(PowerStrip[] powerStrips) {
@@ -95,6 +82,7 @@ public class RemoteFragment extends SherlockFragment {
                             "connectivity.", Toast.LENGTH_SHORT).show();
                 }
             });
+            */
 	    }
 	}
 
@@ -108,15 +96,6 @@ public class RemoteFragment extends SherlockFragment {
 		mListView.setEmptyView(loadingView);
 		mAdapter = new ExpandablePowerStripAdapter(getActivity(),mPowerStrips);
 		mListView.setAdapter(mAdapter);
-		mListView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-				PowerStrip powerStrip = (PowerStrip) arg0.getItemAtPosition(arg2);
-				Intent intent = new Intent(getActivity(), PowerStripActivity.class);
-				intent.putExtra("PowerStrip", powerStrip);
-				startActivity(intent);
-			}
-		});
 
 		//Registers that this item has a contextMenu
 		registerForContextMenu(mListView);
@@ -136,7 +115,8 @@ public class RemoteFragment extends SherlockFragment {
 		}
 
 		public Object getChild(int groupPosition, int childPosition) {
-			String sockets[] = groups.get(groupPosition).sockets;
+			//String sockets[] = groups.get(groupPosition).sockets;
+            String sockets[] = {"Hej", "Lol", "YOLO", "SWAG"};
 			return sockets[childPosition];
 		}
 
@@ -218,7 +198,8 @@ public class RemoteFragment extends SherlockFragment {
         }
 
 		public int getChildrenCount(int groupPosition) {
-			return groups.get(groupPosition).sockets.length;
+			//return groups.get(groupPosition).sockets.length;
+            return 4;
 		}
 
 		public Object getGroup(int groupPosition) {
