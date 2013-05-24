@@ -78,7 +78,7 @@ public class GraphActivity extends Activity {
 	}
 	private void display(List<Consumption> data, GraphView graphView){
 		List<Point> points = transform(data);
-		graphView.SetDataPoints(points);
+		graphView.setDataPoints(points);
 		graphView.setYAxisEnd(getMaxWatt(data));
 		graphView.setXAxisEnd(points.get(points.size()-1).x);
 		graphView.setXSegments((int)(points.get(points.size()-1).x - points.get(0).x)/4);

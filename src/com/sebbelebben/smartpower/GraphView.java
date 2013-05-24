@@ -16,6 +16,8 @@ import android.view.View;
 
 /**
  * Class for rendering a graph from a list of data points.
+ *
+ * @author Andreas Arvidsson
  */
 public class GraphView extends View {
 	private Context mContext;
