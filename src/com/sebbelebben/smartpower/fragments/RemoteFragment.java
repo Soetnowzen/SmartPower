@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import android.util.Log;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.sebbelebben.smartpower.Consumption;
 import com.sebbelebben.smartpower.GraphActivity;
@@ -247,7 +248,6 @@ public class RemoteFragment extends SherlockFragment {
 			tv.setText(group.getName());
 			tv.setOnClickListener(new OnClickListener() {
 				
->>>>>>> Added initial code for expandablelistview.
 				@Override
 				public void onClick(View v) {
                     // Expand or collapse group when textview is pressed.

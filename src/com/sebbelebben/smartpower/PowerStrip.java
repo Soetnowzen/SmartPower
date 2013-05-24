@@ -21,7 +21,6 @@ public class PowerStrip implements Serializable, Graphable{
 	private String name;
 	private String previousName; // The previous name, for rolling back failed name changes
 	private PsSocket[] psSockets;
-	public String sockets[] = {"Ett", "Två", "Tre", "Fyra"}; //Temporary list for trying out expandablelistview
 	
 	/**
 	 * Creates a PowerStrip with the list of PsSockets supplied for faster handling.

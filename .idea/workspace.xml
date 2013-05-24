@@ -19,7 +19,11 @@
     <option name="TOOL_WINDOW_CUSTOM_FILTER" value="SmartPower" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0a7ae240-92d4-45ae-bd4e-f001117d0c0f" name="Default" comment="" />
+    <list default="true" id="0a7ae240-92d4-45ae-bd4e-f001117d0c0f" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sebbelebben/smartpower/PowerStrip.java" afterPath="$PROJECT_DIR$/src/com/sebbelebben/smartpower/PowerStrip.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/com/sebbelebben/smartpower/fragments/RemoteFragment.java" afterPath="$PROJECT_DIR$/src/com/sebbelebben/smartpower/fragments/RemoteFragment.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+    </list>
     <ignored path="SmartPower.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/Dummy.txt" changelist="0a7ae240-92d4-45ae-bd4e-f001117d0c0f" time="1369407267780" ignored="false" />
@@ -93,7 +97,7 @@
           <file leaf-file-name="RemoteFragment.java" pinned="false" current="true" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/com/sebbelebben/smartpower/fragments/RemoteFragment.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state line="79" column="26" selection-start="2716" selection-end="2716" vertical-scroll-proportion="0.1556064">
+                <state line="86" column="26" selection-start="2881" selection-end="2881" vertical-scroll-proportion="0.1556064">
                   <folding />
                 </state>
               </provider>
@@ -445,12 +449,12 @@
       <workItem from="1369303688321" duration="2249000" />
       <workItem from="1369316694428" duration="5425000" />
       <workItem from="1369397911114" duration="4017000" />
-      <workItem from="1369407267358" duration="26000" />
+      <workItem from="1369407267358" duration="123000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11717000" />
+    <option name="totallyTimeSpent" value="11814000" />
   </component>
   <component name="TodoView" selected-index="0">
     <todo-panel id="selected-file">
@@ -703,7 +707,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/sebbelebben/smartpower/fragments/RemoteFragment.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="79" column="26" selection-start="2716" selection-end="2716" vertical-scroll-proportion="0.1556064">
+        <state line="86" column="26" selection-start="2881" selection-end="2881" vertical-scroll-proportion="0.1556064">
           <folding />
         </state>
       </provider>
