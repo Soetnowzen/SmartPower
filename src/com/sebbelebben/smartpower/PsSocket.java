@@ -119,16 +119,10 @@ public class PsSocket implements Serializable,Graphable {
 		Server.sendAndRecieve("{socketid:"+id+",request:turnon,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
-				try {
-					JSONObject data = new JSONObject(result);
-					if (data.getInt("socketid") == id){
-						listener.sucess();
-					}
-					else {
-						listener.failed();
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
+				if(result.equals("switchRequestTrue")){
+					listener.sucess();
+				} else {
+					listener.failed();
 				}
 			}
 		});
@@ -142,15 +136,10 @@ public class PsSocket implements Serializable,Graphable {
 		Server.sendAndRecieve("{socketid:"+id+",request:turnoff,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
-				try {
-					JSONObject data = new JSONObject(result);
-					if (data.getInt("socketid") == id){
-						listener.sucess();
-					} else {
-						listener.failed();
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
+				if(result.equals("switchRequestTrue")){
+					listener.sucess();
+				} else {
+					listener.failed();
 				}
 			}
 		});
