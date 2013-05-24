@@ -6,6 +6,7 @@ import android.util.Log;
 import com.actionbarsherlock.app.SherlockFragment;
 
 import com.sebbelebben.smartpower.PowerStrip;
+import com.sebbelebben.smartpower.PsSocket;
 import com.sebbelebben.smartpower.R;
 import com.sebbelebben.smartpower.Server.*;
 import com.sebbelebben.smartpower.User;
@@ -61,28 +62,25 @@ public class RemoteFragment extends SherlockFragment {
 	    super.onCreate(savedInstanceState);
 	    
 	    // Retrieve the user from the intent
-	    User user = (User) getArguments().getSerializable("User");
+	    final User user = (User) getArguments().getSerializable("User");
 	    
 	    // If a user was provided, get the powerstrips
 	    if(user != null) {
-            /*
-            user.getPowerStrips(new OnPowerStripReceiveListener() {
+            user.updateUser(new GenericListener() {
                 @Override
-                public void onPowerStripReceive(PowerStrip[] powerStrips) {
+                public void sucess() {
                     // Add the power strips to the list
-                    for(int i=0; i < powerStrips.length; i++){
-                        mPowerStrips.add(powerStrips[i]);
+                    for(int i=0; i < user.getPowerStrips().length; i++){
+                        mPowerStrips.add(user.getPowerStrips()[i]);
                     }
                     mAdapter.notifyDataSetChanged();
                 }
 
                 @Override
                 public void failed() {
-                    Toast.makeText(getActivity(), "Failed to connect to the internet. Please check your internet " +
-                            "connectivity.", Toast.LENGTH_SHORT).show();
-                } 
+
+                }
             });
-            */
 	    }
 	}
 
@@ -115,8 +113,7 @@ public class RemoteFragment extends SherlockFragment {
 		}
 
 		public Object getChild(int groupPosition, int childPosition) {
-			//String sockets[] = groups.get(groupPosition).sockets;
-            String sockets[] = {"Hej", "Lol", "YOLO", "SWAG"};
+			PsSocket sockets[] = groups.get(groupPosition).getSockets();
 			return sockets[childPosition];
 		}
 
@@ -125,19 +122,19 @@ public class RemoteFragment extends SherlockFragment {
 		}
 
 		public View getChildView(int groupPos, int childPos, boolean isLastChild, View view, ViewGroup parent) {
-			String child = (String) getChild(groupPos, childPos);
+			PsSocket child = (PsSocket) getChild(groupPos, childPos);
 			if (view == null) {
 				LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				view = inflater.inflate(R.layout.socket_item, null);
 			}
 
 			TextView tv = (TextView) view.findViewById(R.id.text);
-			tv.setText(child);
+			tv.setText(child.getName());
 			tv.setTextColor(Color.WHITE);
 			
 			// If the child is at top, set the background to the drawable with shadow.
 			if(childPos == 0) {
-                Log.i("SmartPower", child);
+                Log.i("SmartPower", child.getName());
                 view.setBackgroundResource(R.drawable.expandable_bg);
 			}
 			

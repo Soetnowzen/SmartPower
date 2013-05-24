@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
-import com.sebbelebben.smartpower.Server.OnLoginListener;
 
 public class LoginActivity extends Activity {
 	
@@ -64,9 +63,9 @@ public class LoginActivity extends Activity {
 		mProgressBar.setVisibility(View.VISIBLE);
 		
 		//Initiates the User with the new username & password
-		mUser.logIn(new OnLoginListener() {
+		mUser.logIn(new Server.GenericListener() {
 			@Override
-			public void onLoginSuccess() {
+			public void sucess() {
 				// Hide the progress bar
 				mProgressBar.setVisibility(View.GONE);
 				
@@ -89,7 +88,7 @@ public class LoginActivity extends Activity {
 			}
 			
 			@Override
-			public void onLoginFailure() {
+			public void failed() {
 				// Hide the progress bar
 				mProgressBar.setVisibility(View.GONE);
 				Toast.makeText(LoginActivity.this, "Login failed!", Toast.LENGTH_SHORT).show();
