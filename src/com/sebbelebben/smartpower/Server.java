@@ -110,8 +110,10 @@ public class Server {
 		void failed();
 	}
 	
-	public static interface OnLoginListener {
-		void onLoginSuccess();
-		void onLoginFailure();
+	public static interface GenericListener {
+		void sucess();
+		void failed();
 	}
+	
+	
 }
