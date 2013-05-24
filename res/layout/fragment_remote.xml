@@ -3,9 +3,14 @@
     android:layout_height="match_parent"
     android:background="@drawable/content_bg">
 
-    <ListView android:id="@+id/listview"
+    <ExpandableListView android:id="@+id/listview"
     	android:layout_width="match_parent"
-	android:layout_height="match_parent" />
+		android:layout_height="match_parent"
+		android:divider="#FFDDDDDD"
+		android:dividerHeight="1px"
+		android:childDivider="#FF000000"
+		android:groupIndicator="@null"
+		/>
     
      <ProgressBar
         android:id="@+id/loading_progress"

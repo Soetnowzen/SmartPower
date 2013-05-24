@@ -3,6 +3,8 @@ package com.sebbelebben.smartpower;
 import java.io.Serializable;
 import java.util.*;
 import org.json.*;
+
+import com.sebbelebben.smartpower.Server.GenericListener;
 import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
 import com.sebbelebben.smartpower.Server.OnReceiveListener;
 import com.sebbelebben.smartpower.Server.OnSetNameReceiveListener;
@@ -32,6 +34,10 @@ public class PsSocket implements Serializable,Graphable {
 		this.apiKey = apiKey;
 	}
 	
+	public String toJSON(){
+		return "{\"id\":"+Integer.toString(this.id)+",\"name\":\""+this.name+"\",\"apikey\":\""+this.apiKey+"\"}";
+		
+	}
 	/**
 	 * Creates a listener that waits for the server to supply the PsSocket's consumption between the given dates.
 	 */
@@ -53,7 +59,7 @@ public class PsSocket implements Serializable,Graphable {
 								consumptionList.add(new Consumption(JSONsockets.getString("time"),JSONsockets.getInt("power")));
 							}
 							listener.onConsumptionReceive(consumptionList.toArray(new Consumption[0]));
-						} else { //TODO
+						} else { 
 							listener.failed();
 						}
 					} else {
@@ -109,20 +115,14 @@ public class PsSocket implements Serializable,Graphable {
 	/**
 	 * Sends a turn on packet to the server.
 	 */
-	public void turnOn(){
+	public void turnOn(final GenericListener listener){
 		Server.sendAndRecieve("{socketid:"+id+",request:turnon,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
-				try {
-					JSONObject data = new JSONObject(result);
-					if (data.getInt("socketid") == id){
-						//check if it was successful
-					}
-					else {
-						//report unsuccessful
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
+				if(result.equals("switchRequestTrue")){
+					listener.sucess();
+				} else {
+					listener.failed();
 				}
 			}
 		});
@@ -132,19 +132,14 @@ public class PsSocket implements Serializable,Graphable {
 	/**
 	 * Sends a turn off packet to the server.
 	 */
-	public void turnOff(){
+	public void turnOff(final GenericListener listener){
 		Server.sendAndRecieve("{socketid:"+id+",request:turnoff,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
-				try {
-					JSONObject data = new JSONObject(result);
-					if (data.getInt("socketid") == id){
-						//check if it was successful
-					} else {
-						//report unsuccessful
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
+				if(result.equals("switchRequestTrue")){
+					listener.sucess();
+				} else {
+					listener.failed();
 				}
 			}
 		});

@@ -21,3 +21,8 @@ local.properties
 
 # Vim temporary files
 *.swp
+
+# Android Studio files
+*.iml
+.idea/
+

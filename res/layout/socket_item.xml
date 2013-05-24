@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:paddingTop="4dp"
+              android:paddingBottom="4dp"
+              android:background="#FF1F2E33"
+              android:orientation="vertical">
+	<ViewFlipper
+    	android:id="@+id/viewflipper"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:inAnimation="@anim/slide_in_left"
+        android:outAnimation="@anim/slide_out_right">
+    	<RelativeLayout
+            	android:layout_width="fill_parent"
+            	android:layout_height="wrap_content"
+            	android:orientation="horizontal">
+
+        	<TextView
+            	android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/text"
+                android:clickable="true"
+                android:gravity="center_vertical"
+                android:minHeight="40dp"
+                android:layout_margin="0dp"
+                android:paddingLeft="4dp"/>
+        	<ImageButton
+                android:id="@+id/options_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/text"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/text"
+                android:padding="4dp"
+                android:src="@drawable/ic_options_light"
+                android:background="@null"/>
+
+        	<ToggleButton
+                android:id="@+id/toggle_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/text"
+                android:layout_toLeftOf="@id/options_button"
+                android:layout_alignTop="@id/text"/>
+
+    	</RelativeLayout> 
+    	<include layout="@layout/socket_options_item" />
+    </ViewFlipper>
+</LinearLayout>

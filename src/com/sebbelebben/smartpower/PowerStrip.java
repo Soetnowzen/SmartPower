@@ -28,7 +28,7 @@ public class PowerStrip implements Serializable, Graphable{
 	 * @param serialId
 	 * @param apiKey
 	 * @param name
-	 * @param psSocekts
+	 * @param psSockets
 	 */
 	public PowerStrip(int id, String serialId, String apiKey, String name, PsSocket[] psSockets){
 		this.id = id;
@@ -38,19 +38,20 @@ public class PowerStrip implements Serializable, Graphable{
 		this.psSockets = psSockets;
 	}
 	
-	/**
-	 * Creates a PowerStrip.
-	 * @param id
-	 * @param serialId
-	 * @param apiKey
-	 * @param name
-	 */
-	public PowerStrip(int id, String serialId, String apiKey, String name){
-		this.id = id;
-		this.apiKey = apiKey;
-		this.serialId = serialId;
-		this.name = name;
-		this.previousName = name;
+	public String toJSON(){
+		String PsSocketsJSON = "";
+		for(int i = 0; i < psSockets.length; i++){
+			if(i != 1){
+				PsSocketsJSON.concat(",");
+			}
+			PsSocketsJSON.concat(psSockets[i].toJSON());
+		}
+		return "{" +
+					"\"id\":"+Integer.toString(this.id)+"," +
+					"\"serialId\":\""+this.serialId+"\"," +
+					"\"name\":\""+this.name+"\"," +
+					"\"pssockets\":["+PsSocketsJSON+"]" +
+				"}";
 	}
 	
 	/**
@@ -60,15 +61,12 @@ public class PowerStrip implements Serializable, Graphable{
 	public String toString(){
 		return serialId;
 	}
-<<<<<<< HEAD
-=======
 	
 	/**
 	 * Sets a new name on the PowerStrip.
 	 * @param name
 	 * @param listener
 	 */
->>>>>>> origin/API
 	public void setName(String name, final OnSetNameReceiveListener listener){
 		this.previousName = this.name;
 		this.name = name;
@@ -142,21 +140,7 @@ public class PowerStrip implements Serializable, Graphable{
 	 * @param update If set to true the list will be updated
 	 * @return
 	 */
-	public PsSocket[] getSockets(Boolean update){
-		if(this.psSockets.equals(null) || update){
-			this.getSockets(new OnSocketReceiveListener() {
-				
-				@Override
-				public void onSocketReceive(PsSocket[] sockets) {
-					PowerStrip.this.psSockets = sockets;
-				}
-				
-				@Override
-				public void failed() {
-					PowerStrip.this.psSockets = null;
-				}
-			});
-		}
+	public PsSocket[] getSockets(){
 		return this.psSockets;
 	}
 	
@@ -164,7 +148,7 @@ public class PowerStrip implements Serializable, Graphable{
 	 * Creates a listener that waits for the server to supply the PowerStrips's connected PsSockets.
 	 * @param listener
 	 */
-	private void getSockets(final OnSocketReceiveListener listener){
+	public void updatePowerStrip(final GenericListener listener){
 		Server.sendAndRecieve("{powerstripid:"+id+",request:sockets,apikey:"+apiKey+"}", new Server.OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
@@ -177,7 +161,8 @@ public class PowerStrip implements Serializable, Graphable{
 							JSONObject JSONsockets = sockets.getJSONObject(i);
 							psSocketList.add(new PsSocket(JSONsockets.getInt("socketid"),JSONsockets.getString("name"),apiKey));
 						}
-						listener.onSocketReceive(psSocketList.toArray(new PsSocket[0]));
+						PowerStrip.this.psSockets = psSocketList.toArray(new PsSocket[0]);
+						listener.sucess();
 					} else {
 						listener.failed();
 					}

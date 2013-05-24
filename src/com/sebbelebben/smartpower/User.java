@@ -34,6 +34,22 @@ public class User implements Serializable, Graphable   {
 		this.password = password;
 	}
 	
+	public String toJSON(){
+		String PowerStripsJSON = "";
+		for(int i = 0; i < powerStrips.length; i++){
+			if(i != 1){
+				PowerStripsJSON.concat(",");
+			}
+			PowerStripsJSON.concat(powerStrips[i].toJSON());
+		}
+		return "{" +
+					"\"username\":\""+this.userName+"\"," +
+					"\"password\":\""+this.password+"\"," +
+					"\"apikey\":\""+this.apiKey+"\"," +
+					"\"powerstrips\":["+PowerStripsJSON+"]," +
+				"}";
+	}
+	
 	/**
 	 * Returns the username of the User.
 	 * @return
@@ -62,7 +78,7 @@ public class User implements Serializable, Graphable   {
 	 * Log in the User by supplying a listener to the server class and the string to send to the server.
 	 * @param listener
 	 */
-	public void logIn(final OnLoginListener listener){
+	public void logIn(final GenericListener listener){
 		Server.sendAndRecieve("{username:"+userName+",request:login,password:"+password+"}", new OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
@@ -72,12 +88,12 @@ public class User implements Serializable, Graphable   {
 						loggedIn = data.getBoolean("login");
 						if(loggedIn) {
 							apiKey = data.getString("apikey");
-							listener.onLoginSuccess();
+							listener.sucess();
 						} else {
-							listener.onLoginFailure();
+							listener.failed();
 						}
 					} else {
-						listener.onLoginFailure();
+						listener.failed();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
@@ -97,82 +113,11 @@ public class User implements Serializable, Graphable   {
 	}
 	
 	/**
-	 * Returns the saved list of PowerStrips connected to the User, or updates the list and then returns it.
-	 * @param update If set to true the list will be updated.
-	 * @return  
-	 */
-	public PowerStrip[] getPowerStrips(Boolean update){
-		if(this.powerStrips.equals(null) || update){
-			this.getPowerStrips(new OnPowerStripReceiveListener() {
-				
-				@Override
-				public void onPowerStripReceive(PowerStrip[] powerStrips) {
-					User.this.powerStrips  = powerStrips;
-				}
-				
-				@Override
-				public void failed() {
-					User.this.powerStrips = null;
-				}
-
-			});
-		}
-		return powerStrips;
-	}
-	
-	/**
-	 * Creates a listener that waits for the server to supply the User's connected PowerStrips.
-	 * @param listener
-	 */
-	private void getPowerStrips(final OnPowerStripReceiveListener listener){
-		Server.sendAndRecieve("{username:"+userName+",request:powerstrips,apikey:"+apiKey+"}", new OnReceiveListener() {
-			@Override
-			public void onReceive(String result) {
-				ArrayList<PowerStrip> powerStripList = new ArrayList<PowerStrip>();
-				try {
-					JSONObject data = new JSONObject(result);
-					if (data.getString("username").equals(userName)){
-						if(!data.get("powerstrips").equals(null)){
-							JSONArray powerStrips = data.getJSONArray("powerstrips");
-							for(int i = 0; i < powerStrips.length(); i++){
-								JSONObject JSONpowerStrip = powerStrips.getJSONObject(i);
-								powerStripList.add(new PowerStrip(JSONpowerStrip.getInt("id"),JSONpowerStrip.getString("serialid"),apiKey,JSONpowerStrip.getString("name")));
-							}
-							listener.onPowerStripReceive(powerStripList.toArray(new PowerStrip[0]));
-						} else {
-							listener.failed();
-						}
-					} else {
-						listener.failed();
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
-	/**
-	 * Returns the saved list of PowerStrips connected to the User with their Sockets set, or updates the list and then returns it.
+	 * Returns the saved list of PowerStrips connected to the User with their Sockets set.
 	 * @param update If set to true the list will be updated.
 	 * @return
 	 */
-	public PowerStrip[] getPowerStripsAndSockets(Boolean update){
-		if(this.powerStrips.equals(null) || update){
-			this.getPowerStrips(new OnPowerStripReceiveListener() {
-				
-				@Override
-				public void onPowerStripReceive(PowerStrip[] powerStrips) {
-					User.this.powerStrips  = powerStrips;
-				}
-				
-				@Override
-				public void failed() {
-					User.this.powerStrips = null;
-				}
-
-			});
-		}
+	public PowerStrip[] getPowerStrips(){
 		return powerStrips;
 	}
 	
@@ -180,7 +125,7 @@ public class User implements Serializable, Graphable   {
 	 * Creates a listener that waits for the server to supply the User's connected PowerStrips with their PsSockets.
 	 * @param listener
 	 */
-	private void getPowerStripsAndSockets(final OnPowerStripAndSocketReceiveListener listener){
+	public void updateUser(final GenericListener listener){
 		Server.sendAndRecieve("{username:"+userName+",request:powerstripsandsockets,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
 			public void onReceive(String result) {
@@ -200,7 +145,8 @@ public class User implements Serializable, Graphable   {
 								}
 								powerStripList.add(new PowerStrip(JSONpowerStrip.getInt("id"),JSONpowerStrip.getString("serialid"),apiKey,JSONpowerStrip.getString("name"),psSocketList.toArray(new PsSocket[0])));
 							}
-							listener.onPowerStripAndSocketReceive(powerStripList.toArray(new PowerStrip[0]));
+							User.this.powerStrips = powerStripList.toArray(new PowerStrip[0]);
+							listener.sucess();
 						} else {
 							listener.failed();
 						}
