@@ -5,19 +5,43 @@ import java.net.*;
 import android.os.AsyncTask;
 import android.util.Log;
 
+/**
+ * A class to send and receive messages to and from the server in a asynchronous task.
+ * Also implements interfaces for the different types of requests that can be sent to the server.
+ * @author Johan Bregell
+ *
+ */
 public class Server {
+	
+	/**
+	 * Main method of the server creates a send task.
+	 * @param message
+	 * @param listener
+	 */
 	public static void sendAndRecieve(String message, OnReceiveListener listener){
 		SendTask sendTask = new SendTask(listener);
 		sendTask.execute(message);
 	}
 	
+	/**
+	 * 
+	 * @author Johan Bregell
+	 *
+	 */
 	private static class SendTask extends AsyncTask<String, Void, String> {
 		private OnReceiveListener mListener;
 		
+		/**
+		 * Creates a sendtask that can send and receive messages from the server.
+		 * @param listener
+		 */
 		public SendTask(OnReceiveListener listener) {
 			mListener = listener;
 		}
 		
+		/**
+		 * Sends a message to the server and watis for the response.
+		 */
 		@Override
 		protected String doInBackground(String... params) {
 			String[] ret = new String[2];
@@ -38,6 +62,9 @@ public class Server {
 			return ret[1];
 		}
 		
+		/**
+		 * Gives the listener the result from the server.
+		 */
 		@Override
 		protected void onPostExecute(String result) {
 			Log.i("onPostExecute", result);
@@ -76,6 +103,11 @@ public class Server {
 	
 	public static interface OnPowerStripReceiveListener {
 		void onPowerStripReceive(PowerStrip[] powerStrips);
+		void failed();
+	}
+	
+	public static interface OnPowerStripAndSocketReceiveListener {
+		void onPowerStripAndSocketReceive(PowerStrip[] powerStrips);
 		void failed();
 	}
 	
