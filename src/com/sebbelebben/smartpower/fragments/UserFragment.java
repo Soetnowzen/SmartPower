@@ -1,5 +1,5 @@
 package com.sebbelebben.smartpower.fragments;
-
+import com.sebbelebben.smartpower.User;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.sebbelebben.smartpower.R;
 import android.os.Bundle;
@@ -10,9 +10,10 @@ import android.webkit.WebView.FindListener;
 import android.widget.ProgressBar;
 
 public class UserFragment extends SherlockFragment {
-	public static UserFragment newInstance() {
+	public static UserFragment newInstance(User user) {
 		UserFragment f = new UserFragment();
 		Bundle args = new Bundle();
+		args.putSerializable("User", user);
 		f.setArguments(args);
 		return f;
 	}

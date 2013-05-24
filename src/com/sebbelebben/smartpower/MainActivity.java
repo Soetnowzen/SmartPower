@@ -85,7 +85,7 @@ public class MainActivity extends SherlockFragmentActivity {
 				fragment = RemoteFragment.newInstance(mUser);
 				break;
 			case 1:
-				fragment = UserFragment.newInstance();
+				fragment = UserFragment.newInstance(mUser);
 				break;
 			case 2:
 				fragment = ConsumptionFragment.newInstance(mUser);
