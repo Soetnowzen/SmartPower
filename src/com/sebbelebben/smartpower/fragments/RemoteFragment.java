@@ -80,7 +80,7 @@ public class RemoteFragment extends SherlockFragment {
                 public void failed() {
                     Toast.makeText(getActivity(), "Failed to connect to the internet. Please check your internet " +
                             "connectivity.", Toast.LENGTH_SHORT).show();
-                }
+                } 
             });
             */
 	    }
