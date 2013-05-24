@@ -1,22 +1,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:orientation="vertical"
-    >
+    android:paddingTop="@dimen/activity_vertical_margin" >
 
-    <TextView
+    <LinearLayout android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/user"
-        android:text="UserFragment\nHenning" />
-    <ListView android:id="@+id/listView" 
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/user"
+            android:text="UserFragment\nHenning" />
+
+        <ListView
+            android:id="@+id/listView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+        </ListView>
+    </LinearLayout>
+    <include layout="@layout/activity_graph"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/user"></ListView>
-    
- 
+        android:layout_weight="1"/>
+
 </LinearLayout>

@@ -19,7 +19,7 @@ public class UserFragment extends SherlockFragment {
 	}
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		View view = inflater.inflate(R.layout.doubleinput_remote, container, false);
+		View view = inflater.inflate(R.layout.fragment_user, container, false);
 		return view;
 	}
 }
