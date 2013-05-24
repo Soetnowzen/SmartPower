@@ -28,6 +28,7 @@ public class Server {
 			     out.println("Android#"+message);
 			     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			     ret = in.readLine().split("#");
+			     socket.close();
 			   } catch (UnknownHostException e) {
 				   e.printStackTrace();
 			   } catch  (IOException e) {
