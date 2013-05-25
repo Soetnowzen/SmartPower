@@ -2,14 +2,12 @@ package com.sebbelebben.smartpower.fragments;
 
 import java.util.ArrayList;
 
+import android.content.Intent;
 import android.util.Log;
 import com.actionbarsherlock.app.SherlockFragment;
 
-import com.sebbelebben.smartpower.PowerStrip;
-import com.sebbelebben.smartpower.PsSocket;
-import com.sebbelebben.smartpower.R;
+import com.sebbelebben.smartpower.*;
 import com.sebbelebben.smartpower.Server.*;
-import com.sebbelebben.smartpower.User;
 
 import android.content.Context;
 import android.app.AlertDialog;
@@ -261,7 +259,9 @@ public class RemoteFragment extends SherlockFragment {
             consumptionButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                    Intent intent = new Intent(getActivity(), GraphActivity.class);
+                    intent.putExtra("PowerStrip", group);
+                    startActivity(intent);
                 }
             });
 
