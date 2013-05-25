@@ -37,10 +37,20 @@ public class UserFragment extends SherlockFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		final User user = (User) getArguments().getSerializable("User");
 		View view = inflater.inflate(R.layout.fragment_user, container, false);
+		listView = (ListView) view.findViewById(R.id.listView);
 		view.findViewById(R.id.loading_progress).setVisibility(ProgressBar.GONE);
 		String str = String.format("name: %s\npwd: %s", user.getUserName(), user.getPassword());
 		((TextView) view.findViewById(R.id.textView)).setText(str);
 		
+		list = new ArrayList<PsSocket>();
+		list.add(new PsSocket(0, "hennig", "apikey"));
+		list.add(new PsSocket(0, "hennigphan1234567", "apikey"));
+		list.add(new PsSocket(0, "hennig2", "apikey"));
+		list.add(new PsSocket(0, "hennig3", "apikey"));
+		list.add(new PsSocket(0, "hennig4", "apikey"));
+		list.add(new PsSocket(0, "hennig5", "apikey"));
+		mAdapter = new SocketAdapter(getActivity(), R.layout.powerstrip_item, list);
+		if(listView != null) listView.setAdapter(mAdapter);
 		return view;
 	}
 	public class SocketAdapter extends ArrayAdapter<PsSocket>{
@@ -60,7 +70,8 @@ public class UserFragment extends SherlockFragment {
 			TextView tv = (TextView) v.findViewById(R.id.text);
 			ToggleButton tb = (ToggleButton) v.findViewById(R.id.toggle_button);
 			if ( tv != null) tv.setText(socket.getName());
-			if (tb != null) tb.setChecked(true);
+			if ( tb != null) tb.setChecked(true);
+			
 			return v;
 		}
 	
