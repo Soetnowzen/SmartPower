@@ -32,7 +32,7 @@ public class GraphActivity extends Activity {
 		final GraphView graphView = (GraphView) findViewById(R.id.graphview);
 		final ProgressBar pb = (ProgressBar) findViewById(R.id.loading_progress);
 		Intent intent = getIntent();
-		final PowerStrip mPowerStrip = (PowerStrip) intent.getSerializableExtra("PowerStrip");
+		final Graphable graphable = (Graphable) intent.getSerializableExtra("PowerStrip");
 		final Context context = this;
 		Calendar cal = Calendar.getInstance();
 		
@@ -45,7 +45,7 @@ public class GraphActivity extends Activity {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZZ", Locale.ENGLISH);
 				String start = String.format("%s-%s-%s 00:00:00+00",year,monthOfYear,dayOfMonth);
 				try{
-					mPowerStrip.getConsumption(sdf.parse(start), new Date(System.currentTimeMillis()), new OnConsumptionReceiveListener() {
+					graphable.getConsumption(sdf.parse(start), new Date(System.currentTimeMillis()), new OnConsumptionReceiveListener() {
 
 						@Override
 						public void onConsumptionReceive(Consumption[] consumption) {
