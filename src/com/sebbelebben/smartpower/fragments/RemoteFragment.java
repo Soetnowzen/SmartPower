@@ -14,7 +14,6 @@ import com.sebbelebben.smartpower.User;
 import android.content.Context;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -25,7 +24,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
@@ -37,6 +35,8 @@ import android.widget.ViewFlipper;
 
 /**
  * Fragment to display {@link PowerStrip} and {@link com.sebbelebben.smartpower.PsSocket}.
+ *
+ * @author Andreas Arvidsson (mostly at least)
  */
 public class RemoteFragment extends SherlockFragment {
     private ExpandableListView mListView;
@@ -86,13 +86,12 @@ public class RemoteFragment extends SherlockFragment {
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		// Inflate the view
-		View view = inflater.inflate(R.layout.fragment_remote,
-                container, false);
+		View view = inflater.inflate(R.layout.fragment_remote, container, false);
 
 		mListView = (ExpandableListView) view.findViewById(R.id.listview);
 		ProgressBar loadingView = (ProgressBar) view.findViewById(R.id.loading_progress);
 		mListView.setEmptyView(loadingView);
-		mAdapter = new ExpandablePowerStripAdapter(getActivity(),mPowerStrips);
+		mAdapter = new ExpandablePowerStripAdapter(getActivity(), mPowerStrips);
 		mListView.setAdapter(mAdapter);
 
 		//Registers that this item has a contextMenu
@@ -102,7 +101,8 @@ public class RemoteFragment extends SherlockFragment {
 	}
 
     /**
-     * Adapter for displaying a {@link PowerStrip}.
+     * Adapter for displaying a {@link PowerStrip} with the sockets as child views.
+     * Note that the data must be already loaded - both powerstrips and the sockets.
      */
 	public class ExpandablePowerStripAdapter extends BaseExpandableListAdapter {
 		private Context context;
@@ -213,7 +213,7 @@ public class RemoteFragment extends SherlockFragment {
 
 		public View getGroupView(final int groupPos, boolean isLastChild, View view,
 				ViewGroup parent) {
-			PowerStrip group = (PowerStrip) getGroup(groupPos);
+			final PowerStrip group = (PowerStrip) getGroup(groupPos);
 
             // If view is null, inflate it.
 			if (view == null) {
@@ -238,7 +238,32 @@ public class RemoteFragment extends SherlockFragment {
 			});
 			
 			setupRemoteItem(view);
-            setupOptionsItem(view);
+
+            ImageButton renameButton = (ImageButton) view.findViewById(R.id.rename_btn);
+            ImageButton favoriteButton = (ImageButton) view.findViewById(R.id.favorite_btn);
+            ImageButton consumptionButton = (ImageButton) view.findViewById(R.id.consumption_btn);
+
+            renameButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(), "Rename", Toast.LENGTH_SHORT).show();
+                    changeName(group);
+                }
+            });
+
+            favoriteButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
+
+            consumptionButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                }
+            });
 
 			return view;
 		}
@@ -264,7 +289,7 @@ public class RemoteFragment extends SherlockFragment {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
 		int position = info.position;
 		if(item.getTitle() == "Change Name") {
-			changeName(position);
+			//changeName(position);
 		} else if(item.getTitle() == "Group together with...") {
 			groupOutlets(item.getItemId());
 		} else {
@@ -273,58 +298,61 @@ public class RemoteFragment extends SherlockFragment {
 		return true;
 	}
 
-	private void changeName(final int position) {
-		// get prompts.xml view
-		Context context = getActivity();
-		LayoutInflater li = LayoutInflater.from(context);
-		View promptsView = li.inflate(R.layout.popup_rename, null);
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
+    /**
+     * Changes the name of the provided power strip.
+     * TODO: Figure out a way to be able to use this method with sockets also. Maybe an interface?
+     * @param ps The power strip.
+     */
+    private void changeName(final PowerStrip ps) {
+        // get prompts.xml view
+        Context context = getActivity();
+        LayoutInflater li = LayoutInflater.from(context);
+        View promptsView = li.inflate(R.layout.popup_rename, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context);
 
-		final EditText result = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput);
+        final EditText result = (EditText) promptsView.findViewById(R.id.editTextDialogUserInput);
 
-		// set popup_rename.xml to alertdialog builder
-		alertDialogBuilder.setView(promptsView);
+        // set popup_rename.xml to alertdialog builder
+        alertDialogBuilder.setView(promptsView);
 
-		// set dialog message
-		alertDialogBuilder.setCancelable(true).setPositiveButton("OK",
-				new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-				// get user input and set it to mResult
-				// edit text
+        // set dialog message
+        alertDialogBuilder.setCancelable(true).setPositiveButton("OK",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        // get user input and set it to mResult
+                        // edit text
 
+                        //String s = result.getText().toString();
+                        //mPowerStrips.get(position);
+                        ps.setName(result.getText().toString(), new OnSetNameReceiveListener() {
 
-			    	//String s = result.getText().toString();
-			    	//mPowerStrips.get(position);
-			    	mPowerStrips.get(position).setName(result.getText().toString(), new OnSetNameReceiveListener() {
-						
-						@Override
-						public void onSetNameReceived(String name) {
-							mAdapter.notifyDataSetChanged();
-						}
-						
-						@Override
-						public void failed() {
-							mAdapter.notifyDataSetChanged();
-							Toast.makeText(getActivity(), "Rename failed", Toast.LENGTH_SHORT).show();
-						}
-					});
-					mAdapter.notifyDataSetChanged();
-			    }
-			  })
-			.setNegativeButton("Cancel",
-			  new DialogInterface.OnClickListener() {
-			    public void onClick(DialogInterface dialog,int id) {
+                            @Override
+                            public void onSetNameReceived(String name) {
+                                mAdapter.notifyDataSetChanged();
+                            }
 
-				dialog.cancel();
-			}
-		});
+                            @Override
+                            public void failed() {
+                                mAdapter.notifyDataSetChanged();
+                                Toast.makeText(getActivity(), "Rename failed", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        mAdapter.notifyDataSetChanged();
+                    }
+                })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog,int id) {
+                                dialog.cancel();
+                            }
+                        });
 
-		// create alert dialog
-		AlertDialog alertDialog = alertDialogBuilder.create();
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
 
-		// show it
-		alertDialog.show();
-	}
+        // show it
+        alertDialog.show();
+    }
 
 	private void groupOutlets(final int position) {
 		Context context = getActivity();
@@ -342,7 +370,7 @@ public class RemoteFragment extends SherlockFragment {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
+                // Notify that the data has changed.
 				mAdapter.notifyDataSetChanged();
 			}
 		})

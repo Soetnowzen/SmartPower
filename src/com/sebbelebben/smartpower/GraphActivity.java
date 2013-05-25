@@ -11,22 +11,15 @@ import java.util.Locale;
 
 import com.sebbelebben.smartpower.GraphView.Point;
 import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
-import com.sebbelebben.smartpower.PowerStrip;
 
 import android.os.Bundle;
-import android.os.Debug;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.View;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -78,7 +71,7 @@ public class GraphActivity extends Activity {
 	}
 	private void display(List<Consumption> data, GraphView graphView){
 		List<Point> points = transform(data);
-		graphView.SetDataPoints(points);
+		graphView.setDataPoints(points);
 		graphView.setYAxisEnd(getMaxWatt(data));
 		graphView.setXAxisEnd(points.get(points.size()-1).x);
 		graphView.setXSegments((int)(points.get(points.size()-1).x - points.get(0).x)/4);
