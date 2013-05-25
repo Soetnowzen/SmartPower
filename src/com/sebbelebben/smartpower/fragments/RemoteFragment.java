@@ -120,7 +120,7 @@ public class RemoteFragment extends SherlockFragment {
 		}
 
 		public View getChildView(int groupPos, int childPos, boolean isLastChild, View view, ViewGroup parent) {
-			PsSocket child = (PsSocket) getChild(groupPos, childPos);
+			final PsSocket child = (PsSocket) getChild(groupPos, childPos);
 			if (view == null) {
 				LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				view = inflater.inflate(R.layout.socket_item, null);
@@ -135,13 +135,40 @@ public class RemoteFragment extends SherlockFragment {
                 Log.i("SmartPower", child.getName());
                 view.setBackgroundResource(R.drawable.expandable_bg);
 			}
+
+            ImageButton renameButton = (ImageButton) view.findViewById(R.id.rename_btn);
+            ImageButton favoriteButton = (ImageButton) view.findViewById(R.id.favorite_btn);
+            ImageButton consumptionButton = (ImageButton) view.findViewById(R.id.consumption_btn);
+
+            renameButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    changeName(child);
+                }
+            });
+
+            favoriteButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(getActivity(), "Favourite", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            consumptionButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(getActivity(), GraphActivity.class);
+                    intent.putExtra("Graphable", child);
+                    startActivity(intent);
+                }
+            });
 			
-			setupRemoteItem(view);
-            setupOptionsItem(view);
+			setupFlipper(view);
+            //setupOptionsItem(view);
 			
 			return view;
 		}
-		private void setupRemoteItem(View view) {
+		private void setupFlipper(View view) {
 			ImageButton optionsButton = (ImageButton) view.findViewById(R.id.options_button);
 			ImageButton backButton = (ImageButton) view.findViewById(R.id.back_btn);
 			final ViewFlipper flipper = (ViewFlipper) view.findViewById(R.id.viewflipper);
@@ -165,32 +192,11 @@ public class RemoteFragment extends SherlockFragment {
 			});
 		}
 
+        /*
         private void setupOptionsItem(View view) {
-            ImageButton renameButton = (ImageButton) view.findViewById(R.id.rename_btn);
-            ImageButton favoriteButton = (ImageButton) view.findViewById(R.id.favorite_btn);
-            ImageButton consumptionButton = (ImageButton) view.findViewById(R.id.consumption_btn);
 
-            renameButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Rename", Toast.LENGTH_SHORT).show();
-                }
-            });
-
-            favoriteButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
-
-            consumptionButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                }
-            });
         }
+        */
 
 		public int getChildrenCount(int groupPosition) {
 			//return groups.get(groupPosition).sockets.length;
@@ -235,24 +241,15 @@ public class RemoteFragment extends SherlockFragment {
 				}
 			});
 			
-			setupRemoteItem(view);
+			setupFlipper(view);
 
             ImageButton renameButton = (ImageButton) view.findViewById(R.id.rename_btn);
-            ImageButton favoriteButton = (ImageButton) view.findViewById(R.id.favorite_btn);
             ImageButton consumptionButton = (ImageButton) view.findViewById(R.id.consumption_btn);
 
             renameButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Rename", Toast.LENGTH_SHORT).show();
                     changeName(group);
-                }
-            });
-
-            favoriteButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
                 }
             });
 
@@ -300,11 +297,10 @@ public class RemoteFragment extends SherlockFragment {
 	}
 
     /**
-     * Changes the name of the provided power strip.
-
-     * @param ps The power strip.
+     * Changes the name of the provided power strip part
+     * @param pspart The power strip part.
      */
-    private void changeName(final PowerStrip ps) {
+    private void changeName(final PsPart pspart) {
         // get prompts.xml view
         Context context = getActivity();
         LayoutInflater li = LayoutInflater.from(context);
@@ -325,7 +321,7 @@ public class RemoteFragment extends SherlockFragment {
 
                         //String s = result.getText().toString();
                         //mPowerStrips.get(position);
-                        ps.setName(result.getText().toString(), new OnSetNameReceiveListener() {
+                        pspart.setName(result.getText().toString(), new OnSetNameReceiveListener() {
 
                             @Override
                             public void onSetNameReceived(String name) {
