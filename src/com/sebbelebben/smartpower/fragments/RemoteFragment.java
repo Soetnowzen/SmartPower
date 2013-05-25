@@ -259,6 +259,7 @@ public class RemoteFragment extends SherlockFragment {
             consumptionButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // Launch GraphActivity with selected Graphable
                     Intent intent = new Intent(getActivity(), GraphActivity.class);
                     intent.putExtra("Graphable", group);
                     startActivity(intent);

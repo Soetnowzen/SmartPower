@@ -8,32 +8,14 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
-    android:background="@drawable/content_bg"
     tools:context=".MainActivity" >
-	<RelativeLayout 
+
+	<LinearLayout
+        android:id="@+id/container"
 	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content">
-    <com.sebbelebben.smartpower.GraphView
-        android:id="@+id/graphview"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        app:xAxisStart="1"
-        app:xAxisEnd="10"
-        app:yAxisStart="0"
-        app:yAxisEnd="10"
-        app:xSegments="2"
-        app:ySegments="2" 
-        app:segmentColor="#333333"
-        app:dataColor="#FF3333"
-        app:axisColor="#000000"
-        app:fillData="true"
-        app:fillDataColor="#40FF0000"
-        app:axisBackgroundColor="#FFFFFF"
-        app:dataBackgroundColor="#000000"
-        app:textColor="#000000"
-        android:layout_alignParentTop="true"
-        android:layout_weight="0.5"/>
-    </RelativeLayout>
+	    android:layout_height="wrap_content"
+        android:orientation="vertical">
+    </LinearLayout>
 
 	<RelativeLayout 
 	    android:layout_width="match_parent"

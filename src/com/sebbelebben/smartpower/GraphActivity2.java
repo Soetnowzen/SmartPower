@@ -1,35 +1,36 @@
 package com.sebbelebben.smartpower;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import com.sebbelebben.smartpower.GraphView.Point;
-import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
-
-import android.os.Bundle;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import com.actionbarsherlock.internal.widget.TabsLinearLayout;
+import com.jjoe64.graphview.*;
+import com.jjoe64.graphview.GraphView;
+import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
 
-public class GraphActivity extends Activity {
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+
+public class GraphActivity2 extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_graph);
-		final GraphView graphView = (GraphView) findViewById(R.id.graphview);
+		setContentView(R.layout.activity_graph2);
+        final LinearLayout layout = (LinearLayout) findViewById(R.id.container);
+        final BarGraphView graphView = new BarGraphView(GraphActivity2.this, "Test");
+        graphView.setScalable(true);
+        //graphView.setScrollable(true);
+        layout.addView(graphView);
 		final ProgressBar pb = (ProgressBar) findViewById(R.id.loading_progress);
 		Intent intent = getIntent();
 		final Graphable graphable = (Graphable) intent.getSerializableExtra("Graphable");
@@ -49,8 +50,17 @@ public class GraphActivity extends Activity {
 
 						@Override
 						public void onConsumptionReceive(Consumption[] consumption) {
+
 							Collections.addAll(data, consumption);
-							display(data, graphView);
+                            GraphView.GraphViewData[] data2 = transform2(data);
+                            graphView.addSeries(new GraphViewSeries(data2));
+                            // TODO: remove this test
+                            for(GraphView.GraphViewData d : data2) {
+                                Log.i("SmartPower", "X: " + d.valueX + "Y: " + d.valueY);
+                            }
+
+                            graphView.invalidate();
+                            Toast.makeText(context, "GOT THE CONSUMPTION!", Toast.LENGTH_SHORT).show();
 							pb.setVisibility(ProgressBar.GONE);
 						}
 
@@ -67,21 +77,10 @@ public class GraphActivity extends Activity {
 		};
 		DatePickerDialog dp = new DatePickerDialog(this, mDateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH));
 		dp.show();
-
-	}
-	private void display(List<Consumption> data, GraphView graphView){
-		List<Point> points = transform2(data);
-		graphView.setDataPoints(points);
-		graphView.setYAxisEnd(getMaxWatt(points));
-		graphView.setXAxisEnd(points.get(points.size()-1).x);
-		graphView.setXSegments((int)(points.get(points.size()-1).x - points.get(0).x)/4);
-		//graphView.setYSegments((int)(getMaxWatt(points)/4));
-        graphView.setYSegments(500);
-		
 	}
 
-    private List<Point> transform2(List<Consumption> data) {
-        List<Point> graphViewData = new ArrayList<Point>();
+    private GraphView.GraphViewData[] transform2(List<Consumption> data) {
+        List<GraphView.GraphViewData> graphViewData = new ArrayList<GraphView.GraphViewData>();
 
         Calendar cal = Calendar.getInstance();
         cal.setTime(data.get(0).getDate());
@@ -100,20 +99,25 @@ public class GraphActivity extends Activity {
                 totalWatt += c.getWatt() * (10.0f/3600);
             } else {
                 currentDay = cal.get(Calendar.DAY_OF_YEAR);
-                graphViewData.add(new Point(j++, totalWatt));
+                graphViewData.add(new GraphView.GraphViewData(j++, totalWatt));
                 totalWatt = 0;
             }
         }
-        graphViewData.add(new Point(j++, totalWatt));
+        graphViewData.add(new GraphView.GraphViewData(j++, totalWatt));
 
-        return graphViewData;
+        GraphView.GraphViewData[] d = new GraphView.GraphViewData[graphViewData.size()];
+        for(int i = 0; i < d.length; i++) {
+            d[i] = graphViewData.get(i);
+        }
+        return d;
     }
 
-	private int getMaxWatt(List<Point> data) {
+
+	private int getMaxWatt(List<Consumption> data) {
 		int maxWatt = 0;
-		for(Point p : data) {
-			if(p.y > maxWatt) {
-				maxWatt = (int) p.y;
+		for(Consumption c : data) {
+			if(c.getWatt() > maxWatt) {
+				maxWatt = c.getWatt();
 			}
 		}
 
