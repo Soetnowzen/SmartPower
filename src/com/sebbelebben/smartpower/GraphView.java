@@ -47,7 +47,7 @@ public class GraphView extends View {
 	private int mAxisBackgroundColor;
 	private int mDataBackgroundColor;
 	private int mTextColor;
-	
+
 	
 	// Misc
 	private int mXPadding = 20;
@@ -119,7 +119,7 @@ public class GraphView extends View {
 		
 		drawBackground(canvas);
 		drawSegments(canvas);
-		
+
 		if(mDataPoints.size() > 0) {
 			drawData(canvas);
 		}
