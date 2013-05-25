@@ -10,13 +10,15 @@
     android:orientation="vertical"
     android:background="@drawable/content_bg"
     tools:context=".MainActivity" >
+
 	<RelativeLayout 
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content">
     <com.sebbelebben.smartpower.GraphView
         android:id="@+id/graphview"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentTop="true"
         app:xAxisStart="1"
         app:xAxisEnd="10"
         app:yAxisStart="0"
@@ -31,8 +33,7 @@
         app:axisBackgroundColor="#FFFFFF"
         app:dataBackgroundColor="#000000"
         app:textColor="#000000"
-        android:layout_alignParentTop="true"
-        android:layout_weight="0.5"/>
+        />
     </RelativeLayout>
 
 	<RelativeLayout 
