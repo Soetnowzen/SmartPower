@@ -1,6 +1,8 @@
 package com.sebbelebben.smartpower;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import org.json.*;
 
@@ -43,34 +45,35 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 	 * Creates a listener that waits for the server to supply the PsSocket's consumption between the given dates.
 	 */
 	public void getConsumption(Date start, Date end, final OnConsumptionReceiveListener listener){
-		Server.sendAndRecieve("{socketid:"+id+",request:consumption,apikey:"+apiKey+",startdate:"+start+",enddate:"+end+"}", new OnReceiveListener() {
-			@Override
-			public void onReceive(String result) {
-				ArrayList<Consumption> consumptionList = new ArrayList<Consumption>();
-				try {			
-					JSONObject data = new JSONObject(result);
-					if (data.getInt("socketid") == id){
-						if (data.has("result")){
-							listener.failed();
-						}
-						else if (data.has("data")){
-							JSONArray sockets = data.getJSONArray("data");
-							for(int i = 0; i < sockets.length(); i++){
-								JSONObject JSONsockets = sockets.getJSONObject(i);
-								consumptionList.add(new Consumption(JSONsockets.getString("time"),JSONsockets.getInt("power")));
-							}
-							listener.onConsumptionReceive(consumptionList.toArray(new Consumption[0]));
-						} else { 
-							listener.failed();
-						}
-					} else {
-						listener.failed();
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-		});
+        DateFormat dd = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss.SSSZ", Locale.ENGLISH);
+        Server.sendAndRecieve("{socketid:"+id+",request:consumption,apikey:"+apiKey+",startdate:"+dd.format(start)+",enddate:"+dd.format(end)+"}", new OnReceiveListener() {
+            @Override
+            public void onReceive(String result) {
+                ArrayList<Consumption> consumptionList = new ArrayList<Consumption>();
+                try {
+                    JSONObject data = new JSONObject(result);
+                    if (data.getInt("socketid") == id){
+                        if (data.has("result")){
+                            listener.failed();
+                        }
+                        else if (data.has("data")){
+                            JSONArray sockets = data.getJSONArray("data");
+                            for(int i = 0; i < sockets.length(); i++){
+                                JSONObject JSONsockets = sockets.getJSONObject(i);
+                                consumptionList.add(new Consumption(JSONsockets.getString("timestamp"),JSONsockets.getInt("activepower")));
+                            }
+                            listener.onConsumptionReceive(consumptionList.toArray(new Consumption[0]));
+                        } else {
+                            listener.failed();
+                        }
+                    } else {
+                        listener.failed();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 	}
 	
 	/**
