@@ -32,7 +32,7 @@ public class GraphActivity extends Activity {
 		final GraphView graphView = (GraphView) findViewById(R.id.graphview);
 		final ProgressBar pb = (ProgressBar) findViewById(R.id.loading_progress);
 		Intent intent = getIntent();
-		final Graphable graphable = (Graphable) intent.getSerializableExtra("PowerStrip");
+		final Graphable graphable = (Graphable) intent.getSerializableExtra("Graphable");
 		final Context context = this;
 		Calendar cal = Calendar.getInstance();
 		

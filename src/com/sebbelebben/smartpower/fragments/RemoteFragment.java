@@ -260,7 +260,7 @@ public class RemoteFragment extends SherlockFragment {
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(getActivity(), GraphActivity.class);
-                    intent.putExtra("PowerStrip", group);
+                    intent.putExtra("Graphable", group);
                     startActivity(intent);
                 }
             });
