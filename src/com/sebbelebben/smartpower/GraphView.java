@@ -48,10 +48,9 @@ public class GraphView extends View {
 	private int mDataBackgroundColor;
 	private int mTextColor;
 
-	
 	// Misc
-	private int mXPadding = 20;
-	private int mYPadding = 20;
+	private int mXPadding = 40;
+	private int mYPadding = 40;
 	private GestureDetector mDetector = new GestureDetector(GraphView.this.getContext(), new mListener());
 	
 	public GraphView(Context context) {
@@ -333,6 +332,12 @@ public class GraphView extends View {
 			float scale = (float)(mXAxisEnd - mXAxisStart) / (float)(getWidth() - mXPadding);
 			mXAxisEnd += distanceX * scale;
 			mXAxisStart += distanceX * scale;
+
+            // Limit the scrolling to the minimum X value
+            if(mXAxisStart < mDataPoints.get(0).x) {
+                mXAxisEnd = mXAxisEnd + Math.abs(mXAxisStart);
+                mXAxisStart = mDataPoints.get(0).x;
+            }
 			
 			invalidate();
 			return true;

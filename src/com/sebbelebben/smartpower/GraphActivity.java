@@ -75,20 +75,9 @@ public class GraphActivity extends Activity {
 		graphView.setYAxisEnd(getMaxWatt(points));
 		graphView.setXAxisEnd(points.get(points.size()-1).x);
 		graphView.setXSegments((int)(points.get(points.size()-1).x - points.get(0).x)/4);
-		graphView.setYSegments((int)(getMaxWatt(points)/4));
+		//graphView.setYSegments((int)(getMaxWatt(points)/4));
+        graphView.setYSegments(500);
 		
-	}
-	private List<Point> transform(List<Consumption> data) {
-		List<Point> points = new ArrayList<Point>();
-		long firstTime = data.get(0).getDate().getTime();
-		for(Consumption c : data) {
-			long time = c.getDate().getTime() - firstTime;
-			time /= 10000000;
-			Point point = new Point(time, c.getWatt());
-			points.add(point);
-		}
-
-		return points;
 	}
 
     private List<Point> transform2(List<Consumption> data) {
