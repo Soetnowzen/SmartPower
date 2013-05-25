@@ -69,23 +69,25 @@ public class GraphView extends View {
 		super(context, attrs);
 		mContext = context;
 		TypedArray attributes = mContext.obtainStyledAttributes(attrs, R.styleable.GraphView);
-		mXAxisStart = attributes.getInteger(R.styleable.GraphView_xAxisStart, 10);
-		mXAxisEnd = attributes.getInteger(R.styleable.GraphView_xAxisEnd, 10);
-		mYAxisStart = attributes.getInteger(R.styleable.GraphView_yAxisStart, 10);
-		mYAxisEnd = attributes.getInteger(R.styleable.GraphView_yAxisEnd, 10);
-		mXSegments = attributes.getInteger(R.styleable.GraphView_xSegments, 3);
-		mYSegments = attributes.getInteger(R.styleable.GraphView_ySegments, 3);
-		mSegmentColor = attributes.getColor(R.styleable.GraphView_segmentColor, Color.BLACK);
-		mDataColor = attributes.getColor(R.styleable.GraphView_dataColor, Color.BLACK);
-		mAxisColor = attributes.getColor(R.styleable.GraphView_axisColor, Color.BLACK);
-		mFillData = attributes.getBoolean(R.styleable.GraphView_fillData, false);
-		mFillColor = attributes.getColor(R.styleable.GraphView_fillDataColor, Color.BLACK);
-		mAxisBackgroundColor = attributes.getColor(R.styleable.GraphView_axisBackgroundColor, Color.BLACK);
-		mDataBackgroundColor = attributes.getColor(R.styleable.GraphView_dataBackgroundColor, Color.BLACK);
-		mTextColor = attributes.getColor(R.styleable.GraphView_textColor, Color.BLACK);
-		attributes.recycle();
-		
-		init();
+        if(attributes != null) {
+		    mXAxisStart = attributes.getInteger(R.styleable.GraphView_xAxisStart, 10);
+		    mXAxisEnd = attributes.getInteger(R.styleable.GraphView_xAxisEnd, 10);
+		    mYAxisStart = attributes.getInteger(R.styleable.GraphView_yAxisStart, 10);
+		    mYAxisEnd = attributes.getInteger(R.styleable.GraphView_yAxisEnd, 10);
+		    mXSegments = attributes.getInteger(R.styleable.GraphView_xSegments, 3);
+		    mYSegments = attributes.getInteger(R.styleable.GraphView_ySegments, 3);
+		    mSegmentColor = attributes.getColor(R.styleable.GraphView_segmentColor, Color.BLACK);
+		    mDataColor = attributes.getColor(R.styleable.GraphView_dataColor, Color.BLACK);
+		    mAxisColor = attributes.getColor(R.styleable.GraphView_axisColor, Color.BLACK);
+		    mFillData = attributes.getBoolean(R.styleable.GraphView_fillData, false);
+		    mFillColor = attributes.getColor(R.styleable.GraphView_fillDataColor, Color.BLACK);
+		    mAxisBackgroundColor = attributes.getColor(R.styleable.GraphView_axisBackgroundColor, Color.BLACK);
+		    mDataBackgroundColor = attributes.getColor(R.styleable.GraphView_dataBackgroundColor, Color.BLACK);
+		    mTextColor = attributes.getColor(R.styleable.GraphView_textColor, Color.BLACK);
+		    attributes.recycle();
+
+            init();
+        }
 	}
 
     /**
@@ -319,9 +321,7 @@ public class GraphView extends View {
      */
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		boolean result = mDetector.onTouchEvent(event);
-
-		return result;
+		return mDetector.onTouchEvent(event);
 	}
 
     /**
@@ -335,7 +335,7 @@ public class GraphView extends View {
 		
 		@Override
 		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-			float scale = (float)(mXAxisEnd - mXAxisStart) / (float)(getWidth() - mXPadding);
+			float scale = (mXAxisEnd - mXAxisStart) / (float)(getWidth() - mXPadding);
 			mXAxisEnd += distanceX * scale;
 			mXAxisStart += distanceX * scale;
 

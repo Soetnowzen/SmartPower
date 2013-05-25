@@ -11,7 +11,6 @@ import android.widget.DatePicker;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import com.actionbarsherlock.internal.widget.TabsLinearLayout;
 import com.jjoe64.graphview.*;
 import com.jjoe64.graphview.GraphView;
 import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
@@ -34,6 +33,7 @@ public class GraphActivity2 extends Activity {
 		final ProgressBar pb = (ProgressBar) findViewById(R.id.loading_progress);
 		Intent intent = getIntent();
 		final Graphable graphable = (Graphable) intent.getSerializableExtra("Graphable");
+        if (graphable == null) throw new AssertionError();
 		final Context context = this;
 		Calendar cal = Calendar.getInstance();
 		
@@ -46,7 +46,7 @@ public class GraphActivity2 extends Activity {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZZ", Locale.ENGLISH);
 				String start = String.format("%s-%s-%s 00:00:00+00",year,monthOfYear,dayOfMonth);
 				try{
-					graphable.getConsumption(sdf.parse(start), new Date(System.currentTimeMillis()), new OnConsumptionReceiveListener() {
+                    graphable.getConsumption(sdf.parse(start), new Date(System.currentTimeMillis()), new OnConsumptionReceiveListener() {
 
 						@Override
 						public void onConsumptionReceive(Consumption[] consumption) {

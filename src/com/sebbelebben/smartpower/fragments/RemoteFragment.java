@@ -221,7 +221,7 @@ public class RemoteFragment extends SherlockFragment {
 
             // If view is null, inflate it.
 			if (view == null) {
-				LayoutInflater inf = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
+				LayoutInflater inf = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				view = inf.inflate(R.layout.powerstrip_item, null);
 			}
 
@@ -282,6 +282,7 @@ public class RemoteFragment extends SherlockFragment {
 		menu.add(0, v.getId(), 0, "Group together with...");
 	}
 
+    /*
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -295,6 +296,7 @@ public class RemoteFragment extends SherlockFragment {
 		}
 		return true;
 	}
+    */
 
     /**
      * Changes the name of the provided power strip part
