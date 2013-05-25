@@ -12,7 +12,7 @@ import com.sebbelebben.smartpower.Server.*;
  * @author Johan Bregell
  *
  */
-public class PowerStrip implements Serializable, Graphable{
+public class PowerStrip implements Serializable, Graphable, PsPart{
 	
 	private static final long serialVersionUID = 4087429125837326107L;
 	private int id;

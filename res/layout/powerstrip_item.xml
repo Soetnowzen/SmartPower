@@ -36,15 +36,7 @@
                 android:src="@drawable/ic_options_dark"
                 android:background="@null"/>
 
-        	<ToggleButton
-                android:id="@+id/toggle_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/text"
-                android:layout_toLeftOf="@id/options_button"
-                android:layout_alignTop="@id/text"/>
-
-    	</RelativeLayout> 
+    	</RelativeLayout>
     	<include layout="@layout/powerstrip_options_item" />
     </ViewFlipper>
 </LinearLayout>
