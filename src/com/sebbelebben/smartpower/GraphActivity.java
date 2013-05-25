@@ -70,12 +70,12 @@ public class GraphActivity extends Activity {
 
 	}
 	private void display(List<Consumption> data, GraphView graphView){
-		List<Point> points = transform(data);
+		List<Point> points = transform2(data);
 		graphView.setDataPoints(points);
-		graphView.setYAxisEnd(getMaxWatt(data));
+		graphView.setYAxisEnd(getMaxWatt(points));
 		graphView.setXAxisEnd(points.get(points.size()-1).x);
 		graphView.setXSegments((int)(points.get(points.size()-1).x - points.get(0).x)/4);
-		graphView.setYSegments((int)(getMaxWatt(data)/4)); 
+		graphView.setYSegments((int)(getMaxWatt(points)/4));
 		
 	}
 	private List<Point> transform(List<Consumption> data) {
@@ -91,11 +91,40 @@ public class GraphActivity extends Activity {
 		return points;
 	}
 
-	private int getMaxWatt(List<Consumption> data) {
+    private List<Point> transform2(List<Consumption> data) {
+        List<Point> graphViewData = new ArrayList<Point>();
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(data.get(0).getDate());
+
+        int currentDay = cal.get(Calendar.DAY_OF_YEAR);
+        int totalWatt = 0;
+        int j = 0;
+
+        for(int i = 0; i < data.size(); i++) {
+            Consumption c = data.get(i);
+            cal.setTime(c.getDate());
+
+            Log.i("SmartPower", ""+cal.get(Calendar.DAY_OF_YEAR));
+
+            if(currentDay == cal.get(Calendar.DAY_OF_YEAR)) {
+                totalWatt += c.getWatt() * (10.0f/3600);
+            } else {
+                currentDay = cal.get(Calendar.DAY_OF_YEAR);
+                graphViewData.add(new Point(j++, totalWatt));
+                totalWatt = 0;
+            }
+        }
+        graphViewData.add(new Point(j++, totalWatt));
+
+        return graphViewData;
+    }
+
+	private int getMaxWatt(List<Point> data) {
 		int maxWatt = 0;
-		for(Consumption c : data) {
-			if(c.getWatt() > maxWatt) {
-				maxWatt = c.getWatt();
+		for(Point p : data) {
+			if(p.y > maxWatt) {
+				maxWatt = (int) p.y;
 			}
 		}
 
