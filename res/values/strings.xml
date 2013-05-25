@@ -13,5 +13,7 @@
     <string name="login_label">Please log in to your SmartPower account</string>
     <string name="popupRenameMessage">Rename</string>
     <string name ="renamingButtonText">Rename</string>
+    <string name="turn_on_failure">Failed to turn on</string>
+    <string name="turn_off_failure">Failed to turn off</string>
 
 </resources>

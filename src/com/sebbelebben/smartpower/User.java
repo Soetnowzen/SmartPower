@@ -88,7 +88,7 @@ public class User implements Serializable, Graphable   {
 						loggedIn = data.getBoolean("login");
 						if(loggedIn) {
 							apiKey = data.getString("apikey");
-							listener.sucess();
+							listener.success();
 						} else {
 							listener.failed();
 						}
@@ -146,7 +146,7 @@ public class User implements Serializable, Graphable   {
 								powerStripList.add(new PowerStrip(JSONpowerStrip.getInt("id"),JSONpowerStrip.getString("serialid"),apiKey,JSONpowerStrip.getString("name"),psSocketList.toArray(new PsSocket[0])));
 							}
 							User.this.powerStrips = powerStripList.toArray(new PowerStrip[0]);
-							listener.sucess();
+							listener.success();
 						} else {
 							listener.failed();
 						}

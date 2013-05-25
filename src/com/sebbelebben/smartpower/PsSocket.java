@@ -127,7 +127,7 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 			@Override
 			public void onReceive(String result) {
 				if(result.equals("switchRequestTrue")){
-					listener.sucess();
+					listener.success();
 				} else {
 					listener.failed();
 				}
@@ -144,7 +144,7 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 			@Override
 			public void onReceive(String result) {
 				if(result.equals("switchRequestTrue")){
-					listener.sucess();
+					listener.success();
 				} else {
 					listener.failed();
 				}

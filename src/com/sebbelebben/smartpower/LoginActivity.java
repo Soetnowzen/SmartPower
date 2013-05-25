@@ -69,7 +69,7 @@ public class LoginActivity extends Activity {
 		//Initiates the User with the new username & password
 		mUser.logIn(new Server.GenericListener() {
 			@Override
-			public void sucess() {
+			public void success() {
 				// Hide the progress bar
 				mProgressBar.setVisibility(View.GONE);
 				

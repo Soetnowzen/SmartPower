@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.content.Intent;
 import android.util.Log;
+import android.widget.*;
 import com.actionbarsherlock.app.SherlockFragment;
 
 import com.sebbelebben.smartpower.*;
@@ -21,15 +22,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.EditText;
-import android.widget.ExpandableListView;
-import android.widget.ImageButton;
-import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.ViewFlipper;
 
 /**
  * Fragment to display {@link PowerStrip} and {@link com.sebbelebben.smartpower.PsSocket}.
@@ -66,7 +58,7 @@ public class RemoteFragment extends SherlockFragment {
 	    if(user != null) {
             user.updateUser(new GenericListener() {
                 @Override
-                public void sucess() {
+                public void success() {
                     // Add the power strips to the list
                     for(int i=0; i < user.getPowerStrips().length; i++){
                         mPowerStrips.add(user.getPowerStrips()[i]);
@@ -136,9 +128,43 @@ public class RemoteFragment extends SherlockFragment {
                 view.setBackgroundResource(R.drawable.expandable_bg);
 			}
 
+            final ToggleButton toggleButton = (ToggleButton) view.findViewById(R.id.toggle_button);
             ImageButton renameButton = (ImageButton) view.findViewById(R.id.rename_btn);
             ImageButton favoriteButton = (ImageButton) view.findViewById(R.id.favorite_btn);
             ImageButton consumptionButton = (ImageButton) view.findViewById(R.id.consumption_btn);
+
+            toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        child.turnOn(new GenericListener() {
+                            @Override
+                            public void success() {
+                                toggleButton.setChecked(true);
+                            }
+
+                            @Override
+                            public void failed() {
+                                toggleButton.setChecked(false);
+                                Toast.makeText(getActivity(), getResources().getString(R.string.turn_on_failure), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        child.turnOff(new GenericListener() {
+                            @Override
+                            public void success() {
+                                toggleButton.setChecked(false);
+                            }
+
+                            @Override
+                            public void failed() {
+                                toggleButton.setChecked(true);
+                                Toast.makeText(getActivity(), getResources().getString(R.string.turn_off_failure), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            });
 
             renameButton.setOnClickListener(new OnClickListener() {
                 @Override
@@ -151,6 +177,7 @@ public class RemoteFragment extends SherlockFragment {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(getActivity(), "Favourite", Toast.LENGTH_SHORT).show();
+
                 }
             });
 

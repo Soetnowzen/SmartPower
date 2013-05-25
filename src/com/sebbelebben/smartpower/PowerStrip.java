@@ -162,7 +162,7 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 							psSocketList.add(new PsSocket(JSONsockets.getInt("socketid"),JSONsockets.getString("name"),apiKey));
 						}
 						PowerStrip.this.psSockets = psSocketList.toArray(new PsSocket[0]);
-						listener.sucess();
+						listener.success();
 					} else {
 						listener.failed();
 					}
