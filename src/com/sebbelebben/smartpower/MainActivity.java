@@ -115,7 +115,6 @@ public class MainActivity extends SherlockFragmentActivity {
     		edit.putString("USER", jUser.toString());
     		edit.commit();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}	
 	}

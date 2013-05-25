@@ -301,7 +301,7 @@ public class RemoteFragment extends SherlockFragment {
 
     /**
      * Changes the name of the provided power strip.
-     * TODO: Figure out a way to be able to use this method with sockets also. Maybe an interface?
+
      * @param ps The power strip.
      */
     private void changeName(final PowerStrip ps) {

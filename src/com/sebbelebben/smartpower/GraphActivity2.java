@@ -54,10 +54,6 @@ public class GraphActivity2 extends Activity {
 							Collections.addAll(data, consumption);
                             GraphView.GraphViewData[] data2 = transform2(data);
                             graphView.addSeries(new GraphViewSeries(data2));
-                            // TODO: remove this test
-                            for(GraphView.GraphViewData d : data2) {
-                                Log.i("SmartPower", "X: " + d.valueX + "Y: " + d.valueY);
-                            }
 
                             graphView.invalidate();
                             Toast.makeText(context, "GOT THE CONSUMPTION!", Toast.LENGTH_SHORT).show();

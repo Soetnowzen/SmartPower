@@ -59,6 +59,12 @@ public class GraphView extends View {
 		init();
 	}
 
+    /**
+     * Constructor for XML creation.
+     *
+     * @param context The application context.
+     * @param attrs The XML attributes.
+     */
 	public GraphView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;

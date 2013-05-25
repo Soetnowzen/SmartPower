@@ -82,7 +82,6 @@ public class LoginActivity extends Activity {
 					startActivity(intent);
 					finish();
 				} catch (JSONException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
