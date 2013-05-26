@@ -24,11 +24,11 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 	
 	/**
 	 * Creates a PowerStrip with the list of PsSockets supplied for faster handling.
-	 * @param id
-	 * @param serialId
-	 * @param apiKey
-	 * @param name
-	 * @param psSockets
+	 * @param id the numeric id of the powerstrip
+	 * @param serialId The serialId of the powerstrip
+	 * @param apiKey The users apiKey
+	 * @param name Name of the powerstrip
+	 * @param psSockets list of all sockets the powerstrip holds
 	 */
 	public PowerStrip(int id, String serialId, String apiKey, String name, PsSocket[] psSockets){
 		this.id = id;
@@ -64,8 +64,8 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 	
 	/**
 	 * Sets a new name on the PowerStrip.
-	 * @param name
-	 * @param listener
+	 * @param name the new name of the socket
+	 * @param listener The callback function
 	 */
 	public void setName(String name, final OnSetNameReceiveListener listener){
 		this.previousName = this.name;
@@ -95,8 +95,8 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 	}
 	
 	/**
-	 * Returns the name of the PowerStip.
-	 * @return
+	 * 
+	 * @return Returns the name of the PowerStip.
 	 */
 	public String getName(){
 		return this.name;
@@ -104,8 +104,8 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 		
 	/**
 	 * Creates a listener that waits for the server to supply the PowerStrip's consumption between the given dates.
-	 * @param start
-	 * @param end
+	 * @param start Start date
+	 * @param end end Date
 	 * @param listener
 	 */
 	public void getConsumption(Date start, Date end, final OnConsumptionReceiveListener listener){
@@ -146,8 +146,8 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 	}
 
 	/**
-	 * Returns the saved list of PsSockets  connected to the PowerStrip, or updates the list and then returns it.
-	 * @return
+	 * 
+	 * @return Returns the saved list of PsSockets  connected to the PowerStrip, or updates the list and then returns it.
 	 */
 	public PsSocket[] getSockets(){
 		return this.psSockets;
@@ -189,8 +189,8 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 	}
 	
 	/**
-	 * Returns the id of the PowerStrip.
-	 * @return
+	 * 
+	 * @return Returns the id of the PowerStrip.
 	 */
 	public Integer getId() {
 		return id;

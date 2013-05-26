@@ -77,6 +77,7 @@ public class GraphActivity extends Activity {
 		dp.show();
 
 	}
+	
 	private void display(List<Consumption> data, GraphView graphView){
 		List<Point> points = transform2(data);
 		graphView.setDataPoints(points);
@@ -87,7 +88,11 @@ public class GraphActivity extends Activity {
         graphView.setYSegments(500);
 		
 	}
-
+	/**
+	 * 
+	 * @param data the list of datapoints to be transformed
+	 * @return List<Point> the format the graph can display
+	 */
     private List<Point> transform2(List<Consumption> data) {
         List<Point> graphViewData = new ArrayList<Point>();
 
@@ -115,7 +120,11 @@ public class GraphActivity extends Activity {
 
         return graphViewData;
     }
-
+    /**
+     *  
+     * @param data the list of datapoint
+     * @return the value of the consumption with the highest value
+     */
 	private int getMaxWatt(List<Point> data) {
 		int maxWatt = 0;
 		for(Point p : data) {

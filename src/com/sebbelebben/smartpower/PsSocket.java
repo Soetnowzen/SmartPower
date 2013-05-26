@@ -27,9 +27,9 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 	
 	/**
 	 * Creates a PsSocket.
-	 * @param id
-	 * @param name
-	 * @param apiKey
+	 * @param id the numeric Id of the PsSocket
+	 * @param name the name of the socket
+	 * @param apiKey the users apiKey
 	 */
 	public PsSocket(int id, String name, String apiKey){
 		this.id = id;
@@ -83,8 +83,8 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 	
 	/**
 	 * Sets a new name on the PsSocket.
-	 * @param name
-	 * @param listener
+	 * @param name the new name of the PsSocket
+	 * @param listener 
 	 */
 	public void setName(String name, final OnSetNameReceiveListener listener){
         this.previousName = this.name;
@@ -114,16 +114,16 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 	}
 	
 	/**
-	 * Returns the name of the PsSocket.
-	 * @return
+	 *
+	 * @return Returns the name of the PsSocket
 	 */
 	public String getName(){
 		return name;
 	}
 	
 	/**
-	 * Returns the id of the PsSocket.
-	 * @return
+	 * 
+	 * @return Returns the id of the PsSocket.
 	 */
 	public int getId(){
 		return id;
