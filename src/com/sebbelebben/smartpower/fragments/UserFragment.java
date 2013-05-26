@@ -1,6 +1,7 @@
 package com.sebbelebben.smartpower.fragments;
 import java.util.ArrayList;
 
+import com.sebbelebben.smartpower.PowerStrip;
 import com.sebbelebben.smartpower.PsSocket;
 import com.sebbelebben.smartpower.User;
 import com.actionbarsherlock.app.SherlockFragment;
@@ -20,12 +21,25 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
-
+/**
+ * Fragment to display user information, 
+ * users favorite sockets {com.sebbelebben.smartpower.PsSocket}
+ * and a graph of your consumption
+ * @author henning
+ *
+ */
 public class UserFragment extends SherlockFragment {
 	ArrayList<PsSocket> list;
 	SocketAdapter mAdapter;
 	ListView listView;
 	
+    /**
+     * Creates a new instance of this fragment, using the provided {@link User} to 
+     * list the {@link com.sebbelebben.smartpower.PsSocket}
+     *
+     * @param user The User used to display information.
+     * @return A new instance of UserFragment.
+     */
 	public static UserFragment newInstance(User user) {
 		UserFragment f = new UserFragment();
 		Bundle args = new Bundle();
@@ -45,7 +59,7 @@ public class UserFragment extends SherlockFragment {
 
 		String str = String.format(res.getString(R.string.userInfo), user.getUserName(), user.getPassword());
 		((TextView) view.findViewById(R.id.textView)).setText(str);
-		
+
 		list = new ArrayList<PsSocket>();
 		list.add(new PsSocket(0, "hennig", "apikey"));
 		list.add(new PsSocket(0, "hennigphan123456711111111111111111111111111111", "apikey"));
@@ -56,13 +70,17 @@ public class UserFragment extends SherlockFragment {
 
 		mAdapter = new SocketAdapter(getActivity(), R.layout.powerstrip_item, list);
 		if(listView != null)
-            listView.setAdapter(mAdapter);
+			listView.setAdapter(mAdapter);
 		return view;
 	}
+	/**
+	 * Adapter that specifically displays {@link com.sebbelebben.smartpower.PsSocket}
+	 * 
+	 */
 	public class SocketAdapter extends BaseAdapter{
 		private ArrayList<PsSocket> objects;
 		private Context context;
-		public SocketAdapter(Context context, int textViewResourceId, ArrayList<PsSocket> objects){
+		public SocketAdapter(Context context, final int textViewResourceId, ArrayList<PsSocket> objects){
 			this.context= context;
 			this.objects = objects; 
 		}
@@ -71,25 +89,22 @@ public class UserFragment extends SherlockFragment {
 			if( v == null)	{
 				LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				v = inflater.inflate(R.layout.socket_item1, null);
-
 			}
-			
+
 			PsSocket socket = objects.get(position);
 			TextView tv = (TextView) v.findViewById(R.id.text);
 			final ToggleButton tb = (ToggleButton) v.findViewById(R.id.toggle_button);
 			if ( tv != null) tv.setText(socket.getName());
 			if ( tb != null) {
 				tb.setOnClickListener(new OnClickListener() {
-					
+
 					@Override
 					public void onClick(View v) {
 						if ( tb.isChecked()) tb.setText("its on"); //send turn on power
 						if ( !tb.isChecked()) tb.setText("its off"); //send turn off power
-						
 					}
 				});
 			}
-			
 			return v;
 		}
 		@Override
@@ -102,9 +117,8 @@ public class UserFragment extends SherlockFragment {
 		}
 		@Override
 		public long getItemId(int arg0) {
-			// TODO Auto-generated method stub
 			return arg0;
 		}
-	
+
 	}
 }
