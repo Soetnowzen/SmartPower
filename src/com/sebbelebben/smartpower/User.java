@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import android.util.Log;
 import org.json.*;
 
 import com.sebbelebben.smartpower.Server.*;
@@ -95,8 +96,9 @@ public class User implements Serializable, Graphable   {
 					} else {
 						listener.failed();
 					}
-				} catch (JSONException e) {
+				} catch (Exception e) {
 					e.printStackTrace();
+                    listener.failed();
 				}
 			}
 

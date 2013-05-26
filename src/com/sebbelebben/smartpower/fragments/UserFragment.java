@@ -49,7 +49,8 @@ public class UserFragment extends SherlockFragment {
 		list.add(new PsSocket(0, "hennig4", "apikey"));
 		list.add(new PsSocket(0, "hennig5", "apikey"));
 		mAdapter = new SocketAdapter(getActivity(), R.layout.powerstrip_item, list);
-		if(listView != null) listView.setAdapter(mAdapter);
+		if(listView != null)
+            listView.setAdapter(mAdapter);
 		return view;
 	}
 	public class SocketAdapter extends ArrayAdapter<PsSocket>{

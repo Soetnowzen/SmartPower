@@ -56,7 +56,7 @@ public class Server {
                  for (int i=0; i<ret.length; i++) {
                      response += ret[i];
                  }
-                 Log.e("HEJSANASJDKSAJDKLSAJKDJ", response);
+                 Log.e("SmartPower", response);
 			     socket.close();
 			   } catch (UnknownHostException e) {
 				   e.printStackTrace();
@@ -73,7 +73,7 @@ public class Server {
 		@Override
 		protected void onPostExecute(String result) {
             if(result != null) {
-			    Log.i("onPostExecute", result);
+			    Log.i("SmartPower", result);
 			    mListener.onReceiveSuccess(result);
             } else {
                 mListener.onReceiveFailure();
