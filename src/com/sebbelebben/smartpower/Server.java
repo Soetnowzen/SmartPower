@@ -52,11 +52,6 @@ public class Server {
 			     out.println("Android#"+message);
 			     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			     ret = in.readLine().split("#");
-                 String response = "";
-                 for (int i=0; i<ret.length; i++) {
-                     response += ret[i];
-                 }
-                 Log.e("HEJSANASJDKSAJDKLSAJKDJ", response);
 			     socket.close();
 			   } catch (UnknownHostException e) {
 				   e.printStackTrace();
