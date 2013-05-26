@@ -340,7 +340,7 @@ public class GraphView extends View {
 			mXAxisStart += distanceX * scale;
 
             // Limit the scrolling to the minimum X value
-            if(mXAxisStart < mDataPoints.get(0).x) {
+            if(mDataPoints.size() > 0 && mXAxisStart < mDataPoints.get(0).x) {
                 mXAxisEnd = mXAxisEnd + Math.abs(mXAxisStart);
                 mXAxisStart = mDataPoints.get(0).x;
             }

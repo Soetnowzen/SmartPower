@@ -38,7 +38,7 @@ public class UserFragment extends SherlockFragment {
 		final User user = (User) getArguments().getSerializable("User");
 		View view = inflater.inflate(R.layout.fragment_user, container, false);
 		listView = (ListView) view.findViewById(R.id.listView);
-//		view.findViewById(R.id.loading_progress).setVisibility(ProgressBar.GONE);
+
 		String str = String.format("name: %s\npwd: %s", user.getUserName(), user.getPassword());
 		((TextView) view.findViewById(R.id.textView)).setText(str);
 		
@@ -49,8 +49,10 @@ public class UserFragment extends SherlockFragment {
 		list.add(new PsSocket(0, "hennig3", "apikey"));
 		list.add(new PsSocket(0, "hennig4", "apikey"));
 		list.add(new PsSocket(0, "hennig5", "apikey"));
-		mAdapter = new SocketAdapter(getActivity(), R.layout.socket_item, list);
-		if(listView != null) listView.setAdapter(mAdapter);
+
+		mAdapter = new SocketAdapter(getActivity(), R.layout.powerstrip_item, list);
+		if(listView != null)
+            listView.setAdapter(mAdapter);
 		return view;
 	}
 	public class SocketAdapter extends ArrayAdapter<PsSocket>{

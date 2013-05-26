@@ -1,5 +1,6 @@
 package com.sebbelebben.smartpower;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.app.Activity;
@@ -7,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,13 +28,14 @@ public class LoginActivity extends Activity {
 	private EditText mPasswordBox;
 	private ProgressBar mProgressBar;
 	private User mUser;
-	
+    private boolean mLoggingIn = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 		
-		//Finds the views on the login screen
+		//Finds the views on the login screen.
 		ImageButton loginButton = (ImageButton) findViewById(R.id.loginbutton);
 		mUsernameBox = (EditText) findViewById(R.id.usernamebox);
 		mPasswordBox = (EditText) findViewById(R.id.passwordbox);
@@ -45,7 +48,15 @@ public class LoginActivity extends Activity {
 		mUsernameBox.setTypeface(robotoThin);
 		mPasswordBox.setTypeface(robotoThin);
 
-		// Loads the preferences if available.
+        // Restore previous state if existent.
+		if(savedInstanceState != null) {
+            mLoggingIn = savedInstanceState.getBoolean("loggingIn");
+            if(mLoggingIn) {
+                mProgressBar.setVisibility(View.VISIBLE);
+            }
+        }
+
+        // Loads the preferences if available.
 		loadPrefs();
 		
 		//Listens for when the login button is pressed.
@@ -63,6 +74,8 @@ public class LoginActivity extends Activity {
      * Logs in by using the input provided via the EditViews
      */
 	private void logIn() {
+        mLoggingIn = true;
+
 		// Show the progress bar
 		mProgressBar.setVisibility(View.VISIBLE);
 		
@@ -77,6 +90,7 @@ public class LoginActivity extends Activity {
 
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 intent.putExtra("User", mUser);
+                mLoggingIn = false;
                 startActivity(intent);
                 finish();
 			}
@@ -86,6 +100,8 @@ public class LoginActivity extends Activity {
 				// Hide the progress bar
 				mProgressBar.setVisibility(View.GONE);
 				Toast.makeText(LoginActivity.this, "Login failed!", Toast.LENGTH_SHORT).show();
+
+                mLoggingIn = false;
 			}
 		});
 	}
@@ -102,7 +118,7 @@ public class LoginActivity extends Activity {
 			else {
 				jUser = new JSONObject(user);
 				mUser = new User(jUser.getString("Username"), jUser.getString("Password"));
-				if(jUser.getBoolean("Logged in")) {
+				if(jUser.getBoolean("Logged in") && !mLoggingIn) {
 					logIn();
 				}
 			}
@@ -136,5 +152,11 @@ public class LoginActivity extends Activity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle bundle) {
+        super.onSaveInstanceState(bundle);
+        bundle.putBoolean("loggingIn", mLoggingIn);
     }
 }
