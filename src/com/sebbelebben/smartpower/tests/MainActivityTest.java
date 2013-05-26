@@ -3,6 +3,8 @@ package com.sebbelebben.smartpower.tests;
 import java.util.ArrayList;
 import java.util.Random;
 
+import android.widget.ExpandableListView;
+import android.widget.Toast;
 import junit.framework.Assert;
 
 import com.jayway.android.robotium.solo.Solo;
@@ -38,48 +40,52 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<LoginActi
 		solo = new Solo(instrumentation, getActivity());
 		super.setUp();
 	}
-	
-	// Can the user rename a power strip?
-	// User story 48027353
-	public void testRename() throws Exception {
-		solo.assertCurrentActivity("wrong activity", LoginActivity.class);
-		
-		// No autologin should occur with cleared preferences
-		View v = solo.getView(com.sebbelebben.smartpower.R.id.loading_progress); 
-		assertFalse(v.getVisibility() == View.VISIBLE);
-		
-		// Enter login details for test account
-		solo.clearEditText(0);
-		solo.enterText(0, "android");
-		solo.clearEditText(1);
-		solo.enterText(1, "android");
-		solo.clickOnImageButton(0);
-		
-		solo.waitForActivity("MainActivity");
-		
-		// Rename an outlet
-		
-		ArrayList<android.widget.TextView> listTexts = solo.clickInList(0);
-		String oldName = (String) listTexts.get(0).getText();
-		
-		solo.clickOnButton("Rename");
-		double rand = Math.random() * 10000;
-		
-		solo.enterText(0, "robotiumTest" + rand);
-		solo.clickOnButton("OK");
-		
-		// Make sure the item is renamed
-		solo.waitForText("robotiumTest" + rand, 1, 5000);
-		solo.getText("robotiumTest" + rand);
-		
-		// Rename the outlet back to what it was
-		solo.clickOnButton("Rename");
-		solo.enterText(0, oldName);
-		solo.clickOnButton("OK");
-		
-	}
-	
-	public void testRotateScreen() throws Exception {
+
+    // Can the user rename a power strip?
+    // User story 48027353
+    public void testRenamePowerStrip() throws Exception {
+        solo.assertCurrentActivity("wrong activity", LoginActivity.class);
+
+        // No autologin should occur with cleared preferences
+        View v = solo.getView(com.sebbelebben.smartpower.R.id.loading_progress);
+        assertFalse(v.getVisibility() == View.VISIBLE);
+
+        // Enter login details for test account
+        solo.clearEditText(0);
+        solo.enterText(0, "android");
+        solo.clearEditText(1);
+        solo.enterText(1, "android");
+        solo.clickOnImageButton(0);
+
+        solo.waitForActivity("MainActivity");
+
+        // Rename a power strip
+
+        // Gets the name of the power strip
+        ArrayList<android.widget.TextView> listTexts = solo.clickInList(0);
+        String oldName = (String) listTexts.get(0).getText();
+
+        solo.clickOnImageButton(0); // Slide out the options
+        solo.sleep(500);
+        solo.clickOnImageButton(1); // Click rename button
+
+        double rand = Math.random() * 10000;
+
+        solo.enterText(0, "robotiumTest" + rand);
+        solo.clickOnButton("OK");
+
+        // Make sure the item is renamed
+        solo.waitForText("robotiumTest" + rand, 1, 5000);
+        solo.getText("robotiumTest" + rand);
+
+        // Rename the outlet back to what it was
+        solo.clickOnImageButton(1); // Click rename button
+        solo.enterText(0, oldName);
+        solo.clickOnButton("OK");
+
+    }
+
+    public void testRotateScreen() throws Exception {
 		// Rotate to landscape
 		solo.setActivityOrientation(Solo.LANDSCAPE);
 		
@@ -100,8 +106,9 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<LoginActi
 		
 		// Rotate back to portrait after logging in
 		solo.setActivityOrientation(Solo.PORTRAIT);
+        // Click in the list and see that it doesn't crash
 		solo.clickInList(0);
-		solo.waitForText("Button", 1, 5000, true);
+        solo.sleep(500);
 	}
 	
 	// Does pressing the back button close the app?
