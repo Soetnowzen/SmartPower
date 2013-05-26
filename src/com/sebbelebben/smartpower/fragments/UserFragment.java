@@ -38,7 +38,7 @@ public class UserFragment extends SherlockFragment {
 		final User user = (User) getArguments().getSerializable("User");
 		View view = inflater.inflate(R.layout.fragment_user, container, false);
 		listView = (ListView) view.findViewById(R.id.listView);
-		view.findViewById(R.id.loading_progress).setVisibility(ProgressBar.GONE);
+//		view.findViewById(R.id.loading_progress).setVisibility(ProgressBar.GONE);
 		String str = String.format("name: %s\npwd: %s", user.getUserName(), user.getPassword());
 		((TextView) view.findViewById(R.id.textView)).setText(str);
 		
@@ -58,20 +58,20 @@ public class UserFragment extends SherlockFragment {
 		
 		public SocketAdapter(Context context, int textViewResourceId, ArrayList<PsSocket> objects){
 			super(context, textViewResourceId, objects);
-			this.objects = objects;
+			this.objects = objects; 
 		}
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View v = convertView;
 			if( v == null)	{
 				LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				v = inflater.inflate(R.layout.socket_item, null);
-				v.setBackgroundColor(0xffffff);
+
 			}
 			PsSocket socket = objects.get(position);
 			TextView tv = (TextView) v.findViewById(R.id.text);
 			ToggleButton tb = (ToggleButton) v.findViewById(R.id.toggle_button);
 			if ( tv != null) tv.setText(socket.getName());
-			if ( tb != null) tb.setChecked(true);
+			if ( tb != null) tb.setChecked(false);
 			
 			return v;
 		}
