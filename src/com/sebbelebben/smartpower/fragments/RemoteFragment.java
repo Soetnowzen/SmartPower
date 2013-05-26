@@ -124,9 +124,10 @@ public class RemoteFragment extends SherlockFragment {
 			
 			// If the child is at top, set the background to the drawable with shadow.
 			if(childPos == 0) {
-                Log.i("SmartPower", child.getName());
                 view.setBackgroundResource(R.drawable.expandable_bg);
-			}
+			} else {
+                view.setBackgroundColor(0xFF1F2E33);
+            }
 
             final ToggleButton toggleButton = (ToggleButton) view.findViewById(R.id.toggle_button);
             ImageButton renameButton = (ImageButton) view.findViewById(R.id.rename_btn);
