@@ -24,4 +24,5 @@
     <!-- Dialog strings -->
     <string name="ok">OK</string>
     <string name="cancel">Avbryt</string>
+    <string name="userInfo">Användare: %1$s\Lösenord: %2$s </string>
 </resources>

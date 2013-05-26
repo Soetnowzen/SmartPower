@@ -24,4 +24,5 @@
     <!-- Dialog strings -->
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
+    <string name="userInfo">User: %1$s\nPassword: %2$s</string>
 </resources>

@@ -7,6 +7,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.sebbelebben.smartpower.R;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView.FindListener;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -37,10 +39,11 @@ public class UserFragment extends SherlockFragment {
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		final User user = (User) getArguments().getSerializable("User");
+		Resources res = getResources();
 		View view = inflater.inflate(R.layout.fragment_user, container, false);
 		listView = (ListView) view.findViewById(R.id.listView);
 
-		String str = String.format("name: %s\npwd: %s", user.getUserName(), user.getPassword());
+		String str = String.format(res.getString(R.string.userInfo), user.getUserName(), user.getPassword());
 		((TextView) view.findViewById(R.id.textView)).setText(str);
 		
 		list = new ArrayList<PsSocket>();
@@ -56,17 +59,17 @@ public class UserFragment extends SherlockFragment {
             listView.setAdapter(mAdapter);
 		return view;
 	}
-	public class SocketAdapter extends ArrayAdapter<PsSocket>{
+	public class SocketAdapter extends BaseAdapter{
 		private ArrayList<PsSocket> objects;
-		
+		private Context context;
 		public SocketAdapter(Context context, int textViewResourceId, ArrayList<PsSocket> objects){
-			super(context, textViewResourceId, objects);
+			this.context= context;
 			this.objects = objects; 
 		}
 		public View getView(final int position, View convertView, ViewGroup parent) {
 			View v = convertView;
 			if( v == null)	{
-				LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+				LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				v = inflater.inflate(R.layout.socket_item1, null);
 
 			}
@@ -80,14 +83,27 @@ public class UserFragment extends SherlockFragment {
 					
 					@Override
 					public void onClick(View v) {
-						if ( tb.isChecked()); //send turn on power
-						if ( !tb.isChecked()); //send turn off power
+						if ( tb.isChecked()) tb.setText("its on"); //send turn on power
+						if ( !tb.isChecked()) tb.setText("its off"); //send turn off power
 						
 					}
 				});
 			}
 			
 			return v;
+		}
+		@Override
+		public int getCount() {
+			return objects.size();
+		}
+		@Override
+		public Object getItem(int arg0) {
+			return objects.get(arg0);
+		}
+		@Override
+		public long getItemId(int arg0) {
+			// TODO Auto-generated method stub
+			return arg0;
 		}
 	
 	}
