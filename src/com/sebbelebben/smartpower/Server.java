@@ -53,9 +53,9 @@ public class Server {
 			     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			     ret = in.readLine().split("#");
                  String response = "";
-                 for (int i=0; i<ret.length; i++) {
-                     response += ret[i];
-                 }
+                for (String aRet : ret) {
+                    response += aRet;
+                }
                  Log.e("SmartPower", response);
 			     socket.close();
 			   } catch (UnknownHostException e) {
