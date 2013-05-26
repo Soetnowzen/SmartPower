@@ -14,8 +14,8 @@ public class Consumption {
 	
 	/**
 	 * Creates a consumption.
-	 * @param date
-	 * @param watt
+	 * @param date the timestamp
+	 * @param watt the consumption
 	 */
 	public Consumption(String date, int watt){
 		try {
@@ -27,16 +27,16 @@ public class Consumption {
 	}
 	
 	/**
-	 * Returns the watt of the Consumption.
-	 * @return 
+	 * 
+	 * @return Returns the watt of the Consumption. 
 	 */
 	public int getWatt() {
 		return watt;
 	}
 
 	/**
-	 * Returns the date of the Consumption.
-	 * @return
+	 * 
+	 * @return Returns the date of the Consumption.
 	 */
 	public Date getDate() {
 		return date;
