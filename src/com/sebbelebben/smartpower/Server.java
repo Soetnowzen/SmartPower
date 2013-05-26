@@ -72,8 +72,12 @@ public class Server {
 		 */
 		@Override
 		protected void onPostExecute(String result) {
-			Log.i("onPostExecute", result);
-			mListener.onReceive(result);
+            if(result != null) {
+			    Log.i("onPostExecute", result);
+			    mListener.onReceiveSuccess(result);
+            } else {
+                mListener.onReceiveFailure();
+            }
 		}
 	}
 	
@@ -83,7 +87,8 @@ public class Server {
 	}
 	
 	public static interface OnReceiveListener {
-		void onReceive(String result);
+		void onReceiveSuccess(String result);
+        void onReceiveFailure();
 	}
 	
 	public static interface OnSocketReceiveListener {

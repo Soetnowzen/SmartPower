@@ -48,7 +48,7 @@ public class PsSocket implements Serializable,Graphable, PsPart {
         DateFormat dd = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss.SSSZ", Locale.ENGLISH);
         Server.sendAndRecieve("{socketid:"+id+",request:consumption,apikey:"+apiKey+",startdate:"+dd.format(start)+",enddate:"+dd.format(end)+"}", new OnReceiveListener() {
             @Override
-            public void onReceive(String result) {
+            public void onReceiveSuccess(String result) {
                 ArrayList<Consumption> consumptionList = new ArrayList<Consumption>();
                 try {
                     JSONObject data = new JSONObject(result);
@@ -73,6 +73,11 @@ public class PsSocket implements Serializable,Graphable, PsPart {
                     e.printStackTrace();
                 }
             }
+
+            @Override
+            public void onReceiveFailure() {
+                listener.failed();
+            }
         });
 	}
 	
@@ -86,7 +91,7 @@ public class PsSocket implements Serializable,Graphable, PsPart {
         this.name = name;
 		Server.sendAndRecieve("{socketid:"+id+",request:setname,apikey:"+apiKey+",newname:"+name+"}", new OnReceiveListener() {
 			@Override
-			public void onReceive(String result) {
+			public void onReceiveSuccess(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getInt("socketid") == id){
@@ -100,7 +105,12 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 					e.printStackTrace();
 				}
 			}
-		});
+
+            @Override
+            public void onReceiveFailure() {
+                listener.failed();
+            }
+        });
 	}
 	
 	/**
@@ -125,14 +135,19 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 	public void turnOn(final GenericListener listener){
 		Server.sendAndRecieve("{socketid:"+id+",request:turnon,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
-			public void onReceive(String result) {
+			public void onReceiveSuccess(String result) {
 				if(result.equals("switchRequestTrue")){
 					listener.success();
 				} else {
 					listener.failed();
 				}
 			}
-		});
+
+            @Override
+            public void onReceiveFailure() {
+                listener.failed();
+            }
+        });
 		
 	}
 	
@@ -142,14 +157,19 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 	public void turnOff(final GenericListener listener){
 		Server.sendAndRecieve("{socketid:"+id+",request:turnoff,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
-			public void onReceive(String result) {
+			public void onReceiveSuccess(String result) {
 				if(result.equals("switchRequestTrue")){
 					listener.success();
 				} else {
 					listener.failed();
 				}
 			}
-		});
+
+            @Override
+            public void onReceiveFailure() {
+                listener.failed();
+            }
+        });
 	}
 	
 	/**

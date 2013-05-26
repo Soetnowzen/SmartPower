@@ -81,7 +81,7 @@ public class User implements Serializable, Graphable   {
 	public void logIn(final GenericListener listener){
 		Server.sendAndRecieve("{username:"+userName+",request:login,password:"+password+"}", new OnReceiveListener() {
 			@Override
-			public void onReceive(String result) {
+			public void onReceiveSuccess(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getString("username").equals(userName)){
@@ -99,6 +99,11 @@ public class User implements Serializable, Graphable   {
 					e.printStackTrace();
 				}
 			}
+
+            @Override
+            public void onReceiveFailure() {
+                listener.failed();
+            }
 		});
 		
 	}
@@ -114,7 +119,6 @@ public class User implements Serializable, Graphable   {
 	
 	/**
 	 * Returns the saved list of PowerStrips connected to the User with their Sockets set.
-	 * @param update If set to true the list will be updated.
 	 * @return
 	 */
 	public PowerStrip[] getPowerStrips(){
@@ -128,7 +132,7 @@ public class User implements Serializable, Graphable   {
 	public void updateUser(final GenericListener listener){
 		Server.sendAndRecieve("{username:"+userName+",request:powerstripsandsockets,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
-			public void onReceive(String result) {
+			public void onReceiveSuccess(String result) {
 				ArrayList<PowerStrip> powerStripList = new ArrayList<PowerStrip>();
 				ArrayList<PsSocket> psSocketList = new ArrayList<PsSocket>();
 				try {
@@ -157,7 +161,12 @@ public class User implements Serializable, Graphable   {
 					e.printStackTrace();
 				}
 			}
-		});
+
+            @Override
+            public void onReceiveFailure() {
+                listener.failed();
+            }
+        });
 	}
 	
 	/**
@@ -168,7 +177,7 @@ public class User implements Serializable, Graphable   {
 	public void createNewGroup(String name, final OnNewGroupReceiveListener listener){
 		Server.sendAndRecieve("{username:"+userName+",request:newgroup,apikey:"+apiKey+",name:"+name+"}", new OnReceiveListener() {
 			@Override
-			public void onReceive(String result) {
+			public void onReceiveSuccess(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getString("username").equals(userName)){
@@ -180,7 +189,12 @@ public class User implements Serializable, Graphable   {
 					e.printStackTrace();
 				}
 			}
-		});
+
+            @Override
+            public void onReceiveFailure() {
+                listener.failed();
+            }
+        });
 	}
 	
 	/**
@@ -190,7 +204,7 @@ public class User implements Serializable, Graphable   {
 	public void getGroups(final OnGroupsReceiveListener listener){
 		Server.sendAndRecieve("{username:"+userName+",request:groups,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
-			public void onReceive(String result) {
+			public void onReceiveSuccess(String result) {
 				ArrayList<Group> groupList = new ArrayList<Group>();
 				try {
 					JSONObject data = new JSONObject(result);
@@ -208,7 +222,12 @@ public class User implements Serializable, Graphable   {
 					e.printStackTrace();
 				}
 			}
-		});
+
+            @Override
+            public void onReceiveFailure() {
+                listener.failed();
+            }
+        });
 	}
 	
 	/**
@@ -221,7 +240,7 @@ public class User implements Serializable, Graphable   {
 		DateFormat dd = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss.SSSZ", Locale.ENGLISH);
 		Server.sendAndRecieve("{username:"+userName+",request:consumption,apikey:"+apiKey+",startdate:"+dd.format(start)+",enddate:"+dd.format(end)+"}", new OnReceiveListener() {
 			@Override
-			public void onReceive(String result) {
+			public void onReceiveSuccess(String result) {
 				ArrayList<Consumption> consumptionList = new ArrayList<Consumption>();
 				try {
 					JSONObject data = new JSONObject(result);
@@ -246,6 +265,11 @@ public class User implements Serializable, Graphable   {
 					e.printStackTrace();
 				}
 			}
-		});
+
+            @Override
+            public void onReceiveFailure() {
+                listener.failed();
+            }
+        });
 	}
 }

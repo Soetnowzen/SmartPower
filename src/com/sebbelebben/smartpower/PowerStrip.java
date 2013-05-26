@@ -72,7 +72,7 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 		this.name = name;
 		Server.sendAndRecieve("{powerstripid:"+id+",request:setname,apikey:"+apiKey+",newname:"+name+"}", new OnReceiveListener() {
 			@Override
-			public void onReceive(String result) {
+			public void onReceiveSuccess(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getInt("powerstripid") == id){
@@ -86,7 +86,12 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 					e.printStackTrace();
 				}
 			}
-		});
+
+            @Override
+            public void onReceiveFailure() {
+                listener.failed();
+            }
+        });
 	}
 	
 	/**
@@ -107,7 +112,7 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 		DateFormat dd = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss.SSSZ", Locale.ENGLISH);
 		Server.sendAndRecieve("{powerstripid:"+id+",request:consumption,apikey:"+apiKey+",startdate:"+dd.format(start)+",enddate:"+dd.format(end)+"}", new OnReceiveListener() {
 			@Override
-			public void onReceive(String result) {
+			public void onReceiveSuccess(String result) {
 				ArrayList<Consumption> consumptionList = new ArrayList<Consumption>();
 				try {
 					JSONObject data = new JSONObject(result);
@@ -132,12 +137,16 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 					e.printStackTrace();
 				}
 			}
-		});
+
+            @Override
+            public void onReceiveFailure() {
+                listener.failed();
+            }
+        });
 	}
 
 	/**
 	 * Returns the saved list of PsSockets  connected to the PowerStrip, or updates the list and then returns it.
-	 * @param update If set to true the list will be updated
 	 * @return
 	 */
 	public PsSocket[] getSockets(){
@@ -151,7 +160,7 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 	public void updatePowerStrip(final GenericListener listener){
 		Server.sendAndRecieve("{powerstripid:"+id+",request:sockets,apikey:"+apiKey+"}", new Server.OnReceiveListener() {
 			@Override
-			public void onReceive(String result) {
+			public void onReceiveSuccess(String result) {
 				ArrayList<PsSocket> psSocketList = new ArrayList<PsSocket>();
 				try {
 					JSONObject data = new JSONObject(result);
@@ -171,7 +180,12 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 				}
 				
 			}
-		});
+
+            @Override
+            public void onReceiveFailure() {
+                listener.failed();
+            }
+        });
 	}
 	
 	/**
