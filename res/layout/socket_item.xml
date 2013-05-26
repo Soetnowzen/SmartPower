@@ -16,18 +16,6 @@
             	android:layout_width="fill_parent"
             	android:layout_height="wrap_content"
             	android:orientation="horizontal">
-
-        	<TextView
-            	android:layout_width="wrap_content"
-                android:layout_height="fill_parent"
-                android:text="heennaoeuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuuu"
-                android:id="@+id/text"
-                android:clickable="true"
-                android:gravity="center_vertical"
-                android:layout_toLeftOf="@+id/toggle_button"
-                android:minHeight="40dp"
-                android:layout_margin="0dp"
-                android:paddingLeft="4dp"/>
         	<ImageButton
                 android:id="@+id/options_button"
                 android:layout_width="wrap_content"
@@ -47,6 +35,19 @@
                 android:layout_alignBottom="@+id/text"
                 android:layout_toLeftOf="@id/options_button"
                 android:layout_alignTop="@id/text"/>
+
+        	<TextView
+        	    android:id="@+id/text"
+        	    android:layout_width="wrap_content"
+        	    android:layout_height="fill_parent"
+        	    android:layout_alignParentLeft="true"
+        	    android:layout_alignParentTop="true"
+        	    android:layout_margin="0dp"
+        	    android:clickable="true"
+        	    android:gravity="center_vertical"
+        	    android:minHeight="40dp"
+        	    android:paddingLeft="4dp"
+        	    android:text="heennaoeu" />
 
     	</RelativeLayout> 
     	<include layout="@layout/socket_options_item" />

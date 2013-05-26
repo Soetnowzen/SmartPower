@@ -66,9 +66,10 @@ public class UserFragment extends SherlockFragment {
 			View v = convertView;
 			if( v == null)	{
 				LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				v = inflater.inflate(R.layout.socket_item, null);
-
+				v = inflater.inflate(R.layout.socket_item1, null);
+//				v.setBackgroundColor(0xff111111);
 			}
+			
 			PsSocket socket = objects.get(position);
 			TextView tv = (TextView) v.findViewById(R.id.text);
 			ToggleButton tb = (ToggleButton) v.findViewById(R.id.toggle_button);
