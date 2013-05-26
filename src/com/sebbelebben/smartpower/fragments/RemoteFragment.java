@@ -311,6 +311,7 @@ public class RemoteFragment extends SherlockFragment {
 	}
 
     /*
+    TODO: Remove this
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
 		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
@@ -343,7 +344,7 @@ public class RemoteFragment extends SherlockFragment {
         alertDialogBuilder.setView(promptsView);
 
         // set dialog message
-        alertDialogBuilder.setCancelable(true).setPositiveButton("OK",
+        alertDialogBuilder.setCancelable(true).setPositiveButton(getResources().getString(R.string.ok),
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         // get user input and set it to mResult
@@ -367,7 +368,7 @@ public class RemoteFragment extends SherlockFragment {
                         mAdapter.notifyDataSetChanged();
                     }
                 })
-                .setNegativeButton("Cancel",
+                .setNegativeButton(getResources().getString(R.string.cancel),
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog,int id) {
                                 dialog.cancel();

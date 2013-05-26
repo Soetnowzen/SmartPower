@@ -67,7 +67,11 @@ public class MainActivity extends SherlockFragmentActivity {
 	}
 
 	private class MainPagerAdapter extends FragmentPagerAdapter {
-		private final String[] CONTENT = { "Remote", "User", "Consumption" };
+		private final String[] CONTENT = {
+                getResources().getString(R.string.remotefragment_title),
+                getResources().getString(R.string.userfragment_title),
+                getResources().getString(R.string.consumptionfragment_title),
+        };
 		private final int COUNT = 3;
 
 		public MainPagerAdapter(FragmentManager fm) {

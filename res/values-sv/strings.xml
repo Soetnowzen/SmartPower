@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SmartPower</string>
+    <string name="action_settings">Inställningar</string>
+    <string name="action_logout">Logga ut</string>
+    <string name="usernamebox_hint">Användarnamn</string>
+    <string name="passwordbox_hint">Lösenord</string>
+    <string name="loginbutton">Logga in</string>
+    <string name="UserName">UserName</string>
+    <string name="PowerStripSerialId">PowerStripSerialId</string>
+    <string name="login_label">Vänligen logga in till ditt SmartPower konto</string>
+    <string name="popupRenameMessage">Ändra namn</string>
+    <string name ="renamingButtonText">Ändra namn</string>
+    <string name="turn_on_failure">Misslyckades med att slå på</string>
+    <string name="turn_off_failure">Misslyckades med att slå av</string>
+    <string name="favorites">Favoriter</string>
+
+    <!-- MainActivity -->
+    <string name="remotefragment_title">Kontroll</string>
+    <string name="userfragment_title">Användare</string>
+    <string name="consumptionfragment_title">Förbrukning</string>
+
+    <!-- Dialog strings -->
+    <string name="ok">OK</string>
+    <string name="cancel">Avbryt</string>
+</resources>
