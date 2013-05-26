@@ -44,12 +44,12 @@ public class UserFragment extends SherlockFragment {
 		
 		list = new ArrayList<PsSocket>();
 		list.add(new PsSocket(0, "hennig", "apikey"));
-		list.add(new PsSocket(0, "hennigphan1234567", "apikey"));
+		list.add(new PsSocket(0, "hennigphan123456711111111111111111111111111111", "apikey"));
 		list.add(new PsSocket(0, "hennig2", "apikey"));
 		list.add(new PsSocket(0, "hennig3", "apikey"));
 		list.add(new PsSocket(0, "hennig4", "apikey"));
 		list.add(new PsSocket(0, "hennig5", "apikey"));
-		mAdapter = new SocketAdapter(getActivity(), R.layout.powerstrip_item, list);
+		mAdapter = new SocketAdapter(getActivity(), R.layout.socket_item, list);
 		if(listView != null) listView.setAdapter(mAdapter);
 		return view;
 	}
@@ -64,7 +64,8 @@ public class UserFragment extends SherlockFragment {
 			View v = convertView;
 			if( v == null)	{
 				LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-				v = inflater.inflate(R.layout.powerstrip_item, null);
+				v = inflater.inflate(R.layout.socket_item, null);
+				v.setBackgroundColor(0xffffff);
 			}
 			PsSocket socket = objects.get(position);
 			TextView tv = (TextView) v.findViewById(R.id.text);
