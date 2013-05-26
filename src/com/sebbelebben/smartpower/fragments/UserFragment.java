@@ -10,6 +10,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.webkit.WebView.FindListener;
 import android.widget.ArrayAdapter;
@@ -62,19 +63,29 @@ public class UserFragment extends SherlockFragment {
 			super(context, textViewResourceId, objects);
 			this.objects = objects; 
 		}
-		public View getView(int position, View convertView, ViewGroup parent) {
+		public View getView(final int position, View convertView, ViewGroup parent) {
 			View v = convertView;
 			if( v == null)	{
 				LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				v = inflater.inflate(R.layout.socket_item1, null);
-//				v.setBackgroundColor(0xff111111);
+
 			}
 			
 			PsSocket socket = objects.get(position);
 			TextView tv = (TextView) v.findViewById(R.id.text);
-			ToggleButton tb = (ToggleButton) v.findViewById(R.id.toggle_button);
+			final ToggleButton tb = (ToggleButton) v.findViewById(R.id.toggle_button);
 			if ( tv != null) tv.setText(socket.getName());
-			if ( tb != null) tb.setChecked(false);
+			if ( tb != null) {
+				tb.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						if ( tb.isChecked()); //send turn on power
+						if ( !tb.isChecked()); //send turn off power
+						
+					}
+				});
+			}
 			
 			return v;
 		}
