@@ -52,12 +52,18 @@ public class Server {
 			     out.println("Android#"+message);
 			     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			     ret = in.readLine().split("#");
+                 String response = "";
+                for (String aRet : ret) {
+                    response += aRet;
+                }
+                 Log.e("SmartPower", response);
+			     socket.close();
 			   } catch (UnknownHostException e) {
 				   e.printStackTrace();
 			   } catch  (IOException e) {
 				   e.printStackTrace();
 			   }
-			
+
 			return ret[1];
 		}
 		
@@ -66,8 +72,12 @@ public class Server {
 		 */
 		@Override
 		protected void onPostExecute(String result) {
-			Log.i("onPostExecute", result);
-			mListener.onReceive(result);
+            if(result != null) {
+			    Log.i("SmartPower", result);
+			    mListener.onReceiveSuccess(result);
+            } else {
+                mListener.onReceiveFailure();
+            }
 		}
 	}
 	
@@ -77,7 +87,8 @@ public class Server {
 	}
 	
 	public static interface OnReceiveListener {
-		void onReceive(String result);
+		void onReceiveSuccess(String result);
+        void onReceiveFailure();
 	}
 	
 	public static interface OnSocketReceiveListener {
@@ -111,9 +122,21 @@ public class Server {
 	}
 	
 	public static interface GenericListener {
-		void sucess();
+		void success();
 		void failed();
 	}
 	
 	
 }
+
+/*
+import socket
+HOST = 'bregell.mine.nu'
+PORT = 39500
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect((HOST, PORT))
+s.sendall('Android#{socketid:17,request:turnoff,apikey:apikey1011}')
+data = s.recv(1024)
+print data
+s.close()
+*/

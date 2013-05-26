@@ -3,116 +3,124 @@ package com.sebbelebben.smartpower;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.sebbelebben.smartpower.Server.OnLoginListener;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.sebbelebben.smartpower.fragments.*;
+import com.viewpagerindicator.TitlePageIndicator;
 
-import android.os.Bundle;
-import android.preference.PreferenceManager;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.view.Menu;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 
-public class MainActivity extends Activity {
-	private EditText mUsernameBox;
-	private EditText mPasswordBox;
+public class MainActivity extends SherlockFragmentActivity {
+	private ViewPager mPager;
+	private MainPagerAdapter mAdapter;
 	private User mUser;
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-			
-		//Finds the loginbutton on the login screen
-		Button loginButton = (Button) findViewById(R.id.loginbutton);
-		mUsernameBox = (EditText) findViewById(R.id.usernamebox);
-		mPasswordBox = (EditText) findViewById(R.id.passwordbox);
 
-		//Checks the old preferences
-		loadPrefs();
+		//Get user from intent
+		mUser = (User) getIntent().getSerializableExtra("User");
 
-			
-		//Listens for when the button is pressed & takes the username & password...
-		loginButton.setOnClickListener(new OnClickListener() {
-			public void onClick(View arg0) {
-				String username = mUsernameBox.getText().toString();
-				String password = mPasswordBox.getText().toString();
-				mUser = new User(username, password);
-				logIn();
-			}
-		});
-	}
-	
-	private void logIn() {
-		//Initiates the User with the new username & password
-		mUser.logIn(new OnLoginListener() {
-			@Override
-			public void onLoginSuccess() {
-				//Creates a JSONObject to save the user so the username & password will be needed to be 
-				//input every time
-				JSONObject jUser = new JSONObject();
-				try {
-					jUser.put("Username", mUser.getUserName());
-					jUser.put("Password", mUser.getPassword());
-					jUser.put("Logggedin", mUser.loginStatus());
-					savePrefs(jUser.toString());
-					Intent intent = new Intent(MainActivity.this, UserActivity.class);
-					intent.putExtra("User", mUser);
-					startActivity(intent);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			
-			@Override
-			public void onLoginFailure() {
-				Toast.makeText(MainActivity.this, "Login failed!", Toast.LENGTH_SHORT).show();
-			}
-		});
-	}
-	
-	private void loadPrefs() {
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-		String user = sp.getString("USER",null);
-		try {
-			JSONObject jUser;
-			if(user == null) mUser = null;
-			else {
-				jUser = new JSONObject(user);
-				mUser = new User(jUser.getString("Username"),jUser.getString("Password"));
-				if(jUser.getBoolean("Loggedin")) {
-					logIn();
-				}
-			}
-		} catch (JSONException error) {
-			error.printStackTrace();
-		}
-		//If you're already logged in then skip this activity/screen
-		if(mUser != null && mUser.loginStatus()) {
-			startActivity(new Intent(this, UserActivity.class));
-		} else if(mUser != null){ //If the user ain't logged in then the password & username is entered into the boxes for them
-			mUsernameBox.setText(mUser.getUserName());
-			mPasswordBox.setText(mUser.getPassword());
-		}
-	}
+		mPager = (ViewPager) findViewById(R.id.viewpager);
+		mAdapter = new MainPagerAdapter(getSupportFragmentManager());
+		mPager.setAdapter(mAdapter);
 
-	private void savePrefs(String value) {
-		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-		Editor edit = sp.edit();
-		edit.putString("USER", value);
-		edit.commit();
+		//Bind the title indicator to the adapter
+		TitlePageIndicator titleIndicator = (TitlePageIndicator)findViewById(R.id.titles);
+		titleIndicator.setViewPager(mPager);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-			getMenuInflater().inflate(R.menu.main, menu);
+			getSupportMenuInflater().inflate(R.menu.main, menu);
 			return true;
 	}
+
+	@Override
+	public boolean onOptionsItemSelected(com.actionbarsherlock.view.MenuItem item) {
+	    // Handle item selection
+	    switch (item.getItemId()) {
+	        case R.id.action_logout:
+	        	// Create a new Intent so that history is cleared
+	        	Intent loginIntent = new Intent(this, LoginActivity.class);
+	        	loginIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+	        	loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	        	mUser.logOut();
+	        	// Write empty user details to SharedPreferences
+	        	saveUserToPreferences();
+	        	startActivity(loginIntent);
+	            return true;
+	        default:
+	            return super.onOptionsItemSelected(item);
+	    }
+	}
+
+	private class MainPagerAdapter extends FragmentPagerAdapter {
+		private final String[] CONTENT = {
+                getResources().getString(R.string.remotefragment_title),
+                getResources().getString(R.string.userfragment_title),
+                getResources().getString(R.string.consumptionfragment_title),
+        };
+		private final int COUNT = 3;
+
+		public MainPagerAdapter(FragmentManager fm) {
+			super(fm);
+		}
+
+		@Override
+		public Fragment getItem(int position) {
+			Fragment fragment = null;
+
+		    	switch(position) {
+			case 0:
+				fragment = RemoteFragment.newInstance(mUser);
+				break;
+			case 1:
+				fragment = UserFragment.newInstance(mUser);
+				break;
+			case 2:
+				fragment = ConsumptionFragment.newInstance(mUser);
+				break;
+			}
+			return fragment;
+		}
+
+		@Override
+		public int getCount() {
+			return COUNT;
+		}
+		
+		@Override
+		public CharSequence getPageTitle(int position) {
+			return CONTENT[position % CONTENT.length];
+		}
+
+	}
+	
+	private void saveUserToPreferences() {
+		JSONObject jUser = new JSONObject();
+		try {
+			jUser.put("Username", mUser.getUserName());
+			jUser.put("Password", mUser.getPassword());
+			jUser.put("Loggged in", mUser.loginStatus());
+			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+    		Editor edit = sp.edit();
+    		edit.putString("USER", jUser.toString());
+    		edit.commit();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}	
+	}
+
 }

@@ -12,22 +12,23 @@ import com.sebbelebben.smartpower.Server.*;
  * @author Johan Bregell
  *
  */
-public class PowerStrip implements Serializable, Graphable{
+public class PowerStrip implements Serializable, Graphable, PsPart{
 	
 	private static final long serialVersionUID = 4087429125837326107L;
 	private int id;
 	private String apiKey;
 	private String serialId;
 	private String name;
+	private String previousName; // The previous name, for rolling back failed name changes
 	private PsSocket[] psSockets;
 	
 	/**
 	 * Creates a PowerStrip with the list of PsSockets supplied for faster handling.
-	 * @param id
-	 * @param serialId
-	 * @param apiKey
-	 * @param name
-	 * @param psSocekts
+	 * @param id the numeric id of the powerstrip
+	 * @param serialId The serialId of the powerstrip
+	 * @param apiKey The users apiKey
+	 * @param name Name of the powerstrip
+	 * @param psSockets list of all sockets the powerstrip holds
 	 */
 	public PowerStrip(int id, String serialId, String apiKey, String name, PsSocket[] psSockets){
 		this.id = id;
@@ -63,30 +64,39 @@ public class PowerStrip implements Serializable, Graphable{
 	
 	/**
 	 * Sets a new name on the PowerStrip.
-	 * @param name
-	 * @param listener
+	 * @param name the new name of the socket
+	 * @param listener The callback function
 	 */
 	public void setName(String name, final OnSetNameReceiveListener listener){
+		this.previousName = this.name;
+		this.name = name;
 		Server.sendAndRecieve("{powerstripid:"+id+",request:setname,apikey:"+apiKey+",newname:"+name+"}", new OnReceiveListener() {
 			@Override
-			public void onReceive(String result) {
+			public void onReceiveSuccess(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getInt("powerstripid") == id){
+						PowerStrip.this.name = data.getString("newname");
 						listener.onSetNameReceived(data.getString("newname"));
 					} else {
+						PowerStrip.this.name = PowerStrip.this.previousName;
 						listener.failed();
 					}
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 			}
-		});
+
+            @Override
+            public void onReceiveFailure() {
+                listener.failed();
+            }
+        });
 	}
 	
 	/**
-	 * Returns the name of the PowerStip.
-	 * @return
+	 * 
+	 * @return Returns the name of the PowerStip.
 	 */
 	public String getName(){
 		return this.name;
@@ -94,15 +104,15 @@ public class PowerStrip implements Serializable, Graphable{
 		
 	/**
 	 * Creates a listener that waits for the server to supply the PowerStrip's consumption between the given dates.
-	 * @param start
-	 * @param end
+	 * @param start Start date
+	 * @param end end Date
 	 * @param listener
 	 */
 	public void getConsumption(Date start, Date end, final OnConsumptionReceiveListener listener){
 		DateFormat dd = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss.SSSZ", Locale.ENGLISH);
 		Server.sendAndRecieve("{powerstripid:"+id+",request:consumption,apikey:"+apiKey+",startdate:"+dd.format(start)+",enddate:"+dd.format(end)+"}", new OnReceiveListener() {
 			@Override
-			public void onReceive(String result) {
+			public void onReceiveSuccess(String result) {
 				ArrayList<Consumption> consumptionList = new ArrayList<Consumption>();
 				try {
 					JSONObject data = new JSONObject(result);
@@ -127,13 +137,17 @@ public class PowerStrip implements Serializable, Graphable{
 					e.printStackTrace();
 				}
 			}
-		});
+
+            @Override
+            public void onReceiveFailure() {
+                listener.failed();
+            }
+        });
 	}
 
 	/**
-	 * Returns the saved list of PsSockets  connected to the PowerStrip, or updates the list and then returns it.
-	 * @param update If set to true the list will be updated
-	 * @return
+	 * 
+	 * @return Returns the saved list of PsSockets  connected to the PowerStrip, or updates the list and then returns it.
 	 */
 	public PsSocket[] getSockets(){
 		return this.psSockets;
@@ -146,7 +160,7 @@ public class PowerStrip implements Serializable, Graphable{
 	public void updatePowerStrip(final GenericListener listener){
 		Server.sendAndRecieve("{powerstripid:"+id+",request:sockets,apikey:"+apiKey+"}", new Server.OnReceiveListener() {
 			@Override
-			public void onReceive(String result) {
+			public void onReceiveSuccess(String result) {
 				ArrayList<PsSocket> psSocketList = new ArrayList<PsSocket>();
 				try {
 					JSONObject data = new JSONObject(result);
@@ -157,7 +171,7 @@ public class PowerStrip implements Serializable, Graphable{
 							psSocketList.add(new PsSocket(JSONsockets.getInt("socketid"),JSONsockets.getString("name"),apiKey));
 						}
 						PowerStrip.this.psSockets = psSocketList.toArray(new PsSocket[0]);
-						listener.sucess();
+						listener.success();
 					} else {
 						listener.failed();
 					}
@@ -166,12 +180,17 @@ public class PowerStrip implements Serializable, Graphable{
 				}
 				
 			}
-		});
+
+            @Override
+            public void onReceiveFailure() {
+                listener.failed();
+            }
+        });
 	}
 	
 	/**
-	 * Returns the id of the PowerStrip.
-	 * @return
+	 * 
+	 * @return Returns the id of the PowerStrip.
 	 */
 	public Integer getId() {
 		return id;
