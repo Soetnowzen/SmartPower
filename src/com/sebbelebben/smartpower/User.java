@@ -15,7 +15,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.sebbelebben.smartpower.Server.GenericListener;
@@ -368,8 +367,6 @@ public class User implements Serializable, Graphable   {
     		else {
     			jsArray = new JSONArray(favorite);
     			for(int index = 0; index < jsArray.length(); index++) {
-        			Log.i("User.java", jsArray.get(index).getClass().toString());
-        			
         			JSONObject comparablePS = (JSONObject) jsArray.get(index);
         			return comparablePS.getInt("id") == psSocket.getId();
     			}
@@ -393,9 +390,6 @@ public class User implements Serializable, Graphable   {
     		if(favorite != null) {
 	    		JSONArray jsArray = new JSONArray(favorite);
 	    		for(int index = 0; index < jsArray.length(); index++) {
-	    			Log.i("User.java", jsArray.get(index).getClass().toString());
-	    			Log.i("User.java", jsArray.get(index).toString());
-	    			
 	    			JSONObject jAddablePsSocket = (JSONObject) jsArray.get(index);
 	    			//PsSocket addablePsSocket = new PsSocket(jAddablePsSocket);
 	    			PsSocket addablePsSocket = new PsSocket(jAddablePsSocket.getInt("id"), jAddablePsSocket.getString("name"),apiKey,jAddablePsSocket.getBoolean("status"));
