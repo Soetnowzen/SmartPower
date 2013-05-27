@@ -7,6 +7,12 @@ import java.util.*;
 
 import org.json.*;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
+
 import com.sebbelebben.smartpower.Server.*;
 
 /**
@@ -248,4 +254,74 @@ public class User implements Serializable, Graphable   {
 			}
 		});
 	}
+	
+	/*private void loadPrefs() {
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+		String user = sp.getString("USER",null);
+		try {
+			JSONObject jUser;
+			if(user == null) mUser = null;
+			else {
+				jUser = new JSONObject(user);
+				mUser = new User(jUser.getString("Username"),jUser.getString("Password"));
+				if(jUser.getBoolean("Logged in")) {
+					logIn();
+				}
+			}
+		} catch (JSONException error) {
+			error.printStackTrace();
+		}
+		//If you're already logged in then skip this activity/screen
+		if(mUser != null && mUser.loginStatus()) {
+			startActivity(new Intent(this, GraphActivity.class));
+		} else if(mUser != null){ //If the user ain't logged in then the password & username is entered into the boxes for them
+			mUsernameBox.setText(mUser.getUserName());
+			mPasswordBox.setText(mUser.getPassword());
+		}
+	}
+
+	private void savePrefs(String value) {
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+		Editor edit = sp.edit();
+		edit.putString("USER", value);
+		edit.commit();
+	}*/
+
+    public void addFavorite(PowerStrip ps, Context context) {
+    	SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+    	String favorite = sp.getString("Favorite", null);
+    	try {
+    		//Check if @param favorite is null then make an empty array
+    		JSONArray jsArray = new JSONArray(favorite);
+		    jsArray.put(ps);
+		    Editor edit = sp.edit();
+		    edit.putString("Favorite", jsArray.toString());
+		    edit.commit();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    }
+
+    public void removeFavorite(PowerStrip ps, Context context) {
+    	/*SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+    	String favorite = sp.getString("Favorite", null);
+    	try {
+    		JSONArray jsArray = new JSONArray(favorite);
+    		
+    	} catch (JSONException e) {
+    		e.printStackTrace();
+    	}*/
+    	/*for(int index = 0; index < jsArray.length(); index++) {
+			jsArray.get(index);
+		}*/
+    }
+
+    public boolean isFavorite() {
+        return true;
+    }
+
+    public String[] getFavorite() {
+        return new String[1];
+    }
 }

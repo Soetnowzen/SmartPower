@@ -252,7 +252,13 @@ public class RemoteFragment extends SherlockFragment {
             favoriteButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
+                	//Retrieve the User from the intent
+                	final User user = (User) getArguments().getSerializable("User");
+                	//v.getId();
+                	
+                	//mPowerStrips.get(v.getId());
+                	if(user.isFavorite()) user.removeFavorite(group);
+                	else user.addFavorite(group);
                 }
             });
 
