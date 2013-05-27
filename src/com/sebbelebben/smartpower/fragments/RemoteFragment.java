@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -116,6 +117,7 @@ public class RemoteFragment extends SherlockFragment {
 
 		public Object getChild(int groupPosition, int childPosition) {
 			PsSocket sockets[] = groups.get(groupPosition).getSockets();
+
 			return sockets[childPosition];
 		}
 
@@ -125,6 +127,7 @@ public class RemoteFragment extends SherlockFragment {
 
 		public View getChildView(int groupPos, int childPos, boolean isLastChild, View view, ViewGroup parent) {
 			final PsSocket child = (PsSocket) getChild(groupPos, childPos);
+
 			if (view == null) {
 				LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				view = inflater.inflate(R.layout.socket_item, null);
@@ -145,6 +148,8 @@ public class RemoteFragment extends SherlockFragment {
             ImageButton renameButton = (ImageButton) view.findViewById(R.id.rename_btn);
             ImageButton favoriteButton = (ImageButton) view.findViewById(R.id.favorite_btn);
             ImageButton consumptionButton = (ImageButton) view.findViewById(R.id.consumption_btn);
+
+            toggleButton.setChecked(child.getStatus());
 
             toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
@@ -202,7 +207,7 @@ public class RemoteFragment extends SherlockFragment {
                     startActivity(intent);
                 }
             });
-			
+
 			setupFlipper(view);
             //setupOptionsItem(view);
 			
@@ -239,8 +244,7 @@ public class RemoteFragment extends SherlockFragment {
         */
 
 		public int getChildrenCount(int groupPosition) {
-			//return groups.get(groupPosition).sockets.length;
-            return 4;
+			return groups.get(groupPosition).getSockets().length;
 		}
 
 		public Object getGroup(int groupPosition) {
