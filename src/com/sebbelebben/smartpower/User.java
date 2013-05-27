@@ -15,6 +15,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.sebbelebben.smartpower.Server.GenericListener;
@@ -317,7 +318,7 @@ public class User implements Serializable, Graphable   {
     		JSONArray jsArray;
     		if(favorite == null) jsArray = new JSONArray();
     		else jsArray = new JSONArray(favorite);
-		    jsArray.put(ps);
+		    jsArray.put(new JSONObject(ps.toJSON()));
 		    Editor edit = sp.edit();
 		    edit.putString("Favorite", jsArray.toString());
 		    edit.commit();
@@ -341,9 +342,13 @@ public class User implements Serializable, Graphable   {
     		if(favorite == null) jsArray = new JSONArray();
     		else jsArray = new JSONArray(favorite);
     		JSONArray newJsArray = new JSONArray();
+    		JSONObject jSocket = new JSONObject(psSocket.toJSON());
     		for(int index = 0; index < jsArray.length(); index++) {
-    			PsSocket comparablePS = (PsSocket) jsArray.get(index);
-    			if(!psSocket.compareTo(comparablePS)) newJsArray.put(index, comparablePS);
+    			JSONObject comparablePS = (JSONObject) jsArray.get(index);
+    			if(comparablePS.toString().compareTo(jSocket.toString()) != 0) newJsArray.put(comparablePS);
+    			//PsSocket comparablePS = (PsSocket) jsArray.get(index);
+    			//if(!psSocket.compareTo(comparablePS)) newJsArray.put(index, comparablePS);
+    			//if(!psSocket.getName().equals(jsArray.get(index))) newJsArray.put(index, jsArray.get(index));
 			}
     		Editor edit = sp.edit();
     		edit.putString("Favorite", newJsArray.toString());
@@ -363,11 +368,20 @@ public class User implements Serializable, Graphable   {
     	try {
     		JSONArray jsArray;
     		if(favorite == null) jsArray = new JSONArray();
-    		else jsArray = new JSONArray(favorite);
-    		for(int index = 0; index < jsArray.length(); index++) {
-    			PsSocket comparablePS = (PsSocket) jsArray.get(index);
-    			if(!psSocket.compareTo(comparablePS)) return true;
-			}
+    		else {
+    			JSONObject jSocket = new JSONObject(psSocket.toJSON());
+    			jsArray = new JSONArray(favorite);
+    			for(int index = 0; index < jsArray.length(); index++) {
+        			Log.i("User.java", jsArray.get(index).getClass().toString());
+        			
+        			JSONObject comparablePS = (JSONObject) jsArray.get(index);
+        			return comparablePS.toString().compareTo(jSocket.toString()) == 0;
+        			
+        			//PsSocket comparablePS = (PsSocket) jsArray.get(index);
+        			//if(!psSocket.compareTo(comparablePS)) return true;
+    			}
+    		}
+    		
     	} catch (JSONException e) {
     		e.printStackTrace();
     	}
@@ -386,7 +400,12 @@ public class User implements Serializable, Graphable   {
     		if(favorite != null) {
 	    		JSONArray jsArray = new JSONArray(favorite);
 	    		for(int index = 0; index < jsArray.length(); index++) {
-	    			PsSocket addablePsSocket = (PsSocket) jsArray.get(index);
+	    			Log.i("User.java", jsArray.get(index).getClass().toString());
+	    			Log.i("User.java", jsArray.get(index).toString());
+	    			
+	    			JSONObject jAddablePsSocket = (JSONObject) jsArray.get(index);
+	    			PsSocket addablePsSocket = new PsSocket(JaddablePsSocket);
+	    			//PsSocket addablePsSocket = (PsSocket) jsArray.get(index);
 	    			list.add(addablePsSocket);
 	    		}
     		}
