@@ -19,7 +19,6 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 	private String apiKey;
 	private String serialId;
 	private String name;
-	private String previousName; // The previous name, for rolling back failed name changes
 	private PsSocket[] psSockets;
 	private Boolean status;
 	
@@ -70,7 +69,7 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 	 * @param listener The callback function
 	 */
 	public void setName(String name, final OnSetNameReceiveListener listener){
-		this.previousName = this.name;
+		final String previousName = this.name;
 		this.name = name;
 		Server.sendAndRecieve("{powerstripid:"+id+",request:setname,apikey:"+apiKey+",newname:"+name+"}", new OnReceiveListener() {
 			@Override
@@ -81,7 +80,7 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 						PowerStrip.this.name = data.getString("newname");
 						listener.onSetNameReceived(data.getString("newname"));
 					} else {
-						PowerStrip.this.name = PowerStrip.this.previousName;
+						PowerStrip.this.name = previousName;
 						listener.failed();
 					}
 				} catch (JSONException e) {

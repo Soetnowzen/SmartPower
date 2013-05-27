@@ -1,12 +1,6 @@
 package com.sebbelebben.smartpower.fragments;
 import java.util.ArrayList;
 
-import com.sebbelebben.smartpower.PowerStrip;
-import com.sebbelebben.smartpower.PsSocket;
-import com.sebbelebben.smartpower.User;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.sebbelebben.smartpower.R;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -14,13 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import com.actionbarsherlock.app.SherlockFragment;
+import com.sebbelebben.smartpower.PsSocket;
+import com.sebbelebben.smartpower.R;
+import com.sebbelebben.smartpower.User;
 /**
  * Fragment to display user information, 
  * users favorite sockets {com.sebbelebben.smartpower.PsSocket}

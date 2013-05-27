@@ -2,26 +2,38 @@ package com.sebbelebben.smartpower.fragments;
 
 import java.util.ArrayList;
 
-import android.content.Intent;
-import android.util.Log;
-import android.widget.*;
-import com.actionbarsherlock.app.SherlockFragment;
-
-import com.sebbelebben.smartpower.*;
-import com.sebbelebben.smartpower.Server.*;
-
-import android.content.Context;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ExpandableListView;
+import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+import android.widget.Toast;
+import android.widget.ToggleButton;
+import android.widget.ViewFlipper;
+
+import com.actionbarsherlock.app.SherlockFragment;
+import com.sebbelebben.smartpower.GraphActivity;
+import com.sebbelebben.smartpower.PowerStrip;
+import com.sebbelebben.smartpower.PsPart;
+import com.sebbelebben.smartpower.PsSocket;
+import com.sebbelebben.smartpower.R;
+import com.sebbelebben.smartpower.Server.GenericListener;
+import com.sebbelebben.smartpower.Server.OnSetNameReceiveListener;
+import com.sebbelebben.smartpower.User;
 
 /**
  * Fragment to display {@link PowerStrip} and {@link com.sebbelebben.smartpower.PsSocket}.

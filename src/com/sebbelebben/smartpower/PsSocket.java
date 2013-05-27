@@ -28,7 +28,6 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 	private static final long serialVersionUID = 2749123692313834401L;
 	private int id;
 	private String name;
-    private String previousName; // The previous name, for rolling back failed name changes
 	private String apiKey;
 	private Boolean status;
 	
@@ -95,7 +94,7 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 	 * @param listener 
 	 */
 	public void setName(String name, final OnSetNameReceiveListener listener){
-        this.previousName = this.name;
+        final String previousName = this.name;
         this.name = name;
 		Server.sendAndRecieve("{socketid:"+id+",request:setname,apikey:"+apiKey+",newname:"+name+"}", new OnReceiveListener() {
 			@Override
@@ -106,7 +105,7 @@ public class PsSocket implements Serializable,Graphable, PsPart {
                         PsSocket.this.name = data.getString("newname");
 						listener.onSetNameReceived(data.getString("newname"));
 					} else {
-                        PsSocket.this.name = PsSocket.this.previousName;
+                        PsSocket.this.name = previousName;
 						listener.failed();
 					}
 				} catch (JSONException e) {

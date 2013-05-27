@@ -50,6 +50,8 @@ public class Server {
 		@Override
 		protected String doInBackground(String... params) {
 			String[] ret = new String[2];
+			ret[0] = null;
+			ret[1] = null;
 			String message = params[0];
 			try{
 			     Socket socket = new Socket("bregell.mine.nu", 39500);
@@ -57,19 +59,17 @@ public class Server {
 			     out.println("Android#"+message);
 			     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			     ret = in.readLine().split("#");
-                 String response = "";
-                for (String aRet : ret) {
-                    response += aRet;
-                }
-                 Log.e("SmartPower", response);
 			     socket.close();
 			   } catch (UnknownHostException e) {
 				   e.printStackTrace();
 			   } catch  (IOException e) {
 				   e.printStackTrace();
 			   }
-
-			return ret[1];
+			if(ret[0].equals("Android")){
+				return ret[1];
+			} else {
+				return ret[0];
+			}
 		}
 		
 		/**
