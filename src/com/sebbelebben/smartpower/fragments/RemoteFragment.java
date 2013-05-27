@@ -389,23 +389,6 @@ public class RemoteFragment extends SherlockFragment {
 		menu.add(0, v.getId(), 0, "Group together with...");
 	}
 
-    /*
-    TODO: Remove this
-	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-		int position = info.position;
-		if(item.getTitle() == "Change Name") {
-			//changeName(position);
-		} else if(item.getTitle() == "Group together with...") {
-			groupOutlets(item.getItemId());
-		} else {
-			return false;
-		}
-		return true;
-	}
-    */
-
     /**
      * Changes the name of the provided power strip part
      * @param pspart The power strip part.
