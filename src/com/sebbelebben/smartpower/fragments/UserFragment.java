@@ -59,12 +59,12 @@ public class UserFragment extends SherlockFragment {
 		((TextView) view.findViewById(R.id.textView)).setText(str);
 
 		list = new ArrayList<PsSocket>();
-		list.add(new PsSocket(0, "hennig", "apikey", true));
-		list.add(new PsSocket(0, "hennigphan123456711111111111111111111111111111", "apikey", true));
-		list.add(new PsSocket(0, "hennig2", "apikey", true));
-		list.add(new PsSocket(0, "hennig3", "apikey", true));
-		list.add(new PsSocket(0, "hennig4", "apikey", true));
-		list.add(new PsSocket(0, "hennig5", "apikey", true));
+		list.add(new PsSocket(13, "hennig", "apikey1011", true));
+		list.add(new PsSocket(13, "hennigphan123456711111111111111111111111111111", "apikey", true));
+		list.add(new PsSocket(13, "hennig2", "apikey1011", true));
+		list.add(new PsSocket(13, "hennig3", "apikey1011", true));
+		list.add(new PsSocket(13, "hennig4", "apikey1011", true));
+		list.add(new PsSocket(13, "hennig5", "apikey1011", true));
 
 		mAdapter = new SocketAdapter(getActivity(), R.layout.powerstrip_item, list);
 		if(listView != null)
@@ -94,9 +94,7 @@ public class UserFragment extends SherlockFragment {
 			final ToggleButton tb = (ToggleButton) v.findViewById(R.id.toggle_button);
 			if ( tv != null) tv.setText(socket.getName());
 			if ( tb != null) {
-				tb.setTextOn("its on");
-				tb.setTextOff("its off");
-				tb.setChecked(false);
+				tb.setChecked(socket.getStatus());
 			
 			tb.setOnClickListener(new OnClickListener() {
 
@@ -121,7 +119,6 @@ public class UserFragment extends SherlockFragment {
 								@Override
 								public void success() {
 									tb.setChecked(true);
-									
 								}
 								
 								@Override
