@@ -11,11 +11,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.sebbelebben.smartpower.PsSocket;
 import com.sebbelebben.smartpower.R;
+import com.sebbelebben.smartpower.Server.GenericListener;
 import com.sebbelebben.smartpower.User;
 /**
  * Fragment to display user information, 
@@ -87,17 +89,46 @@ public class UserFragment extends SherlockFragment {
 				v = inflater.inflate(R.layout.socket_item1, null);
 			}
 
-			PsSocket socket = objects.get(position);
+			final PsSocket socket = objects.get(position);
 			TextView tv = (TextView) v.findViewById(R.id.text);
 			final ToggleButton tb = (ToggleButton) v.findViewById(R.id.toggle_button);
 			if ( tv != null) tv.setText(socket.getName());
 			if ( tb != null) {
-				tb.setOnClickListener(new OnClickListener() {
+				tb.setTextOn("its on");
+				tb.setTextOff("its off");
+				tb.setChecked(false);
+			
+			tb.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
-						if ( tb.isChecked()) tb.setText("its on"); //send turn on power
-						if ( !tb.isChecked()) tb.setText("its off"); //send turn off power
+						tb.setChecked(!tb.isChecked());
+						if ( tb.isChecked()) {
+							socket.turnOff(new GenericListener() {
+								
+								@Override
+								public void success() {
+									tb.setChecked(false);
+								}
+								
+								@Override
+								public void failed() {
+								}
+							});
+						}else {
+							socket.turnOn(new GenericListener() {
+								
+								@Override
+								public void success() {
+									tb.setChecked(true);
+									
+								}
+								
+								@Override
+								public void failed() {
+								}
+							});
+						}
 					}
 				});
 			}
