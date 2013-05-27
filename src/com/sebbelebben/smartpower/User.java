@@ -3,12 +3,19 @@ package com.sebbelebben.smartpower;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
-import android.util.Log;
-import org.json.*;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import com.sebbelebben.smartpower.Server.*;
+import com.sebbelebben.smartpower.Server.GenericListener;
+import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
+import com.sebbelebben.smartpower.Server.OnGroupsReceiveListener;
+import com.sebbelebben.smartpower.Server.OnNewGroupReceiveListener;
+import com.sebbelebben.smartpower.Server.OnReceiveListener;
 
 /**
  * 
@@ -147,9 +154,21 @@ public class User implements Serializable, Graphable   {
 								JSONArray psSockets = JSONpowerStrip.getJSONArray("sockets");
 								for(int j = 0; j < psSockets.length(); j++){
 									JSONObject JSONsocket = psSockets.getJSONObject(j);
-									psSocketList.add(new PsSocket(JSONsocket.getInt("socketid"), JSONsocket.getString("name"), apiKey));
+									if(JSONsocket.getInt("status") == 1){
+										psSocketList.add(new PsSocket(JSONsocket.getInt("socketid"),JSONsocket.getString("name"),apiKey,true));
+									} else if (JSONsocket.getInt("status") == 0) {
+										psSocketList.add(new PsSocket(JSONsocket.getInt("socketid"),JSONsocket.getString("name"),apiKey,false));
+									} else {
+										listener.failed();
+									}
 								}
-								powerStripList.add(new PowerStrip(JSONpowerStrip.getInt("id"),JSONpowerStrip.getString("serialid"),apiKey,JSONpowerStrip.getString("name"),psSocketList.toArray(new PsSocket[0])));
+								if(JSONpowerStrip.getInt("status") == 1){
+									powerStripList.add(new PowerStrip(JSONpowerStrip.getInt("id"),JSONpowerStrip.getString("serialid"),apiKey,JSONpowerStrip.getString("name"),psSocketList.toArray(new PsSocket[0]),true));
+								} else if (JSONpowerStrip.getInt("status") == 0) {
+									powerStripList.add(new PowerStrip(JSONpowerStrip.getInt("id"),JSONpowerStrip.getString("serialid"),apiKey,JSONpowerStrip.getString("name"),psSocketList.toArray(new PsSocket[0]),false));
+								} else {
+									listener.failed();
+								}
 							}
 							User.this.powerStrips = powerStripList.toArray(new PowerStrip[0]);
 							listener.success();

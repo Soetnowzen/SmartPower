@@ -3,13 +3,19 @@ package com.sebbelebben.smartpower;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
-import org.json.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.sebbelebben.smartpower.Server.GenericListener;
 import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
 import com.sebbelebben.smartpower.Server.OnReceiveListener;
 import com.sebbelebben.smartpower.Server.OnSetNameReceiveListener;
+import com.sebbelebben.smartpower.Server.OnUpdateListener;
 
 
 /**
@@ -24,6 +30,7 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 	private String name;
     private String previousName; // The previous name, for rolling back failed name changes
 	private String apiKey;
+	private Boolean status;
 	
 	/**
 	 * Creates a PsSocket.
@@ -31,14 +38,15 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 	 * @param name the name of the socket
 	 * @param apiKey the users apiKey
 	 */
-	public PsSocket(int id, String name, String apiKey){
+	public PsSocket(int id, String name, String apiKey, Boolean status){
 		this.id = id;
 		this.name = name;
 		this.apiKey = apiKey;
+		this.status = status;
 	}
 	
 	public String toJSON(){
-		return "{\"id\":"+Integer.toString(this.id)+",\"name\":\""+this.name+"\",\"apikey\":\""+this.apiKey+"\"}";
+		return "{\"id\":"+Integer.toString(this.id)+",\"name\":\""+this.name+"\",\"apikey\":\""+this.apiKey+"\",\"status\":"+this.status.toString()+"}";
 		
 	}
 	/**
@@ -137,6 +145,7 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 			@Override
 			public void onReceiveSuccess(String result) {
 				if(result.equals("switchRequestTrue")){
+					PsSocket.this.status = true;
 					listener.success();
 				} else {
 					listener.failed();
@@ -159,6 +168,7 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 			@Override
 			public void onReceiveSuccess(String result) {
 				if(result.equals("switchRequestTrue")){
+					PsSocket.this.status = false;
 					listener.success();
 				} else {
 					listener.failed();
@@ -183,5 +193,41 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 			return name;
 		}
 		
+	}
+	
+	public Boolean getStatus(){
+		return status;	
+	}
+	
+	public void updateStatus(final OnUpdateListener listener){
+		Server.sendAndRecieve("{socketid:"+id+",request:status,apikey:"+apiKey+"}", new OnReceiveListener() {
+			
+			@Override
+			public void onReceiveSuccess(String result) {
+				try {
+					JSONObject data = new JSONObject(result);
+					if (data.getInt("socketid") == id){
+						if (data.getInt("status") == 1){
+							PsSocket.this.status = true;
+							listener.onUpdateReceive(true);
+						} else if (data.getInt("status") == 0) {
+							PsSocket.this.status = false;
+							listener.onUpdateReceive(false);
+						} else {
+							listener.failed();
+						}
+					} else {
+						listener.failed();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			@Override
+			public void onReceiveFailure() {
+				listener.failed();
+			}
+		});
 	}
 }

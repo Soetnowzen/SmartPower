@@ -21,6 +21,7 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 	private String name;
 	private String previousName; // The previous name, for rolling back failed name changes
 	private PsSocket[] psSockets;
+	private Boolean status;
 	
 	/**
 	 * Creates a PowerStrip with the list of PsSockets supplied for faster handling.
@@ -30,12 +31,13 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 	 * @param name Name of the powerstrip
 	 * @param psSockets list of all sockets the powerstrip holds
 	 */
-	public PowerStrip(int id, String serialId, String apiKey, String name, PsSocket[] psSockets){
+	public PowerStrip(int id, String serialId, String apiKey, String name, PsSocket[] psSockets, Boolean status){
 		this.id = id;
 		this.apiKey = apiKey;
 		this.serialId = serialId;
 		this.name = name;
 		this.psSockets = psSockets;
+		this.status = status;
 	}
 	
 	public String toJSON(){
@@ -168,7 +170,13 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 						JSONArray sockets = data.getJSONArray("sockets");
 						for(int i = 0; i < sockets.length(); i++){
 							JSONObject JSONsockets = sockets.getJSONObject(i);
-							psSocketList.add(new PsSocket(JSONsockets.getInt("socketid"),JSONsockets.getString("name"),apiKey));
+							if(JSONsockets.getInt("status") == 1){
+								psSocketList.add(new PsSocket(JSONsockets.getInt("socketid"),JSONsockets.getString("name"),apiKey,true));
+							} else if (JSONsockets.getInt("status") == 0) {
+								psSocketList.add(new PsSocket(JSONsockets.getInt("socketid"),JSONsockets.getString("name"),apiKey,false));
+							} else {
+								listener.failed();
+							}	
 						}
 						PowerStrip.this.psSockets = psSocketList.toArray(new PsSocket[0]);
 						listener.success();
@@ -196,4 +204,43 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 		return id;
 	}
 	
+	public Boolean getStatus(){
+		return status;	
+	}
+	
+	public void updateStatus(final OnUpdateListener listener){
+		Server.sendAndRecieve("{powerstripid:"+id+",request:status,apikey:"+apiKey+"}", new OnReceiveListener() {
+			
+			@Override
+			public void onReceiveSuccess(String result) {
+				try {
+					JSONObject data = new JSONObject(result);
+					if (data.getInt("powerstripid") == id){
+						int status_int = data.getInt("status");
+						Boolean status;
+						if (status_int == 1){
+							status = true;
+							PowerStrip.this.status = status;
+							listener.onUpdateReceive(status);
+						} else if (status_int == 0) {
+							status = false;
+							PowerStrip.this.status = status;
+							listener.onUpdateReceive(status);
+						} else {
+							listener.failed();
+						}
+					} else {
+						listener.failed();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+			
+			@Override
+			public void onReceiveFailure() {
+				listener.failed();
+			}
+		});
+	}
 }
