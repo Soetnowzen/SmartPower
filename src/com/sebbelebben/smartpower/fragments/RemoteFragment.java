@@ -254,12 +254,16 @@ public class RemoteFragment extends SherlockFragment {
                 public void onClick(View v) {
                 	//Retrieve the User from the intent
                 	final User user = (User) getArguments().getSerializable("User");
-                	//v.getId();
                 	
-                	user.addFavorite(group, getActivity());
-                	//mPowerStrips.get(v.getId());
-                	//if(user.isFavorite()) user.removeFavorite(group);
-                	//else user.addFavorite(group);
+                	Context context = getActivity();
+                	if(user.isFavorite(group, context)) {
+                		user.removeFavorite(group, context);
+                		//TODO: Change the image to when not favorite.
+                	}
+                	else {
+                		user.addFavorite(group, context);
+                		//TODO: Change the image to when is favorite.
+                	}
                 }
             });
 

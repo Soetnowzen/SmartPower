@@ -157,4 +157,8 @@ public class PsSocket implements Serializable,Graphable {
 		}
 		
 	}
+	
+	public boolean compareTo(PsSocket psSocket) {
+		return this.getId() == psSocket.getId();
+	}
 }
