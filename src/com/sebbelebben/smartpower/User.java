@@ -141,17 +141,17 @@ public class User implements Serializable, Graphable   {
 	public void updateUser(final GenericListener listener){
 		Server.sendAndRecieve("{username:"+userName+",request:powerstripsandsockets,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
-			public void onReceiveSuccess(String result) {
-				ArrayList<PowerStrip> powerStripList = new ArrayList<PowerStrip>();
-				ArrayList<PsSocket> psSocketList = new ArrayList<PsSocket>();
+			public void onReceiveSuccess(String result) {	
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getString("username").equals(userName)){
 						if(!data.get("powerstrips").equals(null)){
+							ArrayList<PowerStrip> powerStripList = new ArrayList<PowerStrip>();
 							JSONArray powerStrips = data.getJSONArray("powerstrips");
 							for(int i = 0; i < powerStrips.length(); i++){
 								JSONObject JSONpowerStrip = powerStrips.getJSONObject(i);
 								JSONArray psSockets = JSONpowerStrip.getJSONArray("sockets");
+								ArrayList<PsSocket> psSocketList = new ArrayList<PsSocket>();
 								for(int j = 0; j < psSockets.length(); j++){
 									JSONObject JSONsocket = psSockets.getJSONObject(j);
 									if(JSONsocket.getInt("status") == 1){

@@ -3,15 +3,12 @@ package com.sebbelebben.smartpower.tests;
 import com.jayway.android.robotium.solo.Solo;
 import com.sebbelebben.smartpower.LoginActivity;
 
-import android.R;
 import android.app.Instrumentation;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.sax.StartElementListener;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
-import android.widget.ProgressBar;
 
 public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginActivity> {
 	private Solo solo;
