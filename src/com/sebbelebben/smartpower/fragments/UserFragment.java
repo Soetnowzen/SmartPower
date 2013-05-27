@@ -1,12 +1,6 @@
 package com.sebbelebben.smartpower.fragments;
 import java.util.ArrayList;
 
-import com.sebbelebben.smartpower.PowerStrip;
-import com.sebbelebben.smartpower.PsSocket;
-import com.sebbelebben.smartpower.User;
-import com.actionbarsherlock.app.SherlockFragment;
-import com.sebbelebben.smartpower.R;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -14,13 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.webkit.WebView.FindListener;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+
+import com.actionbarsherlock.app.SherlockFragment;
+import com.sebbelebben.smartpower.PsSocket;
+import com.sebbelebben.smartpower.R;
+import com.sebbelebben.smartpower.User;
 /**
  * Fragment to display user information, 
  * users favorite sockets {com.sebbelebben.smartpower.PsSocket}
@@ -61,12 +57,12 @@ public class UserFragment extends SherlockFragment {
 		((TextView) view.findViewById(R.id.textView)).setText(str);
 
 		list = new ArrayList<PsSocket>();
-		list.add(new PsSocket(0, "hennig", "apikey"));
-		list.add(new PsSocket(0, "hennigphan123456711111111111111111111111111111", "apikey"));
-		list.add(new PsSocket(0, "hennig2", "apikey"));
-		list.add(new PsSocket(0, "hennig3", "apikey"));
-		list.add(new PsSocket(0, "hennig4", "apikey"));
-		list.add(new PsSocket(0, "hennig5", "apikey"));
+		list.add(new PsSocket(0, "hennig", "apikey", true));
+		list.add(new PsSocket(0, "hennigphan123456711111111111111111111111111111", "apikey", true));
+		list.add(new PsSocket(0, "hennig2", "apikey", true));
+		list.add(new PsSocket(0, "hennig3", "apikey", true));
+		list.add(new PsSocket(0, "hennig4", "apikey", true));
+		list.add(new PsSocket(0, "hennig5", "apikey", true));
 
 		mAdapter = new SocketAdapter(getActivity(), R.layout.powerstrip_item, list);
 		if(listView != null)

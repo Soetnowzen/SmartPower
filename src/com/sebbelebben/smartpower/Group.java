@@ -61,7 +61,13 @@ public class Group implements Serializable{
 						JSONArray sockets = data.getJSONArray("sockets");
 						for(int i = 0; i < sockets.length(); i++){
 							JSONObject JSONsockets = sockets.getJSONObject(i);
-							psSocketList.add(new PsSocket(JSONsockets.getInt("id"),JSONsockets.getString("name"),apiKey));
+							if(JSONsockets.getInt("status") == 1){
+								psSocketList.add(new PsSocket(JSONsockets.getInt("id"),JSONsockets.getString("name"),apiKey,true));	
+							} else if(JSONsockets.getInt("status") == 0){
+								psSocketList.add(new PsSocket(JSONsockets.getInt("id"),JSONsockets.getString("name"),apiKey,false));	
+							} else {
+								listener.failed();
+							}
 						}
 					}
 					else if(data.getString("status").equals("failed")) {
@@ -91,7 +97,13 @@ public class Group implements Serializable{
 						JSONArray sockets = data.getJSONArray("sockets");
 						for(int i = 0; i < sockets.length(); i++){
 							JSONObject JSONsockets = sockets.getJSONObject(i);
-							psSocketList.add(new PsSocket(JSONsockets.getInt("id"),JSONsockets.getString("name"),apiKey));
+							if(JSONsockets.getInt("status") == 1){
+								psSocketList.add(new PsSocket(JSONsockets.getInt("id"),JSONsockets.getString("name"),apiKey,true));	
+							} else if(JSONsockets.getInt("status") == 0){
+								psSocketList.add(new PsSocket(JSONsockets.getInt("id"),JSONsockets.getString("name"),apiKey,false));	
+							} else {
+								listener.failed();
+							}
 						}
 					}
 					else if(data.getString("status").equals("failed")) {
