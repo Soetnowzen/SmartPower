@@ -338,18 +338,15 @@ public class User implements Serializable, Graphable   {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
     	String favorite = sp.getString("Favorite", null);
     	try {
-    		JSONArray jsArray;
-    		if(favorite == null) jsArray = new JSONArray();
-    		else jsArray = new JSONArray(favorite);
+    		JSONArray jsArray = new JSONArray();
     		JSONArray newJsArray = new JSONArray();
-    		JSONObject jSocket = new JSONObject(psSocket.toJSON());
-    		for(int index = 0; index < jsArray.length(); index++) {
-    			JSONObject comparablePS = (JSONObject) jsArray.get(index);
-    			if(comparablePS.toString().compareTo(jSocket.toString()) != 0) newJsArray.put(comparablePS);
-    			//PsSocket comparablePS = (PsSocket) jsArray.get(index);
-    			//if(!psSocket.compareTo(comparablePS)) newJsArray.put(index, comparablePS);
-    			//if(!psSocket.getName().equals(jsArray.get(index))) newJsArray.put(index, jsArray.get(index));
-			}
+    		if(favorite != null) {
+    			jsArray = new JSONArray(favorite);
+	    		for(int index = 0; index < jsArray.length(); index++) {
+	    			JSONObject comparablePS = (JSONObject) jsArray.get(index);
+	    			if(comparablePS.getInt("id") != psSocket.getId()) newJsArray.put(comparablePS);
+				}
+    		}
     		Editor edit = sp.edit();
     		edit.putString("Favorite", newJsArray.toString());
     		edit.commit();
@@ -369,16 +366,12 @@ public class User implements Serializable, Graphable   {
     		JSONArray jsArray;
     		if(favorite == null) jsArray = new JSONArray();
     		else {
-    			JSONObject jSocket = new JSONObject(psSocket.toJSON());
     			jsArray = new JSONArray(favorite);
     			for(int index = 0; index < jsArray.length(); index++) {
         			Log.i("User.java", jsArray.get(index).getClass().toString());
         			
         			JSONObject comparablePS = (JSONObject) jsArray.get(index);
-        			return comparablePS.toString().compareTo(jSocket.toString()) == 0;
-        			
-        			//PsSocket comparablePS = (PsSocket) jsArray.get(index);
-        			//if(!psSocket.compareTo(comparablePS)) return true;
+        			return comparablePS.getInt("id") == psSocket.getId();
     			}
     		}
     		
@@ -404,8 +397,8 @@ public class User implements Serializable, Graphable   {
 	    			Log.i("User.java", jsArray.get(index).toString());
 	    			
 	    			JSONObject jAddablePsSocket = (JSONObject) jsArray.get(index);
-	    			PsSocket addablePsSocket = new PsSocket(JaddablePsSocket);
-	    			//PsSocket addablePsSocket = (PsSocket) jsArray.get(index);
+	    			//PsSocket addablePsSocket = new PsSocket(jAddablePsSocket);
+	    			PsSocket addablePsSocket = new PsSocket(jAddablePsSocket.getInt("id"), jAddablePsSocket.getString("name"),apiKey,jAddablePsSocket.getBoolean("status"));
 	    			list.add(addablePsSocket);
 	    		}
     		}
