@@ -70,9 +70,8 @@ public class MainActivity extends SherlockFragmentActivity {
 		private final String[] CONTENT = {
                 getResources().getString(R.string.remotefragment_title),
                 getResources().getString(R.string.userfragment_title),
-                getResources().getString(R.string.consumptionfragment_title),
         };
-		private final int COUNT = 3;
+		private final int COUNT = 2;
 
 		public MainPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -88,9 +87,6 @@ public class MainActivity extends SherlockFragmentActivity {
 				break;
 			case 1:
 				fragment = UserFragment.newInstance(mUser);
-				break;
-			case 2:
-				fragment = ConsumptionFragment.newInstance(mUser);
 				break;
 			}
 			return fragment;
