@@ -1,4 +1,5 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.sebbelebben.smartpower"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -6,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin" 
-    android:background="#ffffff">
+    android:background="@drawable/content_bg">
     <LinearLayout android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,18 +22,45 @@
             
             android:text="UserFragment\nHenning" />
 
-        <ListView
-            android:id="@+id/listView"
-            android:layout_width="match_parent"
+        <LinearLayout
             android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:orientation="vertical"
             android:layout_weight="1">
-        </ListView>
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="@string/favorites" />
+            <ListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+            </ListView>
+        </LinearLayout>
     </LinearLayout>
-    <include layout="@layout/activity_graph"
-        
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1"/>
+
+    <com.sebbelebben.smartpower.GraphView
+            android:id="@+id/graphview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_weight="1"
+            app:xAxisStart="1"
+            app:xAxisEnd="10"
+            app:yAxisStart="0"
+            app:yAxisEnd="10"
+            app:xSegments="2"
+            app:ySegments="2"
+            app:segmentColor="#333333"
+            app:dataColor="#FF3333"
+            app:axisColor="#000000"
+            app:fillData="true"
+            app:fillDataColor="#40FF0000"
+            app:axisBackgroundColor="#FFFFFF"
+            app:dataBackgroundColor="#000000"
+            app:textColor="#000000"
+            />
+
 
 
 </LinearLayout>

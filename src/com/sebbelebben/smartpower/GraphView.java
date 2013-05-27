@@ -47,11 +47,10 @@ public class GraphView extends View {
 	private int mAxisBackgroundColor;
 	private int mDataBackgroundColor;
 	private int mTextColor;
-	
-	
+
 	// Misc
-	private int mXPadding = 20;
-	private int mYPadding = 20;
+	private int mXPadding = 40;
+	private int mYPadding = 40;
 	private GestureDetector mDetector = new GestureDetector(GraphView.this.getContext(), new mListener());
 	
 	public GraphView(Context context) {
@@ -60,27 +59,35 @@ public class GraphView extends View {
 		init();
 	}
 
+    /**
+     * Constructor for XML creation.
+     *
+     * @param context The application context.
+     * @param attrs The XML attributes.
+     */
 	public GraphView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;
 		TypedArray attributes = mContext.obtainStyledAttributes(attrs, R.styleable.GraphView);
-		mXAxisStart = attributes.getInteger(R.styleable.GraphView_xAxisStart, 10);
-		mXAxisEnd = attributes.getInteger(R.styleable.GraphView_xAxisEnd, 10);
-		mYAxisStart = attributes.getInteger(R.styleable.GraphView_yAxisStart, 10);
-		mYAxisEnd = attributes.getInteger(R.styleable.GraphView_yAxisEnd, 10);
-		mXSegments = attributes.getInteger(R.styleable.GraphView_xSegments, 3);
-		mYSegments = attributes.getInteger(R.styleable.GraphView_ySegments, 3);
-		mSegmentColor = attributes.getColor(R.styleable.GraphView_segmentColor, Color.BLACK);
-		mDataColor = attributes.getColor(R.styleable.GraphView_dataColor, Color.BLACK);
-		mAxisColor = attributes.getColor(R.styleable.GraphView_axisColor, Color.BLACK);
-		mFillData = attributes.getBoolean(R.styleable.GraphView_fillData, false);
-		mFillColor = attributes.getColor(R.styleable.GraphView_fillDataColor, Color.BLACK);
-		mAxisBackgroundColor = attributes.getColor(R.styleable.GraphView_axisBackgroundColor, Color.BLACK);
-		mDataBackgroundColor = attributes.getColor(R.styleable.GraphView_dataBackgroundColor, Color.BLACK);
-		mTextColor = attributes.getColor(R.styleable.GraphView_textColor, Color.BLACK);
-		attributes.recycle();
-		
-		init();
+        if(attributes != null) {
+		    mXAxisStart = attributes.getInteger(R.styleable.GraphView_xAxisStart, 10);
+		    mXAxisEnd = attributes.getInteger(R.styleable.GraphView_xAxisEnd, 10);
+		    mYAxisStart = attributes.getInteger(R.styleable.GraphView_yAxisStart, 10);
+		    mYAxisEnd = attributes.getInteger(R.styleable.GraphView_yAxisEnd, 10);
+		    mXSegments = attributes.getInteger(R.styleable.GraphView_xSegments, 3);
+		    mYSegments = attributes.getInteger(R.styleable.GraphView_ySegments, 3);
+		    mSegmentColor = attributes.getColor(R.styleable.GraphView_segmentColor, Color.BLACK);
+		    mDataColor = attributes.getColor(R.styleable.GraphView_dataColor, Color.BLACK);
+		    mAxisColor = attributes.getColor(R.styleable.GraphView_axisColor, Color.BLACK);
+		    mFillData = attributes.getBoolean(R.styleable.GraphView_fillData, false);
+		    mFillColor = attributes.getColor(R.styleable.GraphView_fillDataColor, Color.BLACK);
+		    mAxisBackgroundColor = attributes.getColor(R.styleable.GraphView_axisBackgroundColor, Color.BLACK);
+		    mDataBackgroundColor = attributes.getColor(R.styleable.GraphView_dataBackgroundColor, Color.BLACK);
+		    mTextColor = attributes.getColor(R.styleable.GraphView_textColor, Color.BLACK);
+		    attributes.recycle();
+
+            init();
+        }
 	}
 
     /**
@@ -119,7 +126,7 @@ public class GraphView extends View {
 		
 		drawBackground(canvas);
 		drawSegments(canvas);
-		
+
 		if(mDataPoints.size() > 0) {
 			drawData(canvas);
 		}
@@ -314,9 +321,7 @@ public class GraphView extends View {
      */
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		boolean result = mDetector.onTouchEvent(event);
-
-		return result;
+		return mDetector.onTouchEvent(event);
 	}
 
     /**
@@ -330,9 +335,15 @@ public class GraphView extends View {
 		
 		@Override
 		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-			float scale = (float)(mXAxisEnd - mXAxisStart) / (float)(getWidth() - mXPadding);
+			float scale = (mXAxisEnd - mXAxisStart) / (float)(getWidth() - mXPadding);
 			mXAxisEnd += distanceX * scale;
 			mXAxisStart += distanceX * scale;
+
+            // Limit the scrolling to the minimum X value
+            if(mDataPoints.size() > 0 && mXAxisStart < mDataPoints.get(0).x) {
+                mXAxisEnd = mXAxisEnd + Math.abs(mXAxisStart);
+                mXAxisStart = mDataPoints.get(0).x;
+            }
 			
 			invalidate();
 			return true;

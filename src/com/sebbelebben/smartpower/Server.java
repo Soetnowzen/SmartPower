@@ -1,7 +1,12 @@
 package com.sebbelebben.smartpower;
 
-import java.io.*;
-import java.net.*;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -45,6 +50,8 @@ public class Server {
 		@Override
 		protected String doInBackground(String... params) {
 			String[] ret = new String[2];
+			ret[0] = null;
+			ret[1] = null;
 			String message = params[0];
 			try{
 			     Socket socket = new Socket("bregell.mine.nu", 39500);
@@ -58,8 +65,11 @@ public class Server {
 			   } catch  (IOException e) {
 				   e.printStackTrace();
 			   }
-			
-			return ret[1];
+			if(ret[0].equals("Android")){
+				return ret[1];
+			} else {
+				return ret[0];
+			}
 		}
 		
 		/**
@@ -67,8 +77,12 @@ public class Server {
 		 */
 		@Override
 		protected void onPostExecute(String result) {
-			Log.i("onPostExecute", result);
-			mListener.onReceive(result);
+            if(result != null) {
+			    Log.i("SmartPower", result);
+			    mListener.onReceiveSuccess(result);
+            } else {
+                mListener.onReceiveFailure();
+            }
 		}
 	}
 	
@@ -78,7 +92,8 @@ public class Server {
 	}
 	
 	public static interface OnReceiveListener {
-		void onReceive(String result);
+		void onReceiveSuccess(String result);
+        void onReceiveFailure();
 	}
 	
 	public static interface OnSocketReceiveListener {
@@ -112,9 +127,25 @@ public class Server {
 	}
 	
 	public static interface GenericListener {
-		void sucess();
+		void success();
 		void failed();
 	}
 	
+	public static interface OnUpdateListener {
+		void onUpdateReceive(Boolean status);
+		void failed();
+	}
 	
 }
+
+/*
+import socket
+HOST = 'bregell.mine.nu'
+PORT = 39500
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+s.connect((HOST, PORT))
+s.sendall('Android#{socketid:17,request:turnoff,apikey:apikey1011}')
+data = s.recv(1024)
+print data
+s.close()
+*/

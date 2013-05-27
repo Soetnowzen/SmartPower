@@ -26,7 +26,7 @@ public class Group implements Serializable{
 	public void getConsumption(Date start, Date end, final OnConsumptionReceiveListener listener){
 		Server.sendAndRecieve("{groupid:"+id+",request:consumption,apikey:"+apiKey+",startdate:"+start+",enddate:"+end+"}", new OnReceiveListener() {
 			@Override
-			public void onReceive(String result) {
+			public void onReceiveSuccess(String result) {
 				ArrayList<Consumption> consumptionList = new ArrayList<Consumption>();
 				try {
 					JSONObject data = new JSONObject(result);
@@ -42,13 +42,18 @@ public class Group implements Serializable{
 				}
 				listener.onConsumptionReceive(consumptionList.toArray(new Consumption[0]));
 			}
-		});
+
+            @Override
+            public void onReceiveFailure() {
+                listener.failed();
+            }
+        });
 	}
 	
 	public void getSockets(final OnSocketReceiveListener listener){
 		Server.sendAndRecieve("{groupid:"+id+",request:sockets,apikey:"+apiKey+"}", new Server.OnReceiveListener() {
 			@Override
-			public void onReceive(String result) {
+			public void onReceiveSuccess(String result) {
 				ArrayList<PsSocket> psSocketList = new ArrayList<PsSocket>();
 				try {
 					JSONObject data = new JSONObject(result);
@@ -56,7 +61,13 @@ public class Group implements Serializable{
 						JSONArray sockets = data.getJSONArray("sockets");
 						for(int i = 0; i < sockets.length(); i++){
 							JSONObject JSONsockets = sockets.getJSONObject(i);
-							psSocketList.add(new PsSocket(JSONsockets.getInt("id"),JSONsockets.getString("name"),apiKey));
+							if(JSONsockets.getInt("status") == 1){
+								psSocketList.add(new PsSocket(JSONsockets.getInt("id"),JSONsockets.getString("name"),apiKey,true));	
+							} else if(JSONsockets.getInt("status") == 0){
+								psSocketList.add(new PsSocket(JSONsockets.getInt("id"),JSONsockets.getString("name"),apiKey,false));	
+							} else {
+								listener.failed();
+							}
 						}
 					}
 					else if(data.getString("status").equals("failed")) {
@@ -67,13 +78,18 @@ public class Group implements Serializable{
 				}
 				listener.onSocketReceive(psSocketList.toArray(new PsSocket[0]));
 			}
-		});
+
+            @Override
+            public void onReceiveFailure() {
+                listener.failed();
+            }
+        });
 	}
 	
 	public void addSocket(PsSocket psSocket, final OnSocketReceiveListener listener){
 		Server.sendAndRecieve("{groupid:"+id+",request:addsocket,apikey:"+apiKey+",socket:"+Integer.toString(psSocket.getId())+"}", new Server.OnReceiveListener() {
 			@Override
-			public void onReceive(String result) {
+			public void onReceiveSuccess(String result) {
 				ArrayList<PsSocket> psSocketList = new ArrayList<PsSocket>();
 				try {
 					JSONObject data = new JSONObject(result);
@@ -81,7 +97,13 @@ public class Group implements Serializable{
 						JSONArray sockets = data.getJSONArray("sockets");
 						for(int i = 0; i < sockets.length(); i++){
 							JSONObject JSONsockets = sockets.getJSONObject(i);
-							psSocketList.add(new PsSocket(JSONsockets.getInt("id"),JSONsockets.getString("name"),apiKey));
+							if(JSONsockets.getInt("status") == 1){
+								psSocketList.add(new PsSocket(JSONsockets.getInt("id"),JSONsockets.getString("name"),apiKey,true));	
+							} else if(JSONsockets.getInt("status") == 0){
+								psSocketList.add(new PsSocket(JSONsockets.getInt("id"),JSONsockets.getString("name"),apiKey,false));	
+							} else {
+								listener.failed();
+							}
 						}
 					}
 					else if(data.getString("status").equals("failed")) {
@@ -92,13 +114,18 @@ public class Group implements Serializable{
 				}
 				listener.onSocketReceive(psSocketList.toArray(new PsSocket[0]));
 			}
-		});
+
+            @Override
+            public void onReceiveFailure() {
+                listener.failed();
+            }
+        });
 	}
 	
 	public void turnOn(){
 		Server.sendAndRecieve("{groupid:"+id+",request:turnon,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
-			public void onReceive(String result) {
+			public void onReceiveSuccess(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getInt("groupid") == id){
@@ -108,14 +135,19 @@ public class Group implements Serializable{
 					e.printStackTrace();
 				}
 			}
-		});
+
+            @Override
+            public void onReceiveFailure() {
+                // TODO: Notify user
+            }
+        });
 		
 	}
 	
 	public void turnOff(){
 		Server.sendAndRecieve("{groupid:"+id+",request:turnoff,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
-			public void onReceive(String result) {
+			public void onReceiveSuccess(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getInt("groupid") == id){
@@ -125,7 +157,12 @@ public class Group implements Serializable{
 					e.printStackTrace();
 				}
 			}
-		});
+
+            @Override
+            public void onReceiveFailure() {
+                // TODO: Notify user
+            }
+        });
 	}
 	
 	public String getName() {

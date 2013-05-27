@@ -15,7 +15,6 @@ import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
 import android.os.Bundle;
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
@@ -29,11 +28,19 @@ public class GraphActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_graph);
+
+        // Find the views.
 		final GraphView graphView = (GraphView) findViewById(R.id.graphview);
 		final ProgressBar pb = (ProgressBar) findViewById(R.id.loading_progress);
+
+        // Retrieve the graphable which data is going to be displayed.
 		Intent intent = getIntent();
 		final Graphable graphable = (Graphable) intent.getSerializableExtra("Graphable");
-		final Context context = this;
+        if (graphable == null) {
+            throw new IllegalArgumentException("GraphActivity needs to be provided a Graphable object - otherwise " +
+                    "there's no point, dummy!");
+        }
+
 		Calendar cal = Calendar.getInstance();
 		
 		final List<Consumption> data = new ArrayList<Consumption>();
@@ -45,7 +52,8 @@ public class GraphActivity extends Activity {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZZ", Locale.ENGLISH);
 				String start = String.format("%s-%s-%s 00:00:00+00",year,monthOfYear,dayOfMonth);
 				try{
-					graphable.getConsumption(sdf.parse(start), new Date(System.currentTimeMillis()), new OnConsumptionReceiveListener() {
+
+                    graphable.getConsumption(sdf.parse(start), new Date(System.currentTimeMillis()), new OnConsumptionReceiveListener() {
 
 						@Override
 						public void onConsumptionReceive(Consumption[] consumption) {
@@ -56,11 +64,11 @@ public class GraphActivity extends Activity {
 
 						@Override
 						public void failed() {
-							Toast.makeText(context, "FAILED TO GET CONSUMPTION", Toast.LENGTH_SHORT).show();
+							Toast.makeText(GraphActivity.this, "FAILED TO GET CONSUMPTION", Toast.LENGTH_SHORT).show();
 						}
 					});
 				}catch(ParseException e){
-					Log.d("bug", "Error with parsing: " + e.getStackTrace());
+					Log.d("bug", "Error with parsing.");
 				}
 				
 			}
@@ -69,33 +77,59 @@ public class GraphActivity extends Activity {
 		dp.show();
 
 	}
+	
 	private void display(List<Consumption> data, GraphView graphView){
-		List<Point> points = transform(data);
+		List<Point> points = transform2(data);
 		graphView.setDataPoints(points);
-		graphView.setYAxisEnd(getMaxWatt(data));
+		graphView.setYAxisEnd(getMaxWatt(points));
 		graphView.setXAxisEnd(points.get(points.size()-1).x);
 		graphView.setXSegments((int)(points.get(points.size()-1).x - points.get(0).x)/4);
-		graphView.setYSegments((int)(getMaxWatt(data)/4)); 
+		//graphView.setYSegments((int)(getMaxWatt(points)/4));
+        graphView.setYSegments(500);
 		
 	}
-	private List<Point> transform(List<Consumption> data) {
-		List<Point> points = new ArrayList<Point>();
-		long firstTime = data.get(0).getDate().getTime();
-		for(Consumption c : data) {
-			long time = c.getDate().getTime() - firstTime;
-			time /= 10000000;
-			Point point = new Point(time, c.getWatt());
-			points.add(point);
-		}
+	/**
+	 * 
+	 * @param data the list of datapoints to be transformed
+	 * @return List<Point> the format the graph can display
+	 */
+    private List<Point> transform2(List<Consumption> data) {
+        List<Point> graphViewData = new ArrayList<Point>();
 
-		return points;
-	}
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(data.get(0).getDate());
 
-	private int getMaxWatt(List<Consumption> data) {
+        int currentDay = cal.get(Calendar.DAY_OF_YEAR);
+        int totalWatt = 0;
+        int j = 0;
+
+        for(Consumption c : data) {
+            cal.setTime(c.getDate());
+
+            Log.i("SmartPower", ""+cal.get(Calendar.DAY_OF_YEAR));
+
+            if(currentDay == cal.get(Calendar.DAY_OF_YEAR)) {
+                totalWatt += c.getWatt() * (10.0f/3600);
+            } else {
+                currentDay = cal.get(Calendar.DAY_OF_YEAR);
+                graphViewData.add(new Point(j++, totalWatt));
+                totalWatt = 0;
+            }
+        }
+        graphViewData.add(new Point(j++, totalWatt));
+
+        return graphViewData;
+    }
+    /**
+     *  
+     * @param data the list of datapoint
+     * @return the value of the consumption with the highest value
+     */
+	private int getMaxWatt(List<Point> data) {
 		int maxWatt = 0;
-		for(Consumption c : data) {
-			if(c.getWatt() > maxWatt) {
-				maxWatt = c.getWatt();
+		for(Point p : data) {
+			if(p.y > maxWatt) {
+				maxWatt = (int) p.y;
 			}
 		}
 

@@ -55,7 +55,7 @@ public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginAct
 	}
 	
 	// Does the log out function actually log the user out?
-	// User story 48567259
+	// User story 48567259 (log out)
 	public void testLogout() throws Exception {
 		solo.assertCurrentActivity("wrong activity", LoginActivity.class);
 		
