@@ -151,39 +151,40 @@ public class RemoteFragment extends SherlockFragment {
 
             toggleButton.setChecked(child.getStatus());
 
-            toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    if (isChecked) {
-                        child.turnOn(new GenericListener() {
-                            @Override
-                            public void success() {
-                                toggleButton.setChecked(true);
-                            }
-
-                            @Override
-                            public void failed() {
-                                toggleButton.setChecked(false);
-                                Toast.makeText(getActivity(), getResources().getString(R.string.turn_on_failure), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    } else {
-                        child.turnOff(new GenericListener() {
-                            @Override
-                            public void success() {
-                                toggleButton.setChecked(false);
-                            }
-
-                            @Override
-                            public void failed() {
-                                toggleButton.setChecked(true);
-                                Toast.makeText(getActivity(), getResources().getString(R.string.turn_off_failure), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                    }
-                }
-            });
-
+            toggleButton.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					toggleButton.setChecked(!toggleButton.isChecked());
+					final ToggleButton tb = toggleButton;
+					PsSocket socket = child;
+					if ( tb.isChecked()) {
+						socket.turnOff(new GenericListener() {
+							
+							@Override
+							public void success() {
+								tb.setChecked(false);
+							}
+							
+							@Override
+							public void failed() {
+							}
+						});
+					}else {
+						socket.turnOn(new GenericListener() {
+							
+							@Override
+							public void success() {
+								tb.setChecked(true);
+							}
+							
+							@Override
+							public void failed() {
+							}
+						});
+					}
+				}
+			});
             renameButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
