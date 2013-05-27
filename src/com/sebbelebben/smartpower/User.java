@@ -300,13 +300,28 @@ public class User implements Serializable, Graphable   {
     	}
     }
 
-    /*public boolean isFavorite() {
-        return true;
-    }*/
+    /**
+	 * @param context
+	 * @return eturns all the favorite PowerStrips and return null if there are non.
+	 */
+    public boolean isFavorite(PowerStrip ps, Context context) {
+    	SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+    	String favorite = sp.getString("Favorite", null);
+    	try {
+    		JSONArray jsArray = new JSONArray(favorite);
+    		for(int index = 0; index < jsArray.length(); index++) {
+    			PowerStrip comparablePS = (PowerStrip) jsArray.get(index);
+    			if(!ps.compareTo(comparablePS)) return true;
+			}
+    	} catch (JSONException e) {
+    		e.printStackTrace();
+    	}
+        return false;
+    }
 
     /**
 	 * @param context
-	 * Returns all the favorite PowerStrips and return null if there are non.
+	 * @return Returns all the favorite PowerStrips and return null if there are non.
 	 */
     public ArrayList<PowerStrip> getFavorite(Context context) {
     	SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);

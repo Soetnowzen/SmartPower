@@ -256,9 +256,10 @@ public class RemoteFragment extends SherlockFragment {
                 	final User user = (User) getArguments().getSerializable("User");
                 	//v.getId();
                 	
+                	user.addFavorite(group, getActivity());
                 	//mPowerStrips.get(v.getId());
-                	if(user.isFavorite()) user.removeFavorite(group);
-                	else user.addFavorite(group);
+                	//if(user.isFavorite()) user.removeFavorite(group);
+                	//else user.addFavorite(group);
                 }
             });
 
