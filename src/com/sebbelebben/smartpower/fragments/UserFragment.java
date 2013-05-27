@@ -3,7 +3,11 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -11,11 +15,13 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.sebbelebben.smartpower.PsSocket;
 import com.sebbelebben.smartpower.R;
+import com.sebbelebben.smartpower.Server.GenericListener;
 import com.sebbelebben.smartpower.User;
 /**
  * Fragment to display user information, 
@@ -51,18 +57,22 @@ public class UserFragment extends SherlockFragment {
 		final User user = (User) getArguments().getSerializable("User");
 		Resources res = getResources();
 		View view = inflater.inflate(R.layout.fragment_user, container, false);
+		
+		String header = res.getString(R.string.favorites);
+		SpannableString spanString = new SpannableString(header);
+		spanString.setSpan(new UnderlineSpan(), 0, spanString.length(), 0);
+		spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
+		((TextView) view.findViewById(R.id.text)).setText(spanString);
+		//String str = String.format(res.getString(R.string.userInfo), user.getUserName(), user.getPassword());
+		
 		listView = (ListView) view.findViewById(R.id.listView);
-
-		String str = String.format(res.getString(R.string.userInfo), user.getUserName(), user.getPassword());
-		((TextView) view.findViewById(R.id.textView)).setText(str);
-
 		list = new ArrayList<PsSocket>();
-		list.add(new PsSocket(0, "hennig", "apikey", true));
-		list.add(new PsSocket(0, "hennigphan123456711111111111111111111111111111", "apikey", true));
-		list.add(new PsSocket(0, "hennig2", "apikey", true));
-		list.add(new PsSocket(0, "hennig3", "apikey", true));
-		list.add(new PsSocket(0, "hennig4", "apikey", true));
-		list.add(new PsSocket(0, "hennig5", "apikey", true));
+		list.add(new PsSocket(13, "hennig", "apikey1011", true));
+		list.add(new PsSocket(13, "hennigphan123456711111111111111111111111111111", "apikey", true));
+		list.add(new PsSocket(13, "hennig2", "apikey1011", true));
+		list.add(new PsSocket(13, "hennig3", "apikey1011", true));
+		list.add(new PsSocket(13, "hennig4", "apikey1011", true));
+		list.add(new PsSocket(13, "hennig5", "apikey1011", true));
 
 		mAdapter = new SocketAdapter(getActivity(), R.layout.powerstrip_item, list);
 		if(listView != null)
@@ -87,17 +97,43 @@ public class UserFragment extends SherlockFragment {
 				v = inflater.inflate(R.layout.socket_item1, null);
 			}
 
-			PsSocket socket = objects.get(position);
+			final PsSocket socket = objects.get(position);
 			TextView tv = (TextView) v.findViewById(R.id.text);
 			final ToggleButton tb = (ToggleButton) v.findViewById(R.id.toggle_button);
 			if ( tv != null) tv.setText(socket.getName());
 			if ( tb != null) {
-				tb.setOnClickListener(new OnClickListener() {
+				tb.setChecked(socket.getStatus());
+			
+			tb.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
-						if ( tb.isChecked()) tb.setText("its on"); //send turn on power
-						if ( !tb.isChecked()) tb.setText("its off"); //send turn off power
+						tb.setChecked(!tb.isChecked());
+						if ( tb.isChecked()) {
+							socket.turnOff(new GenericListener() {
+								
+								@Override
+								public void success() {
+									tb.setChecked(false);
+								}
+								
+								@Override
+								public void failed() {
+								}
+							});
+						}else {
+							socket.turnOn(new GenericListener() {
+								
+								@Override
+								public void success() {
+									tb.setChecked(true);
+								}
+								
+								@Override
+								public void failed() {
+								}
+							});
+						}
 					}
 				});
 			}

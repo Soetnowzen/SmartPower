@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -141,7 +142,7 @@ public class User implements Serializable, Graphable   {
 	public void updateUser(final GenericListener listener){
 		Server.sendAndRecieve("{username:"+userName+",request:powerstripsandsockets,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
-			public void onReceiveSuccess(String result) {	
+			public void onReceiveSuccess(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getString("username").equals(userName)){
@@ -151,7 +152,7 @@ public class User implements Serializable, Graphable   {
 							for(int i = 0; i < powerStrips.length(); i++){
 								JSONObject JSONpowerStrip = powerStrips.getJSONObject(i);
 								JSONArray psSockets = JSONpowerStrip.getJSONArray("sockets");
-								ArrayList<PsSocket> psSocketList = new ArrayList<PsSocket>();
+                                ArrayList<PsSocket> psSocketList = new ArrayList<PsSocket>();
 								for(int j = 0; j < psSockets.length(); j++){
 									JSONObject JSONsocket = psSockets.getJSONObject(j);
 									if(JSONsocket.getInt("status") == 1){
@@ -162,6 +163,7 @@ public class User implements Serializable, Graphable   {
 										listener.failed();
 									}
 								}
+
 								if(JSONpowerStrip.getInt("status") == 1){
 									powerStripList.add(new PowerStrip(JSONpowerStrip.getInt("id"),JSONpowerStrip.getString("serialid"),apiKey,JSONpowerStrip.getString("name"),psSocketList.toArray(new PsSocket[0]),true));
 								} else if (JSONpowerStrip.getInt("status") == 0) {

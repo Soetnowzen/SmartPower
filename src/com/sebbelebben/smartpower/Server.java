@@ -1,11 +1,9 @@
 package com.sebbelebben.smartpower;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.net.UnknownHostException;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -13,15 +11,16 @@ import android.util.Log;
 /**
  * A class to send and receive messages to and from the server in a asynchronous task.
  * Also implements interfaces for the different types of requests that can be sent to the server.
- * @author Johan Bregell
  *
+ * @author Johan Bregell
  */
 public class Server {
 	
 	/**
-	 * Main method of the server creates a send task.
-	 * @param message
-	 * @param listener
+	 * Sends a message to the server and calls the listener methods when received a response.
+     *
+	 * @param message The message to be sent to the server.
+	 * @param listener A listener to notify when the message has completed.
 	 */
 	public static void sendAndRecieve(String message, OnReceiveListener listener){
 		SendTask sendTask = new SendTask(listener);
@@ -29,23 +28,24 @@ public class Server {
 	}
 	
 	/**
-	 * 
+	 * Async task for sending a message to the server.
+     *
 	 * @author Johan Bregell
-	 *
 	 */
 	private static class SendTask extends AsyncTask<String, Void, String> {
 		private OnReceiveListener mListener;
 		
 		/**
-		 * Creates a sendtask that can send and receive messages from the server.
-		 * @param listener
+		 * Creates an async task that can send and receive messages from the server.
+         *
+		 * @param listener The listener to be called when a response is received.
 		 */
 		public SendTask(OnReceiveListener listener) {
 			mListener = listener;
 		}
 		
 		/**
-		 * Sends a message to the server and watis for the response.
+		 * Sends a message to the server and waits for the response.
 		 */
 		@Override
 		protected String doInBackground(String... params) {
@@ -53,18 +53,17 @@ public class Server {
 			ret[0] = null;
 			ret[1] = null;
 			String message = params[0];
-			try{
-			     Socket socket = new Socket("bregell.mine.nu", 39500);
-			     PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-			     out.println("Android#"+message);
-			     BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			     ret = in.readLine().split("#");
-			     socket.close();
-			   } catch (UnknownHostException e) {
-				   e.printStackTrace();
-			   } catch  (IOException e) {
-				   e.printStackTrace();
-			   }
+			try {
+			    Socket socket = new Socket("bregell.mine.nu", 39500);
+			    PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
+			    out.println("Android#"+message);
+			    BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+			    ret = in.readLine().split("#");
+			    socket.close();
+			} catch (Exception e) {
+                Log.i("SmartPower", "Error in server!");
+				e.printStackTrace();
+			}
 			if(ret[0].equals("Android")){
 				return ret[1];
 			} else {
@@ -85,7 +84,9 @@ public class Server {
             }
 		}
 	}
-	
+
+    // Interfaces for handling responses from the server
+
 	public static interface OnSetNameReceiveListener{
 		void onSetNameReceived(String name);
 		void failed();
@@ -113,16 +114,6 @@ public class Server {
 	
 	public static interface OnGroupsReceiveListener {
 		void onGroupReceive(Group[] groups);
-		void failed();
-	}
-	
-	public static interface OnPowerStripReceiveListener {
-		void onPowerStripReceive(PowerStrip[] powerStrips);
-		void failed();
-	}
-	
-	public static interface OnPowerStripAndSocketReceiveListener {
-		void onPowerStripAndSocketReceive(PowerStrip[] powerStrips);
 		void failed();
 	}
 	
