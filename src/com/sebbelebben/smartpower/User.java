@@ -304,17 +304,17 @@ public class User implements Serializable, Graphable   {
     }
 
     public void removeFavorite(PowerStrip ps, Context context) {
-    	/*SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+    	SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
     	String favorite = sp.getString("Favorite", null);
     	try {
     		JSONArray jsArray = new JSONArray(favorite);
-    		
+    		for(int index = 0; index < jsArray.length(); index++) {
+    			PowerStrip comparablePS = (PowerStrip) jsArray.get(index);
+    			if(ps.compareTo(comparablePS)) jsArray.put(index, null);
+			}
     	} catch (JSONException e) {
     		e.printStackTrace();
-    	}*/
-    	/*for(int index = 0; index < jsArray.length(); index++) {
-			jsArray.get(index);
-		}*/
+    	}
     }
 
     public boolean isFavorite() {
