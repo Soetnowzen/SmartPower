@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.ImageButton;
@@ -149,7 +147,7 @@ public class RemoteFragment extends SherlockFragment {
 
             final ToggleButton toggleButton = (ToggleButton) view.findViewById(R.id.toggle_button);
             ImageButton renameButton = (ImageButton) view.findViewById(R.id.rename_btn);
-            ImageButton favoriteButton = (ImageButton) view.findViewById(R.id.favorite_btn);
+            final ImageButton favoriteButton = (ImageButton) view.findViewById(R.id.favorite_btn);
             ImageButton consumptionButton = (ImageButton) view.findViewById(R.id.consumption_btn);
 
             toggleButton.setChecked(child.getStatus());
@@ -205,10 +203,12 @@ public class RemoteFragment extends SherlockFragment {
                 	Context context = getActivity();
                 	if(user.isFavorite(child, context)) {
                 		user.removeFavorite(child, context);
+                		favoriteButton.setImageResource(R.drawable.ic_favorite_off_light);
                 		//TODO: Change the image to when not favorite.
                 	}
                 	else {
                 		user.addFavorite(child, context);
+                		favoriteButton.setImageResource(R.drawable.ic_favorite_on_light);
                 		//TODO: Change the image to when is favorite.
                 	}
                 }
