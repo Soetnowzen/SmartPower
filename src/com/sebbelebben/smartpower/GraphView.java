@@ -169,7 +169,8 @@ public class GraphView extends View {
 		int stopX = w;
 		int startY = h - mYPadding;
 		int stopY = h - mYPadding;
-		
+
+        // Draw those sexy axis
 		canvas.drawRect(0, 0, mXPadding, h, mAxisBackgroundPaint);
 		canvas.drawLine(startX, startY, stopX, stopY, mAxisPaint);
 		

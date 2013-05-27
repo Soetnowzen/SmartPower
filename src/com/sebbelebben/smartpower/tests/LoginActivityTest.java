@@ -13,6 +13,9 @@ import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
 import android.widget.ProgressBar;
 
+/**
+ * Robotium test for doing acceptance test on the LoginActivity.
+ */
 public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginActivity> {
 	private Solo solo;
 	

@@ -3,7 +3,11 @@ import java.util.ArrayList;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -53,11 +57,19 @@ public class UserFragment extends SherlockFragment {
 		final User user = (User) getArguments().getSerializable("User");
 		Resources res = getResources();
 		View view = inflater.inflate(R.layout.fragment_user, container, false);
+		
+		String header = res.getString(R.string.favorites);
+		SpannableString spanString = new SpannableString(header);
+		spanString.setSpan(new UnderlineSpan(), 0, spanString.length(), 0);
+		spanString.setSpan(new StyleSpan(Typeface.BOLD), 0, spanString.length(), 0);
+		((TextView) view.findViewById(R.id.text)).setText(spanString);
+		//String str = String.format(res.getString(R.string.userInfo), user.getUserName(), user.getPassword());
+		
 		listView = (ListView) view.findViewById(R.id.listView);
 
-		String str = String.format(res.getString(R.string.userInfo), user.getUserName(), user.getPassword());
-		((TextView) view.findViewById(R.id.textView)).setText(str);
-		
+//		String str = String.format(res.getString(R.string.userInfo), user.getUserName(), user.getPassword());
+//		((TextView) view.findViewById(R.id.textView)).setText(str);
+
 		list = new ArrayList<PsSocket>();
 		list = user.getFavorite(getActivity());
 		/*list.add(new PsSocket(13, "hennig", "apikey1011", true));
