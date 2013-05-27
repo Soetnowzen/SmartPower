@@ -151,8 +151,38 @@ public class RemoteFragment extends SherlockFragment {
             ImageButton renameButton = (ImageButton) view.findViewById(R.id.rename_btn);
             ImageButton favoriteButton = (ImageButton) view.findViewById(R.id.favorite_btn);
             ImageButton consumptionButton = (ImageButton) view.findViewById(R.id.consumption_btn);
+            toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    if (isChecked) {
+                        child.turnOn(new GenericListener() {
+                            @Override
+                            public void success() {
+                                toggleButton.setChecked(true);
+                            }
 
-            toggleButton.setChecked(child.getStatus());
+                            @Override
+                            public void failed() {
+                                toggleButton.setChecked(false);
+                                Toast.makeText(getActivity(), getResources().getString(R.string.turn_on_failure), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    } else {
+                        child.turnOff(new GenericListener() {
+                            @Override
+                            public void success() {
+                                toggleButton.setChecked(false);
+                            }
+
+                            @Override
+                            public void failed() {
+                                toggleButton.setChecked(true);
+                                Toast.makeText(getActivity(), getResources().getString(R.string.turn_off_failure), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            });
 
             toggleButton.setOnClickListener(new OnClickListener() {
 				

@@ -153,8 +153,8 @@ public class User implements Serializable, Graphable   {
 					JSONObject data = new JSONObject(result);
 					if (data.getString("username").equals(userName)){
 						if(!data.get("powerstrips").equals(null)){
+							ArrayList<PowerStrip> powerStripList = new ArrayList<PowerStrip>();
 							JSONArray powerStrips = data.getJSONArray("powerstrips");
-                            ArrayList<PowerStrip> powerStripList = new ArrayList<PowerStrip>();
 							for(int i = 0; i < powerStrips.length(); i++){
 								JSONObject JSONpowerStrip = powerStrips.getJSONObject(i);
 								JSONArray psSockets = JSONpowerStrip.getJSONArray("sockets");

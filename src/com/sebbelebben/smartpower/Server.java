@@ -78,7 +78,7 @@ public class Server {
 		protected void onPostExecute(String result) {
             if(result != null) {
 			    Log.i("SmartPower", result);
-			    mListener.onReceiveSuccess(result);
+ 
             } else {
                 mListener.onReceiveFailure();
             }

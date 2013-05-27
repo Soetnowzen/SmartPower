@@ -76,7 +76,7 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 			public void onReceiveSuccess(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
-					if (data.getInt("powerstripid") == id){
+					if (data.getInt("powerstripid") == id && data.getBoolean("result") == true){
 						PowerStrip.this.name = data.getString("newname");
 						listener.onSetNameReceived(data.getString("newname"));
 					} else {
