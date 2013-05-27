@@ -145,7 +145,7 @@ public class RemoteFragment extends SherlockFragment {
             ImageButton renameButton = (ImageButton) view.findViewById(R.id.rename_btn);
             ImageButton favoriteButton = (ImageButton) view.findViewById(R.id.favorite_btn);
             ImageButton consumptionButton = (ImageButton) view.findViewById(R.id.consumption_btn);
-
+            
             toggleButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
