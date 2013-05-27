@@ -20,6 +20,6 @@ This library gives us the possibility of adding a title to each of the sliding f
 
 ### Robotium
 
-For acceptance testing, we chose to use Robotium since it's easy to test the GUI using this library
+For acceptance testing, we chose to use Robotium since it's easy to test the GUI using this library, which would be hard to automate otherwise.
 
 
