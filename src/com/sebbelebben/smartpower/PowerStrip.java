@@ -182,4 +182,8 @@ public class PowerStrip implements Serializable, Graphable{
 		return id;
 	}
 	
+	public boolean compareTo(PowerStrip ps) {
+		return this.getId() == ps.getId();
+	}
+	
 }
