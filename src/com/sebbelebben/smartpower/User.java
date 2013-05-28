@@ -403,6 +403,6 @@ public class User implements Serializable, Graphable   {
     	} catch (JSONException e) {
     		e.printStackTrace();
     	}
-        return null;
+        return new ArrayList<PsSocket>();
     }
 }
