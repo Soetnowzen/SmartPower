@@ -308,7 +308,8 @@ public class User implements Serializable, Graphable   {
 	 * it also saves it as a favorite.
 	 */
     public void addFavorite(PsSocket ps, Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        //SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sp = context.getSharedPreferences(userName, 0);
     	String favorite = sp.getString("Favorite", null);
     	try {
     		//Check if @param favorite is null then make an empty array
@@ -333,7 +334,8 @@ public class User implements Serializable, Graphable   {
 	 * Removes the given PowerStrip from favorites if it exists.
 	 */
     public void removeFavorite(PsSocket psSocket, Context context) {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        //SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sp = context.getSharedPreferences(userName, 0);
     	String favorite = sp.getString("Favorite", null);
     	try {
     		JSONArray jsArray = new JSONArray();
@@ -360,7 +362,8 @@ public class User implements Serializable, Graphable   {
 	 * @return true if the supplied psSocket is in favorite list otherwise false
 	 */
     public boolean isFavorite(PsSocket psSocket, Context context) {
-    	SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+    	//SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sp = context.getSharedPreferences(userName, 0);
     	String favorite = sp.getString("Favorite", null);
     	try {
     		JSONArray jsArray;
@@ -384,7 +387,8 @@ public class User implements Serializable, Graphable   {
 	 * @return Returns all the favorite PowerStrips and return null if there are non.
 	 */
     public ArrayList<PsSocket> getFavorite(Context context) {
-    	SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+    	//SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sp = context.getSharedPreferences(userName, 0);
     	String favorite = sp.getString("Favorite", null);
     	try{
     		ArrayList<PsSocket> list = new ArrayList<PsSocket>();
