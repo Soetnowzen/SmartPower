@@ -44,6 +44,21 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 		this.status = status;
 	}
 	
+	/**
+	 * Takes JSONObject and creates corresponding PsSocket
+	 * @param JSONObject PsSocket as JSONObject
+	 */
+	public PsSocket(JSONObject PsSocketJSON){
+		try {
+			this.id = PsSocketJSON.getInt("id");
+			this.name = PsSocketJSON.getString("name");
+			this.apiKey = PsSocketJSON.getString("apiKey");
+			this.status = PsSocketJSON.getBoolean("status");
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public String toJSON(){
 		return "{\"id\":"+Integer.toString(this.id)+",\"name\":\""+this.name+"\",\"apikey\":\""+this.apiKey+"\",\"status\":"+this.status.toString()+"}";
 		

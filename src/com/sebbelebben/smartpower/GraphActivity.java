@@ -22,6 +22,11 @@ import android.widget.DatePicker;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+/**
+ * Class for displaying a graph of consumption.
+ *
+ * @author Andreas Arvidsson
+ */
 public class GraphActivity extends Activity {
 
 	@Override
@@ -77,7 +82,13 @@ public class GraphActivity extends Activity {
 		dp.show();
 
 	}
-	
+
+    /**
+     * Displays a list of consumption points in the provided {@link GraphView}.
+     *
+     * @param data The consumption data.
+     * @param graphView The graph view.
+     */
 	private void display(List<Consumption> data, GraphView graphView){
 		List<Point> points = transform2(data);
 		graphView.setDataPoints(points);
@@ -89,9 +100,10 @@ public class GraphActivity extends Activity {
 		
 	}
 	/**
-	 * 
-	 * @param data the list of datapoints to be transformed
-	 * @return List<Point> the format the graph can display
+	 * Transforms the list of consumption to a list of data points.
+     *
+	 * @param data The list of datapoints to be transformed.
+	 * @return List<Point> The format the graph can display.
 	 */
     private List<Point> transform2(List<Consumption> data) {
         List<Point> graphViewData = new ArrayList<Point>();
@@ -121,9 +133,10 @@ public class GraphActivity extends Activity {
         return graphViewData;
     }
     /**
-     *  
-     * @param data the list of datapoint
-     * @return the value of the consumption with the highest value
+     *  Gets the maximum watt from the list of data points.
+     *
+     * @param data The list of data points.
+     * @return The value of the consumption with the highest value.
      */
 	private int getMaxWatt(List<Point> data) {
 		int maxWatt = 0;
