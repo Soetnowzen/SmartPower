@@ -1,5 +1,6 @@
 package com.sebbelebben.smartpower;
 
+import android.util.Log;
 import com.actionbarsherlock.view.Window;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -90,6 +91,7 @@ public class MainActivity extends SherlockFragmentActivity implements FavoriteLi
 				fragment = RemoteFragment.newInstance(mUser);
 				break;
 			case 1:
+                Log.i("SmartPower", "CREATING FRAGMENT");
 				fragment = UserFragment.newInstance(mUser);
 				userFragment = (UserFragment) fragment;
 				break;
@@ -125,9 +127,19 @@ public class MainActivity extends SherlockFragmentActivity implements FavoriteLi
 	}
 
 	@Override
+    /**
+     * Called whenever favorites has changed.
+     *
+     * This method is totally a hack. There is no guarantee that viewpager fragments are stored with the used tag in
+     * future android versions. Also, if the fragment layout is changed in the viewpager,
+     * then this will probably not function properly. Use with caution, and party hard.
+     */
 	public void onFavoriteChanged() {
-		userFragment.FavoriteChanged();
-		
-	}
+        FragmentManager fm = getSupportFragmentManager();
+        Fragment f = fm.findFragmentByTag("android:switcher:"+R.id.viewpager+":1");
 
+        if(f != null && f instanceof UserFragment) {
+            ((UserFragment) f).FavoriteChanged();
+        }
+	}
 }
