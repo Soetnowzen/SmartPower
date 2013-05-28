@@ -8,6 +8,6 @@ package com.sebbelebben.smartpower;
  * @author Johan Swetzén
  */
 public interface PsPart {
-    public void setName(String name, final Server.OnSetNameReceiveListener listener);
+    public void setName(String name, final Server.GenericStringListener listener);
     public void updateStatus(final Server.OnUpdateListener listener);
 }

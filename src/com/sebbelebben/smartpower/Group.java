@@ -1,11 +1,15 @@
 package com.sebbelebben.smartpower;
 
 import java.io.Serializable;
-import java.util.*;
-import org.json.*;
+import java.util.ArrayList;
+import java.util.Date;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.sebbelebben.smartpower.Server.GenericStringListener;
 import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
-import com.sebbelebben.smartpower.Server.OnReceiveListener;
 import com.sebbelebben.smartpower.Server.OnSocketReceiveListener;
 
 public class Group implements Serializable{
@@ -24,9 +28,9 @@ public class Group implements Serializable{
 	}
 	
 	public void getConsumption(Date start, Date end, final OnConsumptionReceiveListener listener){
-		Server.sendAndRecieve("{groupid:"+id+",request:consumption,apikey:"+apiKey+",startdate:"+start+",enddate:"+end+"}", new OnReceiveListener() {
+		Server.sendAndRecieve("{groupid:"+id+",request:consumption,apikey:"+apiKey+",startdate:"+start+",enddate:"+end+"}", new GenericStringListener() {
 			@Override
-			public void onReceiveSuccess(String result) {
+			public void success(String result) {
 				ArrayList<Consumption> consumptionList = new ArrayList<Consumption>();
 				try {
 					JSONObject data = new JSONObject(result);
@@ -44,16 +48,16 @@ public class Group implements Serializable{
 			}
 
             @Override
-            public void onReceiveFailure() {
+            public void failed() {
                 listener.failed();
             }
         });
 	}
 	
 	public void getSockets(final OnSocketReceiveListener listener){
-		Server.sendAndRecieve("{groupid:"+id+",request:sockets,apikey:"+apiKey+"}", new Server.OnReceiveListener() {
+		Server.sendAndRecieve("{groupid:"+id+",request:sockets,apikey:"+apiKey+"}", new GenericStringListener() {
 			@Override
-			public void onReceiveSuccess(String result) {
+			public void success(String result) {
 				ArrayList<PsSocket> psSocketList = new ArrayList<PsSocket>();
 				try {
 					JSONObject data = new JSONObject(result);
@@ -80,16 +84,16 @@ public class Group implements Serializable{
 			}
 
             @Override
-            public void onReceiveFailure() {
+            public void failed() {
                 listener.failed();
             }
         });
 	}
 	
 	public void addSocket(PsSocket psSocket, final OnSocketReceiveListener listener){
-		Server.sendAndRecieve("{groupid:"+id+",request:addsocket,apikey:"+apiKey+",socket:"+Integer.toString(psSocket.getId())+"}", new Server.OnReceiveListener() {
+		Server.sendAndRecieve("{groupid:"+id+",request:addsocket,apikey:"+apiKey+",socket:"+Integer.toString(psSocket.getId())+"}", new GenericStringListener() {
 			@Override
-			public void onReceiveSuccess(String result) {
+			public void success(String result) {
 				ArrayList<PsSocket> psSocketList = new ArrayList<PsSocket>();
 				try {
 					JSONObject data = new JSONObject(result);
@@ -116,16 +120,16 @@ public class Group implements Serializable{
 			}
 
             @Override
-            public void onReceiveFailure() {
+            public void failed() {
                 listener.failed();
             }
         });
 	}
 	
 	public void turnOn(){
-		Server.sendAndRecieve("{groupid:"+id+",request:turnon,apikey:"+apiKey+"}", new OnReceiveListener() {
+		Server.sendAndRecieve("{groupid:"+id+",request:turnon,apikey:"+apiKey+"}", new GenericStringListener() {
 			@Override
-			public void onReceiveSuccess(String result) {
+			public void success(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getInt("groupid") == id){
@@ -137,17 +141,17 @@ public class Group implements Serializable{
 			}
 
             @Override
-            public void onReceiveFailure() {
-                // TODO: Notify user
+            public void failed() {
+                
             }
         });
 		
 	}
 	
 	public void turnOff(){
-		Server.sendAndRecieve("{groupid:"+id+",request:turnoff,apikey:"+apiKey+"}", new OnReceiveListener() {
+		Server.sendAndRecieve("{groupid:"+id+",request:turnoff,apikey:"+apiKey+"}", new GenericStringListener() {
 			@Override
-			public void onReceiveSuccess(String result) {
+			public void success(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getInt("groupid") == id){
@@ -159,8 +163,8 @@ public class Group implements Serializable{
 			}
 
             @Override
-            public void onReceiveFailure() {
-                // TODO: Notify user
+            public void failed() {
+            	
             }
         });
 	}

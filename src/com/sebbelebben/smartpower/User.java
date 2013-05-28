@@ -17,10 +17,10 @@ import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
 
 import com.sebbelebben.smartpower.Server.GenericListener;
+import com.sebbelebben.smartpower.Server.GenericStringListener;
 import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
 import com.sebbelebben.smartpower.Server.OnGroupsReceiveListener;
 import com.sebbelebben.smartpower.Server.OnNewGroupReceiveListener;
-import com.sebbelebben.smartpower.Server.OnReceiveListener;
 
 
 /**
@@ -93,9 +93,9 @@ public class User implements Serializable, Graphable   {
 	 * @param listener
 	 */
 	public void logIn(final GenericListener listener){
-		Server.sendAndRecieve("{username:"+userName+",request:login,password:"+password+"}", new OnReceiveListener() {
+		Server.sendAndRecieve("{username:"+userName+",request:login,password:"+password+"}", new GenericStringListener() {
 			@Override
-			public void onReceiveSuccess(String result) {
+			public void success(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getString("username").equals(userName)){
@@ -116,7 +116,7 @@ public class User implements Serializable, Graphable   {
 			}
 
             @Override
-            public void onReceiveFailure() {
+            public void failed() {
                 listener.failed();
             }
 		});
@@ -145,9 +145,9 @@ public class User implements Serializable, Graphable   {
 	 * @param listener
 	 */
 	public void updateUser(final GenericListener listener){
-		Server.sendAndRecieve("{username:"+userName+",request:powerstripsandsockets,apikey:"+apiKey+"}", new OnReceiveListener() {
+		Server.sendAndRecieve("{username:"+userName+",request:powerstripsandsockets,apikey:"+apiKey+"}", new GenericStringListener() {
 			@Override
-			public void onReceiveSuccess(String result) {
+			public void success(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getString("username").equals(userName)){
@@ -191,7 +191,7 @@ public class User implements Serializable, Graphable   {
 			}
 
             @Override
-            public void onReceiveFailure() {
+            public void failed() {
                 listener.failed();
             }
         });
@@ -203,9 +203,9 @@ public class User implements Serializable, Graphable   {
 	 * @param listener
 	 */
 	public void createNewGroup(String name, final OnNewGroupReceiveListener listener){
-		Server.sendAndRecieve("{username:"+userName+",request:newgroup,apikey:"+apiKey+",name:"+name+"}", new OnReceiveListener() {
+		Server.sendAndRecieve("{username:"+userName+",request:newgroup,apikey:"+apiKey+",name:"+name+"}", new GenericStringListener() {
 			@Override
-			public void onReceiveSuccess(String result) {
+			public void success(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getString("username").equals(userName)){
@@ -219,7 +219,7 @@ public class User implements Serializable, Graphable   {
 			}
 
             @Override
-            public void onReceiveFailure() {
+            public void failed() {
                 listener.failed();
             }
         });
@@ -230,9 +230,10 @@ public class User implements Serializable, Graphable   {
 	 * @param listener
 	 */
 	public void getGroups(final OnGroupsReceiveListener listener){
-		Server.sendAndRecieve("{username:"+userName+",request:groups,apikey:"+apiKey+"}", new OnReceiveListener() {
+		Server.sendAndRecieve("{username:"+userName+",request:groups,apikey:"+apiKey+"}", new GenericStringListener() {
+			
 			@Override
-			public void onReceiveSuccess(String result) {
+			public void success(String result) {
 				ArrayList<Group> groupList = new ArrayList<Group>();
 				try {
 					JSONObject data = new JSONObject(result);
@@ -252,10 +253,20 @@ public class User implements Serializable, Graphable   {
 			}
 
             @Override
-            public void onReceiveFailure() {
+            public void failed() {
                 listener.failed();
             }
         });
+	}
+	
+	/**
+	 * 
+	 * @param listener
+	 */
+	public void getConsumption(final OnConsumptionReceiveListener listener){
+		Date end = new Date(System.currentTimeMillis());
+		Date start = new Date(System.currentTimeMillis() - (3600*1000));
+		getConsumption(start, end, listener);
 	}
 	
 	/**
@@ -266,9 +277,9 @@ public class User implements Serializable, Graphable   {
 	 */
 	public void getConsumption(Date start, Date end, final OnConsumptionReceiveListener listener){
 		DateFormat dd = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss.SSSZ", Locale.ENGLISH);
-		Server.sendAndRecieve("{username:"+userName+",request:consumption,apikey:"+apiKey+",startdate:"+dd.format(start)+",enddate:"+dd.format(end)+"}", new OnReceiveListener() {
+		Server.sendAndRecieve("{username:"+userName+",request:consumption,apikey:"+apiKey+",startdate:"+dd.format(start)+",enddate:"+dd.format(end)+"}", new GenericStringListener() {
 			@Override
-			public void onReceiveSuccess(String result) {
+			public void success(String result) {
 				ArrayList<Consumption> consumptionList = new ArrayList<Consumption>();
 				try {
 					JSONObject data = new JSONObject(result);
@@ -295,7 +306,7 @@ public class User implements Serializable, Graphable   {
 			}
 
             @Override
-            public void onReceiveFailure() {
+            public void failed() {
                 listener.failed();
             }
         });

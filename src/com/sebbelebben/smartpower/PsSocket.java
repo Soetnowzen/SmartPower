@@ -12,9 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.sebbelebben.smartpower.Server.GenericListener;
+import com.sebbelebben.smartpower.Server.GenericStringListener;
 import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
-import com.sebbelebben.smartpower.Server.OnReceiveListener;
-import com.sebbelebben.smartpower.Server.OnSetNameReceiveListener;
 import com.sebbelebben.smartpower.Server.OnUpdateListener;
 
 
@@ -68,9 +67,9 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 	 */
 	public void getConsumption(Date start, Date end, final OnConsumptionReceiveListener listener){
         DateFormat dd = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss.SSSZ", Locale.ENGLISH);
-        Server.sendAndRecieve("{socketid:"+id+",request:consumption,apikey:"+apiKey+",startdate:"+dd.format(start)+",enddate:"+dd.format(end)+"}", new OnReceiveListener() {
+        Server.sendAndRecieve("{socketid:"+id+",request:consumption,apikey:"+apiKey+",startdate:"+dd.format(start)+",enddate:"+dd.format(end)+"}", new GenericStringListener() {
             @Override
-            public void onReceiveSuccess(String result) {
+            public void success(String result) {
                 ArrayList<Consumption> consumptionList = new ArrayList<Consumption>();
                 try {
                     JSONObject data = new JSONObject(result);
@@ -97,7 +96,7 @@ public class PsSocket implements Serializable,Graphable, PsPart {
             }
 
             @Override
-            public void onReceiveFailure() {
+            public void failed() {
                 listener.failed();
             }
         });
@@ -108,17 +107,17 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 	 * @param name the new name of the PsSocket
 	 * @param listener 
 	 */
-	public void setName(String name, final OnSetNameReceiveListener listener){
+	public void setName(String name, final GenericStringListener listener){
         final String previousName = this.name;
         this.name = name;
-		Server.sendAndRecieve("{socketid:"+id+",request:setname,apikey:"+apiKey+",newname:"+name+"}", new OnReceiveListener() {
+		Server.sendAndRecieve("{socketid:"+id+",request:setname,apikey:"+apiKey+",newname:"+name+"}", new GenericStringListener() {
 			@Override
-			public void onReceiveSuccess(String result) {
+			public void success(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getInt("socketid") == id){
                         PsSocket.this.name = data.getString("newname");
-						listener.onSetNameReceived(data.getString("newname"));
+						listener.success(data.getString("newname"));
 					} else {
                         PsSocket.this.name = previousName;
 						listener.failed();
@@ -129,7 +128,7 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 			}
 
             @Override
-            public void onReceiveFailure() {
+            public void failed() {
                 listener.failed();
             }
         });
@@ -155,9 +154,9 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 	 * Sends a turn on packet to the server.
 	 */
 	public void turnOn(final GenericListener listener){
-		Server.sendAndRecieve("{socketid:"+id+",request:turnon,apikey:"+apiKey+"}", new OnReceiveListener() {
+		Server.sendAndRecieve("{socketid:"+id+",request:turnon,apikey:"+apiKey+"}", new GenericStringListener() {
 			@Override
-			public void onReceiveSuccess(String result) {
+			public void success(String result) {
 				if(result.equals("switchRequestTrue")){
 					PsSocket.this.status = true;
 					listener.success();
@@ -167,7 +166,7 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 			}
 
             @Override
-            public void onReceiveFailure() {
+            public void failed() {
                 listener.failed();
             }
         });
@@ -178,9 +177,9 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 	 * Sends a turn off packet to the server.
 	 */
 	public void turnOff(final GenericListener listener){
-		Server.sendAndRecieve("{socketid:"+id+",request:turnoff,apikey:"+apiKey+"}", new OnReceiveListener() {
+		Server.sendAndRecieve("{socketid:"+id+",request:turnoff,apikey:"+apiKey+"}", new GenericStringListener() {
 			@Override
-			public void onReceiveSuccess(String result) {
+			public void success(String result) {
 				if(result.equals("switchRequestTrue")){
 					PsSocket.this.status = false;
 					listener.success();
@@ -190,7 +189,7 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 			}
 
             @Override
-            public void onReceiveFailure() {
+            public void failed() {
                 listener.failed();
             }
         });
@@ -218,10 +217,10 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 	}
 	
 	public void updateStatus(final OnUpdateListener listener){
-		Server.sendAndRecieve("{socketid:"+id+",request:status,apikey:"+apiKey+"}", new OnReceiveListener() {
+		Server.sendAndRecieve("{socketid:"+id+",request:status,apikey:"+apiKey+"}", new GenericStringListener() {
 			
 			@Override
-			public void onReceiveSuccess(String result) {
+			public void success(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getInt("socketid") == id){
@@ -243,7 +242,7 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 			}
 			
 			@Override
-			public void onReceiveFailure() {
+			public void failed() {
 				listener.failed();
 			}
 		});
