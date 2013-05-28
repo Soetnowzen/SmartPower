@@ -32,7 +32,8 @@
         </activity>
         <activity
             android:name="com.sebbelebben.smartpower.MainActivity"
-            android:label="" >
+            android:label=""
+            android:configChanges="keyboardHidden|orientation" >
         </activity>
         <activity
             android:name="com.sebbelebben.smartpower.GraphActivity"

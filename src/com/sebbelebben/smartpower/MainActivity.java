@@ -114,7 +114,7 @@ public class MainActivity extends SherlockFragmentActivity implements FavoriteLi
 		try {
 			jUser.put("Username", mUser.getUserName());
 			jUser.put("Password", mUser.getPassword());
-			jUser.put("Loggged in", mUser.loginStatus());
+			jUser.put("Logged in", mUser.loginStatus());
 			SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
     		Editor edit = sp.edit();
     		edit.putString("USER", jUser.toString());

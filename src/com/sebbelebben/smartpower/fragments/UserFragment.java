@@ -47,6 +47,7 @@ public class UserFragment extends SherlockFragment {
 	public static UserFragment newInstance(User user) {
 		UserFragment f = new UserFragment();
 		Bundle args = new Bundle();
+        f.setRetainInstance(true);
 		args.putSerializable("User", user);
 		f.setArguments(args);
 		return f;
