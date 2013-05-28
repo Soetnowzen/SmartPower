@@ -1,6 +1,8 @@
 package com.sebbelebben.smartpower.fragments;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -109,11 +111,14 @@ public class RemoteFragment extends SherlockFragment {
      * Note that the data must be already loaded - both powerstrips and the sockets.
      */
 	public class ExpandablePowerStripAdapter extends BaseExpandableListAdapter {
+        private Map<Integer, View[]> childMap = new HashMap<Integer, View[]>();
 		private Context context;
 		private ArrayList<PowerStrip> groups;
+
 		public ExpandablePowerStripAdapter(Context context, ArrayList<PowerStrip> groups) {
 			this.context = context;
 			this.groups = groups;
+
 		}
 
 		public Object getChild(int groupPosition, int childPosition) {
@@ -147,7 +152,7 @@ public class RemoteFragment extends SherlockFragment {
 
             final ToggleButton toggleButton = (ToggleButton) view.findViewById(R.id.toggle_button);
             ImageButton renameButton = (ImageButton) view.findViewById(R.id.rename_btn);
-            ImageButton favoriteButton = (ImageButton) view.findViewById(R.id.favorite_btn);
+            final ImageButton favoriteButton = (ImageButton) view.findViewById(R.id.favorite_btn);
             ImageButton consumptionButton = (ImageButton) view.findViewById(R.id.consumption_btn);
 
             toggleButton.setChecked(child.getStatus());
@@ -156,6 +161,7 @@ public class RemoteFragment extends SherlockFragment {
 				
 				@Override
 				public void onClick(View v) {
+                    getSherlockActivity().setProgressBarIndeterminateVisibility(true);
 					toggleButton.setChecked(!toggleButton.isChecked());
 					final ToggleButton tb = toggleButton;
 					PsSocket socket = child;
@@ -164,11 +170,14 @@ public class RemoteFragment extends SherlockFragment {
 							
 							@Override
 							public void success() {
+                                getSherlockActivity().setProgressBarIndeterminateVisibility(false);
 								tb.setChecked(false);
 							}
 							
 							@Override
 							public void failed() {
+                                getSherlockActivity().setProgressBarIndeterminateVisibility(false);
+                                Toast.makeText(getActivity(), getResources().getString(R.string.turn_off_failure), Toast.LENGTH_SHORT).show();
 							}
 						});
 					}else {
@@ -176,16 +185,20 @@ public class RemoteFragment extends SherlockFragment {
 							
 							@Override
 							public void success() {
+                                getSherlockActivity().setProgressBarIndeterminateVisibility(false);
 								tb.setChecked(true);
 							}
 							
 							@Override
 							public void failed() {
+                                getSherlockActivity().setProgressBarIndeterminateVisibility(false);
+                                Toast.makeText(getActivity(), getResources().getString(R.string.turn_on_failure), Toast.LENGTH_SHORT).show();
 							}
 						});
 					}
 				}
 			});
+
             renameButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -193,21 +206,28 @@ public class RemoteFragment extends SherlockFragment {
                 }
             });
 
+            // Set the initial state of the favorite button
+            User user = (User) getArguments().getSerializable("User");
+            if(user.isFavorite(child, getActivity())) {
+                favoriteButton.setImageResource(R.drawable.ic_favorite_on_light);
+            } else {
+                favoriteButton.setImageResource(R.drawable.ic_favorite_off_light);
+            }
+
             favoriteButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Favorite", Toast.LENGTH_SHORT).show();
                     //Retrieve the User from the intent
                 	final User user = (User) getArguments().getSerializable("User");
                 	
                 	Context context = getActivity();
                 	if(user.isFavorite(child, context)) {
                 		user.removeFavorite(child, context);
-                		//TODO: Change the image to when not favorite.
+                		favoriteButton.setImageResource(R.drawable.ic_favorite_off_light);
                 	}
                 	else {
                 		user.addFavorite(child, context);
-                		//TODO: Change the image to when is favorite.
+                		favoriteButton.setImageResource(R.drawable.ic_favorite_on_light);
                 	}
                 }
             });
@@ -223,6 +243,14 @@ public class RemoteFragment extends SherlockFragment {
 
 			setupFlipper(view);
             //setupOptionsItem(view);
+
+            // Cache the view in the map
+            View[] cache = childMap.get(groupPos);
+            if(cache == null) {
+                cache = new View[getChildrenCount(groupPos)];
+            }
+            cache[childPos] = view;
+            childMap.put(groupPos, cache);
 			
 			return view;
 		}
@@ -282,6 +310,8 @@ public class RemoteFragment extends SherlockFragment {
 				view = inf.inflate(R.layout.powerstrip_item, null);
 			}
 
+            final ViewFlipper flipper = (ViewFlipper) view.findViewById(R.id.viewflipper);
+
             // Set the text of the textview to the powerstrip name.
 			TextView tv = (TextView) view.findViewById(R.id.text);
 			tv.setText(group.getName());
@@ -293,6 +323,14 @@ public class RemoteFragment extends SherlockFragment {
 					if(!mListView.isGroupExpanded(groupPos)) {
 						mListView.expandGroup(groupPos);
 					} else {
+                        // Make sure all ViewFlippers are restored
+                        for(View childView : childMap.get(groupPos)) {
+                            ViewFlipper flipper = (ViewFlipper) childView.findViewById(R.id.viewflipper);
+                            flipper.setInAnimation(getActivity(), R.anim.no_anim);
+                            flipper.setOutAnimation(getActivity(), R.anim.no_anim);
+                            flipper.setDisplayedChild(0);
+                        }
+                        
 						mListView.collapseGroup(groupPos);
 					}
 				}
@@ -356,23 +394,6 @@ public class RemoteFragment extends SherlockFragment {
 		menu.add(0, v.getId(), 0, "Change Name");
 		menu.add(0, v.getId(), 0, "Group together with...");
 	}
-
-    /*
-    TODO: Remove this
-	@Override
-	public boolean onContextItemSelected(MenuItem item) {
-		AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-		int position = info.position;
-		if(item.getTitle() == "Change Name") {
-			//changeName(position);
-		} else if(item.getTitle() == "Group together with...") {
-			groupOutlets(item.getItemId());
-		} else {
-			return false;
-		}
-		return true;
-	}
-    */
 
     /**
      * Changes the name of the provided power strip part

@@ -57,7 +57,6 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		
 	}
 	
 	public String toJSON(){

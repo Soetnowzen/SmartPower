@@ -153,8 +153,8 @@ public class User implements Serializable, Graphable   {
 					JSONObject data = new JSONObject(result);
 					if (data.getString("username").equals(userName)){
 						if(!data.get("powerstrips").equals(null)){
+							ArrayList<PowerStrip> powerStripList = new ArrayList<PowerStrip>();
 							JSONArray powerStrips = data.getJSONArray("powerstrips");
-                            ArrayList<PowerStrip> powerStripList = new ArrayList<PowerStrip>();
 							for(int i = 0; i < powerStrips.length(); i++){
 								JSONObject JSONpowerStrip = powerStrips.getJSONObject(i);
 								JSONArray psSockets = JSONpowerStrip.getJSONArray("sockets");
@@ -309,7 +309,6 @@ public class User implements Serializable, Graphable   {
 	 * it also saves it as a favorite.
 	 */
     public void addFavorite(PsSocket ps, Context context) {
-    	Toast.makeText(context, "Adding "+ps.toString(), Toast.LENGTH_SHORT).show();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
     	String favorite = sp.getString("Favorite", null);
     	try {
@@ -331,12 +330,11 @@ public class User implements Serializable, Graphable   {
     }
 
     /**
-	 * @param ps is the PowerStrip that will be removed if it exist.
+	 * @param psSocket is the PowerStrip that will be removed if it exist.
 	 * @param context
 	 * Removes the given PowerStrip from favorites if it exists.
 	 */
     public void removeFavorite(PsSocket psSocket, Context context) {
-    	Toast.makeText(context, "removing "+psSocket.toString(), Toast.LENGTH_SHORT).show();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
     	String favorite = sp.getString("Favorite", null);
     	try {

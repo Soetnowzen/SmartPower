@@ -1,27 +1,15 @@
 package com.sebbelebben.smartpower.tests;
 
 import java.util.ArrayList;
-import java.util.Random;
 
-import android.widget.ExpandableListView;
-import android.widget.Toast;
-import junit.framework.Assert;
+import android.app.Instrumentation;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+import android.test.ActivityInstrumentationTestCase2;
+import android.view.View;
 
 import com.jayway.android.robotium.solo.Solo;
 import com.sebbelebben.smartpower.LoginActivity;
-import com.sebbelebben.smartpower.MainActivity;
-
-import android.R;
-import android.app.Instrumentation;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.sax.StartElementListener;
-import android.test.ActivityInstrumentationTestCase2;
-import android.text.style.ClickableSpan;
-import android.util.Log;
-import android.view.View;
-import android.widget.ProgressBar;
 
 /**
  * Robotium test for doing acceptance test on the MainActivity.
