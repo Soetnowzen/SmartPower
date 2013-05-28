@@ -284,6 +284,8 @@ public class RemoteFragment extends SherlockFragment {
 				view = inf.inflate(R.layout.powerstrip_item, null);
 			}
 
+            
+
             // Set the text of the textview to the powerstrip name.
 			TextView tv = (TextView) view.findViewById(R.id.text);
 			tv.setText(group.getName());
@@ -296,6 +298,7 @@ public class RemoteFragment extends SherlockFragment {
 						mListView.expandGroup(groupPos);
 					} else {
 						mListView.collapseGroup(groupPos);
+
 					}
 				}
 			});
