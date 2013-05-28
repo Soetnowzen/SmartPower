@@ -161,6 +161,7 @@ public class RemoteFragment extends SherlockFragment {
 				
 				@Override
 				public void onClick(View v) {
+                    getSherlockActivity().setProgressBarIndeterminateVisibility(true);
 					toggleButton.setChecked(!toggleButton.isChecked());
 					final ToggleButton tb = toggleButton;
 					PsSocket socket = child;
@@ -169,11 +170,14 @@ public class RemoteFragment extends SherlockFragment {
 							
 							@Override
 							public void success() {
+                                getSherlockActivity().setProgressBarIndeterminateVisibility(false);
 								tb.setChecked(false);
 							}
 							
 							@Override
 							public void failed() {
+                                getSherlockActivity().setProgressBarIndeterminateVisibility(false);
+                                Toast.makeText(getActivity(), getResources().getString(R.string.turn_off_failure), Toast.LENGTH_SHORT).show();
 							}
 						});
 					}else {
@@ -181,16 +185,20 @@ public class RemoteFragment extends SherlockFragment {
 							
 							@Override
 							public void success() {
+                                getSherlockActivity().setProgressBarIndeterminateVisibility(false);
 								tb.setChecked(true);
 							}
 							
 							@Override
 							public void failed() {
+                                getSherlockActivity().setProgressBarIndeterminateVisibility(false);
+                                Toast.makeText(getActivity(), getResources().getString(R.string.turn_on_failure), Toast.LENGTH_SHORT).show();
 							}
 						});
 					}
 				}
 			});
+
             renameButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -198,10 +206,17 @@ public class RemoteFragment extends SherlockFragment {
                 }
             });
 
+            // Set the initial state of the favorite button
+            User user = (User) getArguments().getSerializable("User");
+            if(user.isFavorite(child, getActivity())) {
+                favoriteButton.setImageResource(R.drawable.ic_favorite_on_light);
+            } else {
+                favoriteButton.setImageResource(R.drawable.ic_favorite_off_light);
+            }
+
             favoriteButton.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(getActivity(), "Favorite", Toast.LENGTH_SHORT).show();
                     //Retrieve the User from the intent
                 	final User user = (User) getArguments().getSerializable("User");
                 	
@@ -209,12 +224,10 @@ public class RemoteFragment extends SherlockFragment {
                 	if(user.isFavorite(child, context)) {
                 		user.removeFavorite(child, context);
                 		favoriteButton.setImageResource(R.drawable.ic_favorite_off_light);
-                		//TODO: Change the image to when not favorite.
                 	}
                 	else {
                 		user.addFavorite(child, context);
                 		favoriteButton.setImageResource(R.drawable.ic_favorite_on_light);
-                		//TODO: Change the image to when is favorite.
                 	}
                 }
             });

@@ -309,7 +309,6 @@ public class User implements Serializable, Graphable   {
 	 * it also saves it as a favorite.
 	 */
     public void addFavorite(PsSocket ps, Context context) {
-    	Toast.makeText(context, "Adding "+ps.toString(), Toast.LENGTH_SHORT).show();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
     	String favorite = sp.getString("Favorite", null);
     	try {
@@ -328,12 +327,11 @@ public class User implements Serializable, Graphable   {
     }
 
     /**
-	 * @param ps is the PowerStrip that will be removed if it exist.
+	 * @param psSocket is the PowerStrip that will be removed if it exist.
 	 * @param context
 	 * Removes the given PowerStrip from favorites if it exists.
 	 */
     public void removeFavorite(PsSocket psSocket, Context context) {
-    	Toast.makeText(context, "removing "+psSocket.toString(), Toast.LENGTH_SHORT).show();
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
     	String favorite = sp.getString("Favorite", null);
     	try {
@@ -368,7 +366,9 @@ public class User implements Serializable, Graphable   {
     			jsArray = new JSONArray(favorite);
     			for(int index = 0; index < jsArray.length(); index++) {
         			JSONObject comparablePS = (JSONObject) jsArray.get(index);
-        			return comparablePS.getInt("id") == psSocket.getId();
+        			if(comparablePS.getInt("id") == psSocket.getId()) {
+                        return true;
+                    }
     			}
     		}
     		
