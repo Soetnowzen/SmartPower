@@ -58,6 +58,7 @@ public class RemoteFragment extends SherlockFragment {
 		RemoteFragment f = new RemoteFragment();
 		Bundle args = new Bundle();
 		args.putSerializable("User", user);
+        f.setRetainInstance(true);
 		f.setArguments(args);
 		return f;
 	}
