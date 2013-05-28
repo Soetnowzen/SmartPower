@@ -105,7 +105,7 @@ public class UserFragment extends SherlockFragment {
 		list.add(new PsSocket(13, "hennig3", "apikey1011", true));
 		list.add(new PsSocket(13, "hennig4", "apikey1011", true));
 		list.add(new PsSocket(13, "hennig5", "apikey1011", true));*/
-
+		Log.d("bug", "confirmation of nothing");
 		mAdapter = new SocketAdapter(getActivity(), R.layout.powerstrip_item, list);
 		if(listView != null)
 			listView.setAdapter(mAdapter);
@@ -199,14 +199,17 @@ public class UserFragment extends SherlockFragment {
 			TextView tv = (TextView) v.findViewById(R.id.text);
 			final ToggleButton tb = (ToggleButton) v.findViewById(R.id.toggle_button);
 			if ( tv != null) tv.setText(socket.getName());
-			if ( tb !=  null && socket != null && socket.getStatus() != null) {
+			/*
+			 * sets the onclicklistener to the togglebutton
+			 * The toggling is delayed until a confirmation from server arrives
+			 */
+			if ( tb !=  null  ) {
 				tb.setChecked(socket.getStatus());
-
-			
 			tb.setOnClickListener(new OnClickListener() {
 
 					@Override
 					public void onClick(View v) {
+						Log.d("bug", "onclick");
 						tb.setChecked(!tb.isChecked());
 						if ( tb.isChecked()) {
 							socket.turnOff(new GenericListener() {
@@ -218,6 +221,7 @@ public class UserFragment extends SherlockFragment {
 								
 								@Override
 								public void failed() {
+									Toast.makeText(getActivity(), "Failed turning socket off", Toast.LENGTH_SHORT);
 								}
 							});
 						}else {
@@ -226,10 +230,12 @@ public class UserFragment extends SherlockFragment {
 								@Override
 								public void success() {
 									tb.setChecked(true);
+									
 								}
 								
 								@Override
 								public void failed() {
+									Toast.makeText(getActivity(), "Failed turning socket on", Toast.LENGTH_SHORT);
 								}
 							});
 						}
