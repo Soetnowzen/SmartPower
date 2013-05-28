@@ -4,11 +4,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -439,6 +445,30 @@ public class RemoteFragment extends SherlockFragment {
                             @Override
                             public void onSetNameReceived(String name) {
                                 mAdapter.notifyDataSetChanged();
+                                
+                                User user = (User) getArguments().getSerializable("User");
+                                
+                                SharedPreferences sp = getActivity().getSharedPreferences(user.getUserName(), 0);
+                                String favorite = sp.getString("Favorite", null);
+                                try {
+                            		if(favorite != null){
+                            			JSONArray jsArray = new JSONArray(favorite);
+                            			for(int i = 0; i < jsArray.length(); i++) {
+                                			JSONObject loop_psSocket = jsArray.getJSONObject(i);
+                                			if(loop_psSocket.getInt("id") == pspart.getId()){
+                                				PsSocket socket = (PsSocket) pspart;
+                                				
+                                				jsArray.put(i, new JSONObject(socket.toJSON()));
+                                				Editor edit = sp.edit();
+                                			    edit.putString("Favorite", jsArray.toString());
+                                			    edit.commit();
+                                				mCallback.onFavoriteChanged();
+                                			}
+                            			}
+                            		}
+                            	} catch (JSONException e) {
+                            		e.printStackTrace();
+                            	}
                             }
 
                             @Override

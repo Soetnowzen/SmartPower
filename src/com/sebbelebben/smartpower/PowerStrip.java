@@ -199,7 +199,7 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 	 * 
 	 * @return Returns the id of the PowerStrip.
 	 */
-	public Integer getId() {
+	public int getId() {
 		return id;
 	}
 	
