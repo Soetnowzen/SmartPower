@@ -56,7 +56,7 @@ public class UserFragment extends SherlockFragment {
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		final User user = (User) getArguments().getSerializable("User");
-
+/*
         Calendar c = Calendar.getInstance();
         Date now = c.getTime();
         c.set(Calendar.DAY_OF_YEAR, now.getDay() - 1);
@@ -75,7 +75,7 @@ public class UserFragment extends SherlockFragment {
                 Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
             }
         });
-
+*/
 		Resources res = getResources();
 		View view = inflater.inflate(R.layout.fragment_user, container, false);
 		graphView = (GraphView) view.findViewById(R.id.graphview);
