@@ -10,6 +10,9 @@ import android.preference.PreferenceManager;
 import android.test.ActivityInstrumentationTestCase2;
 import android.view.View;
 
+/**
+ * Robotium test for doing acceptance test on the LoginActivity.
+ */
 public class LoginActivityTest extends ActivityInstrumentationTestCase2<LoginActivity> {
 	private Solo solo;
 	

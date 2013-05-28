@@ -1,5 +1,6 @@
 package com.sebbelebben.smartpower;
 
+import com.actionbarsherlock.view.Window;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,6 +27,7 @@ public class MainActivity extends SherlockFragmentActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_main);
 
 		//Get user from intent
@@ -70,9 +72,8 @@ public class MainActivity extends SherlockFragmentActivity {
 		private final String[] CONTENT = {
                 getResources().getString(R.string.remotefragment_title),
                 getResources().getString(R.string.userfragment_title),
-                getResources().getString(R.string.consumptionfragment_title),
         };
-		private final int COUNT = 3;
+		private final int COUNT = 2;
 
 		public MainPagerAdapter(FragmentManager fm) {
 			super(fm);
@@ -88,9 +89,6 @@ public class MainActivity extends SherlockFragmentActivity {
 				break;
 			case 1:
 				fragment = UserFragment.newInstance(mUser);
-				break;
-			case 2:
-				fragment = ConsumptionFragment.newInstance(mUser);
 				break;
 			}
 			return fragment;

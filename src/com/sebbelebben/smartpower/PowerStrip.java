@@ -203,6 +203,10 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 		return id;
 	}
 	
+	public boolean compareTo(PowerStrip ps) {
+		return this.getId() == ps.getId();
+	}
+	
 	public Boolean getStatus(){
 		return status;	
 	}

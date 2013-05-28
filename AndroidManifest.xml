@@ -38,10 +38,6 @@
             android:name="com.sebbelebben.smartpower.GraphActivity"
             android:label="" >
         </activity>
-        <activity
-                android:name="com.sebbelebben.smartpower.GraphActivity2"
-                android:label="" >
-        </activity>
     </application>
 
 </manifest>

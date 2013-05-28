@@ -11,11 +11,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.preference.PreferenceManager;
+
 import com.sebbelebben.smartpower.Server.GenericListener;
 import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
 import com.sebbelebben.smartpower.Server.OnGroupsReceiveListener;
 import com.sebbelebben.smartpower.Server.OnNewGroupReceiveListener;
 import com.sebbelebben.smartpower.Server.OnReceiveListener;
+
 
 /**
  * 
@@ -141,7 +147,7 @@ public class User implements Serializable, Graphable   {
 	public void updateUser(final GenericListener listener){
 		Server.sendAndRecieve("{username:"+userName+",request:powerstripsandsockets,apikey:"+apiKey+"}", new OnReceiveListener() {
 			@Override
-			public void onReceiveSuccess(String result) {	
+			public void onReceiveSuccess(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getString("username").equals(userName)){
@@ -151,7 +157,7 @@ public class User implements Serializable, Graphable   {
 							for(int i = 0; i < powerStrips.length(); i++){
 								JSONObject JSONpowerStrip = powerStrips.getJSONObject(i);
 								JSONArray psSockets = JSONpowerStrip.getJSONArray("sockets");
-								ArrayList<PsSocket> psSocketList = new ArrayList<PsSocket>();
+                                ArrayList<PsSocket> psSocketList = new ArrayList<PsSocket>();
 								for(int j = 0; j < psSockets.length(); j++){
 									JSONObject JSONsocket = psSockets.getJSONObject(j);
 									if(JSONsocket.getInt("status") == 1){
@@ -162,6 +168,7 @@ public class User implements Serializable, Graphable   {
 										listener.failed();
 									}
 								}
+
 								if(JSONpowerStrip.getInt("status") == 1){
 									powerStripList.add(new PowerStrip(JSONpowerStrip.getInt("id"),JSONpowerStrip.getString("serialid"),apiKey,JSONpowerStrip.getString("name"),psSocketList.toArray(new PsSocket[0]),true));
 								} else if (JSONpowerStrip.getInt("status") == 0) {
@@ -293,4 +300,105 @@ public class User implements Serializable, Graphable   {
             }
         });
 	}
+	
+	/**
+	 * @param ps is the PowerStrip that is to be added to favorites
+	 * @param context
+	 * Takes a PowerStrip that the method save in the SharedPreferences (so favorites won't be lost if the app crashes)
+	 * it also saves it as a favorite.
+	 */
+    public void addFavorite(PsSocket ps, Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+    	String favorite = sp.getString("Favorite", null);
+    	try {
+    		//Check if @param favorite is null then make an empty array
+    		JSONArray jsArray;
+    		if(favorite == null){
+    			jsArray = new JSONArray();
+    		} else {
+    			jsArray = new JSONArray(favorite);
+    		}
+		    jsArray.put(new JSONObject(ps.toJSON()));
+		    Editor edit = sp.edit();
+		    edit.putString("Favorite", jsArray.toString());
+		    edit.commit();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+    }
+
+    /**
+	 * @param psSocket is the PowerStrip that will be removed if it exist.
+	 * @param context
+	 * Removes the given PowerStrip from favorites if it exists.
+	 */
+    public void removeFavorite(PsSocket psSocket, Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+    	String favorite = sp.getString("Favorite", null);
+    	try {
+    		JSONArray jsArray = new JSONArray();
+    		JSONArray newJsArray = new JSONArray();
+    		if(favorite != null) {
+    			jsArray = new JSONArray(favorite);
+	    		for(int index = 0; index < jsArray.length(); index++) {
+	    			JSONObject comparablePS = jsArray.getJSONObject(index);
+	    			if(comparablePS.getInt("id") != psSocket.getId()) {
+	    				newJsArray.put(comparablePS);
+	    			}
+				}
+    		}
+    		Editor edit = sp.edit();
+    		edit.putString("Favorite", newJsArray.toString());
+    		edit.commit();
+    	} catch (JSONException e) {
+    		e.printStackTrace();
+    	}
+    }
+
+    /**
+	 * @param context
+	 * @return true if the supplied psSocket is in favorite list otherwise false
+	 */
+    public boolean isFavorite(PsSocket psSocket, Context context) {
+    	SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+    	String favorite = sp.getString("Favorite", null);
+    	try {
+    		JSONArray jsArray;
+    		if(favorite != null){
+    			jsArray = new JSONArray(favorite);
+    			for(int i = 0; i < jsArray.length(); i++) {
+        			JSONObject loop_psSocket = jsArray.getJSONObject(i);
+        			if(loop_psSocket.getInt("id") == psSocket.getId()){
+        				return true;
+        			}
+    			}
+    		}
+    	} catch (JSONException e) {
+    		e.printStackTrace();
+    	}
+        return false;
+    }
+
+    /**
+	 * @param context
+	 * @return Returns all the favorite PowerStrips and return null if there are non.
+	 */
+    public ArrayList<PsSocket> getFavorite(Context context) {
+    	SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+    	String favorite = sp.getString("Favorite", null);
+    	try{
+    		ArrayList<PsSocket> list = new ArrayList<PsSocket>();
+    		if(favorite != null) {
+	    		JSONArray jsArray = new JSONArray(favorite);
+	    		for(int index = 0; index < jsArray.length(); index++) {
+	    			JSONObject jAddablePsSocket = jsArray.getJSONObject(index);
+	    			list.add(new PsSocket(jAddablePsSocket));
+	    		}
+	    		return list;
+    		}
+    	} catch (JSONException e) {
+    		e.printStackTrace();
+    	}
+        return null;
+    }
 }

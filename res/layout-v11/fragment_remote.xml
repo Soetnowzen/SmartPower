@@ -8,6 +8,7 @@
 		android:layout_height="match_parent"
 		android:divider="#FFDDDDDD"
 		android:dividerHeight="1px"
+		android:childDivider="#FF1F2E33"
 		android:groupIndicator="@null"
         android:cacheColorHint="#FFFFFF"
 		/>

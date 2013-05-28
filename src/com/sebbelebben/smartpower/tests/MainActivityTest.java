@@ -11,6 +11,9 @@ import android.view.View;
 import com.jayway.android.robotium.solo.Solo;
 import com.sebbelebben.smartpower.LoginActivity;
 
+/**
+ * Robotium test for doing acceptance test on the MainActivity.
+ */
 public class MainActivityTest extends ActivityInstrumentationTestCase2<LoginActivity> {
 	private Solo solo;
 	
