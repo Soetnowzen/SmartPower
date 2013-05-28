@@ -193,8 +193,9 @@ public class UserFragment extends SherlockFragment {
 			TextView tv = (TextView) v.findViewById(R.id.text);
 			final ToggleButton tb = (ToggleButton) v.findViewById(R.id.toggle_button);
 			if ( tv != null) tv.setText(socket.getName());
-			if ( tb != null) {
+			if ( tb !=  null && socket != null && socket.getStatus() != null) {
 				tb.setChecked(socket.getStatus());
+
 			
 			tb.setOnClickListener(new OnClickListener() {
 
