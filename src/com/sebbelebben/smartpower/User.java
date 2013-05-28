@@ -384,7 +384,7 @@ public class User implements Serializable, Graphable   {
 
     /**
 	 * @param context
-	 * @return Returns all the favorite PowerStrips and return null if there are non.
+	 * @return Returns all the favorite PowerStrips and returns an empty list if there are none.
 	 */
     public ArrayList<PsSocket> getFavorite(Context context) {
     	//SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
