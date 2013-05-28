@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -45,7 +46,7 @@ public class RemoteFragment extends SherlockFragment {
     private ExpandableListView mListView;
 	private ArrayList<PowerStrip> mPowerStrips = new ArrayList<PowerStrip>();
 	private ExpandablePowerStripAdapter mAdapter;
-
+	private FavoriteListener mCallback;
     /**
      * Creates a new instance of this fragment, using the provided {@link User} to list the {@link PowerStrip} and
      * {@link com.sebbelebben.smartpower.PsSocket}.
@@ -60,7 +61,19 @@ public class RemoteFragment extends SherlockFragment {
 		f.setArguments(args);
 		return f;
 	}
-
+	public interface FavoriteListener{
+		public void onFavoriteChanged();
+	}
+	@Override
+	public void onAttach(Activity activity){
+		super.onAttach(activity);
+		try{
+			mCallback = (FavoriteListener) activity;
+		}catch(ClassCastException e){
+			throw new ClassCastException(activity.toString() +
+					" must implement FavoriteListener");
+		}
+	}
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    
@@ -229,6 +242,7 @@ public class RemoteFragment extends SherlockFragment {
                 		user.addFavorite(child, context);
                 		favoriteButton.setImageResource(R.drawable.ic_favorite_on_light);
                 	}
+                	mCallback.onFavoriteChanged();
                 }
             });
 

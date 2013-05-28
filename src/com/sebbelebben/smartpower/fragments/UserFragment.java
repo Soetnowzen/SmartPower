@@ -35,6 +35,7 @@ public class UserFragment extends SherlockFragment {
 	SocketAdapter mAdapter;
 	ListView listView;
     GraphView graphView;
+    User mUser;
 	
     /**
      * Creates a new instance of this fragment, using the provided {@link User} to 
@@ -53,9 +54,13 @@ public class UserFragment extends SherlockFragment {
 
 	public UserFragment() {
 	}
-
+	public void FavoriteChanged(){
+		list.clear();
+		list.addAll(mUser.getFavorite(getActivity()));
+		mAdapter.notifyDataSetChanged();
+	}
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		final User user = (User) getArguments().getSerializable("User");
+		 mUser = (User) getArguments().getSerializable("User");
 /*
         Calendar c = Calendar.getInstance();
         Date now = c.getTime();
@@ -92,7 +97,7 @@ public class UserFragment extends SherlockFragment {
 //		((TextView) view.findViewById(R.id.textView)).setText(str);
 
 		list = new ArrayList<PsSocket>();
-		list = user.getFavorite(getActivity());
+		list = mUser.getFavorite(getActivity());
 		/*list.add(new PsSocket(13, "hennig", "apikey1011", true));
 		list.add(new PsSocket(13, "hennigphan123456711111111111111111111111111111", "apikey", true));
 		list.add(new PsSocket(13, "hennig2", "apikey1011", true));
