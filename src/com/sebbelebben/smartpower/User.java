@@ -15,7 +15,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.preference.PreferenceManager;
-import android.widget.Toast;
 
 import com.sebbelebben.smartpower.Server.GenericListener;
 import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
@@ -324,7 +323,6 @@ public class User implements Serializable, Graphable   {
 		    edit.putString("Favorite", jsArray.toString());
 		    edit.commit();
 		} catch (JSONException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
