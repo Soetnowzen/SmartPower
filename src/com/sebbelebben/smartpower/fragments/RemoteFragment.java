@@ -1,6 +1,8 @@
 package com.sebbelebben.smartpower.fragments;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -109,11 +111,14 @@ public class RemoteFragment extends SherlockFragment {
      * Note that the data must be already loaded - both powerstrips and the sockets.
      */
 	public class ExpandablePowerStripAdapter extends BaseExpandableListAdapter {
+        private Map<Integer, View[]> childMap = new HashMap<Integer, View[]>();
 		private Context context;
 		private ArrayList<PowerStrip> groups;
+
 		public ExpandablePowerStripAdapter(Context context, ArrayList<PowerStrip> groups) {
 			this.context = context;
 			this.groups = groups;
+
 		}
 
 		public Object getChild(int groupPosition, int childPosition) {
@@ -225,6 +230,14 @@ public class RemoteFragment extends SherlockFragment {
 
 			setupFlipper(view);
             //setupOptionsItem(view);
+
+            // Cache the view in the map
+            View[] cache = childMap.get(groupPos);
+            if(cache == null) {
+                cache = new View[getChildrenCount(groupPos)];
+            }
+            cache[childPos] = view;
+            childMap.put(groupPos, cache);
 			
 			return view;
 		}
@@ -284,7 +297,7 @@ public class RemoteFragment extends SherlockFragment {
 				view = inf.inflate(R.layout.powerstrip_item, null);
 			}
 
-            
+            final ViewFlipper flipper = (ViewFlipper) view.findViewById(R.id.viewflipper);
 
             // Set the text of the textview to the powerstrip name.
 			TextView tv = (TextView) view.findViewById(R.id.text);
@@ -297,8 +310,15 @@ public class RemoteFragment extends SherlockFragment {
 					if(!mListView.isGroupExpanded(groupPos)) {
 						mListView.expandGroup(groupPos);
 					} else {
+                        // Make sure all ViewFlippers are restored
+                        for(View childView : childMap.get(groupPos)) {
+                            ViewFlipper flipper = (ViewFlipper) childView.findViewById(R.id.viewflipper);
+                            flipper.setInAnimation(getActivity(), R.anim.no_anim);
+                            flipper.setOutAnimation(getActivity(), R.anim.no_anim);
+                            flipper.setDisplayedChild(0);
+                        }
+                        
 						mListView.collapseGroup(groupPos);
-
 					}
 				}
 			});
