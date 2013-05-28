@@ -315,8 +315,11 @@ public class User implements Serializable, Graphable   {
     	try {
     		//Check if @param favorite is null then make an empty array
     		JSONArray jsArray;
-    		if(favorite == null) jsArray = new JSONArray();
-    		else jsArray = new JSONArray(favorite);
+    		if(favorite == null){
+    			jsArray = new JSONArray();
+    		} else {
+    			jsArray = new JSONArray(favorite);
+    		}
 		    jsArray.put(new JSONObject(ps.toJSON()));
 		    Editor edit = sp.edit();
 		    edit.putString("Favorite", jsArray.toString());
@@ -342,8 +345,10 @@ public class User implements Serializable, Graphable   {
     		if(favorite != null) {
     			jsArray = new JSONArray(favorite);
 	    		for(int index = 0; index < jsArray.length(); index++) {
-	    			JSONObject comparablePS = (JSONObject) jsArray.get(index);
-	    			if(comparablePS.getInt("id") != psSocket.getId()) newJsArray.put(comparablePS);
+	    			JSONObject comparablePS = jsArray.getJSONObject(index);
+	    			if(comparablePS.getInt("id") != psSocket.getId()) {
+	    				newJsArray.put(comparablePS);
+	    			}
 				}
     		}
     		Editor edit = sp.edit();
@@ -356,22 +361,22 @@ public class User implements Serializable, Graphable   {
 
     /**
 	 * @param context
-	 * @return eturns all the favorite PowerStrips and return null if there are non.
+	 * @return true if the supplied psSocket is in favorite list otherwise false
 	 */
     public boolean isFavorite(PsSocket psSocket, Context context) {
     	SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
     	String favorite = sp.getString("Favorite", null);
     	try {
     		JSONArray jsArray;
-    		if(favorite == null) jsArray = new JSONArray();
-    		else {
+    		if(favorite != null){
     			jsArray = new JSONArray(favorite);
-    			for(int index = 0; index < jsArray.length(); index++) {
-        			JSONObject comparablePS = (JSONObject) jsArray.get(index);
-        			return comparablePS.getInt("id") == psSocket.getId();
+    			for(int i = 0; i < jsArray.length(); i++) {
+        			JSONObject loop_psSocket = jsArray.getJSONObject(i);
+        			if(loop_psSocket.getInt("id") == psSocket.getId()){
+        				return true;
+        			}
     			}
     		}
-    		
     	} catch (JSONException e) {
     		e.printStackTrace();
     	}
@@ -390,17 +395,14 @@ public class User implements Serializable, Graphable   {
     		if(favorite != null) {
 	    		JSONArray jsArray = new JSONArray(favorite);
 	    		for(int index = 0; index < jsArray.length(); index++) {
-	    			JSONObject jAddablePsSocket = (JSONObject) jsArray.get(index);
-	    			//PsSocket addablePsSocket = new PsSocket(jAddablePsSocket);
-	    			PsSocket addablePsSocket = new PsSocket(jAddablePsSocket.getInt("id"), jAddablePsSocket.getString("name"),apiKey,jAddablePsSocket.getBoolean("status"));
-	    			list.add(addablePsSocket);
+	    			JSONObject jAddablePsSocket = jsArray.getJSONObject(index);
+	    			list.add(new PsSocket(jAddablePsSocket));
 	    		}
+	    		return list;
     		}
-    		return list;
-    		
     	} catch (JSONException e) {
     		e.printStackTrace();
     	}
-        return new ArrayList<PsSocket>();
+        return null;
     }
 }
