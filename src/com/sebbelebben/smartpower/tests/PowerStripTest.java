@@ -74,7 +74,7 @@ public class PowerStripTest extends AndroidTestCase {
 	}
 	
 	public void testId(){
-		assertEquals(Integer.valueOf(5), powerStrip.getId());
+		assertEquals(5, powerStrip.getId());
 	}
 	
 	public void testSerialId(){

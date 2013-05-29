@@ -14,7 +14,6 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
-import android.preference.PreferenceManager;
 
 import com.sebbelebben.smartpower.Server.GenericListener;
 import com.sebbelebben.smartpower.Server.GenericStringListener;
@@ -263,10 +262,50 @@ public class User implements Serializable, Graphable   {
 	 * 
 	 * @param listener
 	 */
-	public void getConsumption(final OnConsumptionReceiveListener listener){
-		Date end = new Date(System.currentTimeMillis());
-		Date start = new Date(System.currentTimeMillis() - (3600*1000));
-		getConsumption(start, end, listener);
+	public void getConsumption(Duration duration, int amount, final OnConsumptionReceiveListener listener){
+		String durationstring = null;
+		if(duration.equals(Duration.YEAR)){
+			durationstring = "year";
+		} else if(duration.equals(Duration.MONTH)){
+			durationstring = "month";
+		} else if(duration.equals(Duration.DAY)){
+			durationstring = "day";
+		} else if(duration.equals(Duration.HOUR)){
+			durationstring = "hour";
+		}
+		Server.sendAndRecieve("{username:"+userName+",request:consumption,apikey:"+apiKey+",duration:"+durationstring+",amount:"+Integer.toString(amount)+"}", new GenericStringListener() {
+			@Override
+			public void success(String result) {
+				ArrayList<Consumption> consumptionList = new ArrayList<Consumption>();
+				try {
+					JSONObject data = new JSONObject(result);
+					if (data.getString("username").equals(userName)){
+						if (data.has("result")){ 
+							listener.failed(); 
+						}
+						else if (data.has("data")){
+							JSONArray sockets = data.getJSONArray("data");
+							for(int i = 0; i < sockets.length(); i++){
+								JSONObject JSONsockets = sockets.getJSONObject(i);
+								consumptionList.add(new Consumption(JSONsockets.getString("timestamp"),JSONsockets.getInt("activepower")));
+							}
+							listener.onConsumptionReceive(consumptionList.toArray(new Consumption[0]));
+						} else {
+							listener.failed();
+						}	
+					} else {
+						listener.failed();
+					}
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
+			}
+
+            @Override
+            public void failed() {
+                listener.failed();
+            }
+        });
 	}
 	
 	/**
@@ -416,4 +455,9 @@ public class User implements Serializable, Graphable   {
     	}
         return new ArrayList<PsSocket>();
     }
+    
+    public enum Duration{
+    	YEAR, MONTH, DAY, HOUR
+    }
+    
 }

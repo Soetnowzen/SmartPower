@@ -1,5 +1,8 @@
 package com.sebbelebben.smartpower.fragments;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -20,8 +23,13 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.sebbelebben.smartpower.*;
+import com.sebbelebben.smartpower.Consumption;
+import com.sebbelebben.smartpower.GraphView;
+import com.sebbelebben.smartpower.PsSocket;
+import com.sebbelebben.smartpower.R;
+import com.sebbelebben.smartpower.Server;
 import com.sebbelebben.smartpower.Server.GenericListener;
+import com.sebbelebben.smartpower.User;
 
 /**
  * Fragment to display user information, 
@@ -60,17 +68,12 @@ public class UserFragment extends SherlockFragment {
 		mAdapter.notifyDataSetChanged();
 	}
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		 mUser = (User) getArguments().getSerializable("User");
-/*
-        Calendar c = Calendar.getInstance();
-        Date now = c.getTime();
-        c.set(Calendar.DAY_OF_YEAR, now.getDay() - 1);
-        Date before = c.getTime();
+		mUser = (User) getArguments().getSerializable("User");
+
         final List<Consumption> data = new ArrayList<Consumption>();
-        user.getConsumption(before, now, new Server.OnConsumptionReceiveListener() {
+        mUser.getConsumption(User.Duration.HOUR,12,new Server.OnConsumptionReceiveListener() {
             @Override
             public void onConsumptionReceive(Consumption[] consumption) {
-                Log.i("SmartPower", "EDGFHKJHG");
                 Collections.addAll(data, consumption);
                 display(data, graphView);
             }
@@ -80,7 +83,7 @@ public class UserFragment extends SherlockFragment {
                 Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
             }
         });
-*/
+        
 		Resources res = getResources();
 		View view = inflater.inflate(R.layout.fragment_user, container, false);
 		graphView = (GraphView) view.findViewById(R.id.graphview);

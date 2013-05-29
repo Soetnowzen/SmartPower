@@ -10,4 +10,5 @@ package com.sebbelebben.smartpower;
 public interface PsPart {
     public void setName(String name, final Server.GenericStringListener listener);
     public void updateStatus(final Server.OnUpdateListener listener);
+    public int getId();
 }

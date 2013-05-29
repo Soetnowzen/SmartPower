@@ -51,7 +51,7 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 		try {
 			this.id = psSocket.getInt("id");
 			this.name = psSocket.getString("name");
-			this.apiKey = psSocket.getString("apiKey");
+			this.apiKey = psSocket.getString("apikey");
 			this.status = psSocket.getBoolean("status");
 		} catch (JSONException e) {
 			e.printStackTrace();
