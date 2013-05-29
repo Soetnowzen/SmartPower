@@ -1,11 +1,7 @@
 package com.sebbelebben.smartpower;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,9 +61,18 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 	/**
 	 * Creates a listener that waits for the server to supply the PsSocket's consumption between the given dates.
 	 */
-	public void getConsumption(Date start, Date end, final OnConsumptionReceiveListener listener){
-        DateFormat dd = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss.SSSZ", Locale.ENGLISH);
-        Server.sendAndRecieve("{socketid:"+id+",request:consumption,apikey:"+apiKey+",startdate:"+dd.format(start)+",enddate:"+dd.format(end)+"}", new GenericStringListener() {
+	public void getConsumption(Duration duration, int amount, final OnConsumptionReceiveListener listener){
+		String durationstring = null;
+		if(duration.equals(Duration.YEAR)){
+			durationstring = "year";
+		} else if(duration.equals(Duration.MONTH)){
+			durationstring = "month";
+		} else if(duration.equals(Duration.DAY)){
+			durationstring = "day";
+		} else if(duration.equals(Duration.HOUR)){
+			durationstring = "hour";
+		}
+        Server.sendAndRecieve("{socketid:"+id+",request:consumption,apikey:"+apiKey+",duration:"+durationstring+",amount:"+Integer.toString(amount)+"}", new GenericStringListener() {
             @Override
             public void success(String result) {
                 ArrayList<Consumption> consumptionList = new ArrayList<Consumption>();

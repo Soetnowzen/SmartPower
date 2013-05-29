@@ -1,11 +1,7 @@
 package com.sebbelebben.smartpower;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -309,49 +305,6 @@ public class User implements Serializable, Graphable   {
 	}
 	
 	/**
-	 * Creates a listener that waits for the server to supply the User's consumption between the given dates.
-	 * @param start
-	 * @param end
-	 * @param listener
-	 */
-	public void getConsumption(Date start, Date end, final OnConsumptionReceiveListener listener){
-		DateFormat dd = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss.SSSZ", Locale.ENGLISH);
-		Server.sendAndRecieve("{username:"+userName+",request:consumption,apikey:"+apiKey+",startdate:"+dd.format(start)+",enddate:"+dd.format(end)+"}", new GenericStringListener() {
-			@Override
-			public void success(String result) {
-				ArrayList<Consumption> consumptionList = new ArrayList<Consumption>();
-				try {
-					JSONObject data = new JSONObject(result);
-					if (data.getString("username").equals(userName)){
-						if (data.has("result")){ 
-							listener.failed(); 
-						}
-						else if (data.has("data")){
-							JSONArray sockets = data.getJSONArray("data");
-							for(int i = 0; i < sockets.length(); i++){
-								JSONObject JSONsockets = sockets.getJSONObject(i);
-								consumptionList.add(new Consumption(JSONsockets.getString("timestamp"),JSONsockets.getInt("activepower")));
-							}
-							listener.onConsumptionReceive(consumptionList.toArray(new Consumption[0]));
-						} else {
-							listener.failed();
-						}	
-					} else {
-						listener.failed();
-					}
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-			}
-
-            @Override
-            public void failed() {
-                listener.failed();
-            }
-        });
-	}
-	
-	/**
 	 * @param ps is the PowerStrip that is to be added to favorites
 	 * @param context
 	 * Takes a PowerStrip that the method save in the SharedPreferences (so favorites won't be lost if the app crashes)
@@ -455,9 +408,4 @@ public class User implements Serializable, Graphable   {
     	}
         return new ArrayList<PsSocket>();
     }
-    
-    public enum Duration{
-    	YEAR, MONTH, DAY, HOUR
-    }
-    
 }

@@ -1,12 +1,16 @@
 package com.sebbelebben.smartpower;
 
 import java.io.Serializable;
-import java.text.*;
-import java.util.*;
-import org.json.*;
+import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.sebbelebben.smartpower.Server.GenericListener;
 import com.sebbelebben.smartpower.Server.GenericStringListener;
-import com.sebbelebben.smartpower.Server.*;
+import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
+import com.sebbelebben.smartpower.Server.OnUpdateListener;
 
 /**
  * 
@@ -110,9 +114,18 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 	 * @param end end Date
 	 * @param listener
 	 */
-	public void getConsumption(Date start, Date end, final OnConsumptionReceiveListener listener){
-		DateFormat dd = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss.SSSZ", Locale.ENGLISH);
-		Server.sendAndRecieve("{powerstripid:"+id+",request:consumption,apikey:"+apiKey+",startdate:"+dd.format(start)+",enddate:"+dd.format(end)+"}", new GenericStringListener() {
+	public void getConsumption(Duration duration, int amount, final OnConsumptionReceiveListener listener){
+		String durationstring = null;
+		if(duration.equals(Duration.YEAR)){
+			durationstring = "year";
+		} else if(duration.equals(Duration.MONTH)){
+			durationstring = "month";
+		} else if(duration.equals(Duration.DAY)){
+			durationstring = "day";
+		} else if(duration.equals(Duration.HOUR)){
+			durationstring = "hour";
+		}
+		Server.sendAndRecieve("{powerstripid:"+id+",request:consumption,apikey:"+apiKey+",duration:"+durationstring+",amount:"+Integer.toString(amount)+"}", new GenericStringListener() {
 			@Override
 			public void success(String result) {
 				ArrayList<Consumption> consumptionList = new ArrayList<Consumption>();

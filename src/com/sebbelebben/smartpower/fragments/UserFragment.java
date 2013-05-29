@@ -24,6 +24,7 @@ import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.sebbelebben.smartpower.Consumption;
+import com.sebbelebben.smartpower.Duration;
 import com.sebbelebben.smartpower.GraphView;
 import com.sebbelebben.smartpower.PsSocket;
 import com.sebbelebben.smartpower.R;
@@ -71,7 +72,7 @@ public class UserFragment extends SherlockFragment {
 		mUser = (User) getArguments().getSerializable("User");
 
         final List<Consumption> data = new ArrayList<Consumption>();
-        mUser.getConsumption(User.Duration.HOUR,12,new Server.OnConsumptionReceiveListener() {
+        mUser.getConsumption(Duration.HOUR,12,new Server.OnConsumptionReceiveListener() {
             @Override
             public void onConsumptionReceive(Consumption[] consumption) {
                 Collections.addAll(data, consumption);
