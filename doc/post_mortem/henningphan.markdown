@@ -80,7 +80,7 @@ Questions:
 6 Had a bug that a constructor was misbuilt. An easy unit test would surely have caught it in this case
 
 <h2 id="4">What worked well in how you worked in this project?</h2>
-Conversation, we knew each other from before and we have a "smsgrupp". Work distribution was great with scrum and the close interactions.  
+Conversation, we knew each other from before and we have a "smsgrupp". Work distribution was great with scrum and the close interactions. It also didn't take long time until a requested method would be implemented. Git is also a hightlight in this project.  
 
 <h2 id="5">What did not work well in how you worked in this project?</h2>
 We had problems with scrum in the beginning because some user stories was dependent on other tasks which someone else was developing, this lead to a slow start. Some minor information losses that could save time e.g. Coding a request that was already implemented in the API.  
@@ -100,4 +100,4 @@ Lastly I been thinking of merging waterfall with agile. Think waterfall with 3 i
 
 I would like to mention that I have been reminded once again of the importance of unit testing. Had good experiences with Git and bad moments with Eclipse. But what I believe is the best is the experience, I have learned the most by experiencing it here in this course and not from reading it
 
-Henning
+Author: Henning
