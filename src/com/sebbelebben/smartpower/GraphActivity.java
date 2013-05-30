@@ -1,15 +1,11 @@
 package com.sebbelebben.smartpower;
 
-import java.text.SimpleDateFormat;
 import java.util.*;
-
 import android.app.Activity;
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.widget.DatePicker;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -45,7 +41,6 @@ public class GraphActivity extends Activity {
         graphable.getConsumption(Duration.HOUR, 24, new OnConsumptionReceiveListener() {
             @Override
             public void onConsumptionReceive(Consumption[] consumption) {
-                Log.i("SmartPower", "Received graph data");
                 Collections.addAll(data, consumption);
                 display(data, graphView);
                 //pb.setVisibility(ProgressBar.GONE);
@@ -70,7 +65,6 @@ public class GraphActivity extends Activity {
         graphView.setYAxisEnd(getMaxWatt(points) + getMaxWatt(points) / 5);
         graphView.setXAxisEnd(points.get(points.size() - 1).x);
         graphView.setXSegments((int) (points.get(points.size() - 1).x - points.get(0).x) / 4);
-        //graphView.setYSegments((int)(getMaxWatt(points)/4));
         graphView.setYSegments((int)(points.get(points.size()-1).y)/4);
 	}
 	/**
@@ -82,23 +76,17 @@ public class GraphActivity extends Activity {
     public static List<Point> transform(List<Consumption> data) {
         List<Point> graphViewData = new ArrayList<Point>();
 
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(data.get(0).getDate());
         long firstTime = data.get(0).getDate().getTime();
 
-        for(int i = 0; i < data.size(); i++) {
-            long time = data.get(i).getDate().getTime();
-            float hour = (time - firstTime) / (60*60*1000);
-            Point point = new Point(hour, data.get(i).getWatt());
+        for (Consumption c : data) {
+            long time = c.getDate().getTime();
+            float hour = (time - firstTime) / (60 * 60 * 1000);
+            Point point = new Point(hour, c.getWatt());
             point.label = String.valueOf(time);
 
             graphViewData.add(point);
         }
 
-        for(Point p : graphViewData) {
-            Log.i("SmartPower", "X: " + p.x + ", Y: " + p.y);
-        }
-        Log.i("SmartPower", "Done with transform");
         return graphViewData;
     }
     /**
