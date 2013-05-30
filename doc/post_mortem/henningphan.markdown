@@ -49,24 +49,19 @@ Questions:
 
 ###Git version control###
 1 The advantages is many, multiple developers can contribute at the same time, can work at different geographical locations. Branching, everyone can code without interfering each other. Working offline, that you can revert to an arbitrary commit if you messed up  
-
 2 Maybe someone pushed an error but the advantages compensate for that thousandfold  
-
 3 Very efficient,  quite easy to use and it goes fast to learn the basics, from there you can expand your knowledge little by little  
-
 4 Every project  
-
 5 The exception would be small projects that only have one functionality  
-
 6 To be without version control is like not having electricity
 
 ###Scrum###
-1 Advantage is that we have a pool we can choose our work from. Also because all our ideas was summarized on the pivotaltracker it helped me visualize the product, it's also a consistent way to get information
-2 Didn't really understand the point system at first. The daily meetings I was forced to participate \*early\* in the morning, three meetings a week would have been sufficient. Short meetings, only 15 minutes they said, someone always had to pull a joke.
-3 It was an efficient way to keep track of tasks and keep our priorities straight. In my other course that's where we failed a little. It gave us a slow start because some user stories distributed were dependent on others not yet implemented
-4 Every project that has more than a few tasks. My favorite way to work is to write down all the tasks and then erase them one after another when finished. Scrum is all that
-5 Depends on my teammates and how efficient the meetings would be. Also Im not to keen to have multiple website to visit to keep track with one project. Google drive, github, pivotaltracker.
-6 In the end we worked so close to each other that we didnt use pivotal tracker instead we just requested each other directly in a loose form of scrum. Believe this was possible because of the small team size
+1 Advantage is that we have a pool we can choose our work from. Also because all our ideas was summarized on the pivotaltracker it helped me visualize the product, it's also a consistent way to get information  
+2 Didn't really understand the point system at first. The daily meetings I was forced to participate \*early\* in the morning, three meetings a week would have been sufficient. Short meetings, only 15 minutes they said, someone always had to pull a joke.  
+3 It was an efficient way to keep track of tasks and keep our priorities straight. In my other course that's where we failed a little. It gave us a slow start because some user stories distributed were dependent on others not yet implemented  
+4 Every project that has more than a few tasks. My favorite way to work is to write down all the tasks and then erase them one after another when finished. Scrum is all that  
+5 Depends on my teammates and how efficient the meetings would be. Also Im not to keen to have multiple website to visit to keep track with one project. Google drive, github, pivotaltracker  
+6 In the end we worked so close to each other that we didnt use pivotal tracker instead we just requested each other directly in a loose form of scrum. Believe this was possible because of the small team size  
 
 ###Agile###
 
