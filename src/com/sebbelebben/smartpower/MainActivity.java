@@ -1,11 +1,13 @@
 package com.sebbelebben.smartpower;
 
+import com.actionbarsherlock.view.Window;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.sebbelebben.smartpower.fragments.*;
+import com.sebbelebben.smartpower.fragments.RemoteFragment.FavoriteListener;
 import com.viewpagerindicator.TitlePageIndicator;
 
 import android.content.Intent;
@@ -18,14 +20,16 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
-public class MainActivity extends SherlockFragmentActivity {
+public class MainActivity extends SherlockFragmentActivity implements FavoriteListener{
 	private ViewPager mPager;
 	private MainPagerAdapter mAdapter;
 	private User mUser;
+	private UserFragment userFragment;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.activity_main);
 
 		//Get user from intent
@@ -87,6 +91,7 @@ public class MainActivity extends SherlockFragmentActivity {
 				break;
 			case 1:
 				fragment = UserFragment.newInstance(mUser);
+				userFragment = (UserFragment) fragment;
 				break;
 			}
 			return fragment;
@@ -117,6 +122,12 @@ public class MainActivity extends SherlockFragmentActivity {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}	
+	}
+
+	@Override
+	public void onFavoriteChanged() {
+		userFragment.FavoriteChanged();
+		
 	}
 
 }
