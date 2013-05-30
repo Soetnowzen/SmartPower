@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.sebbelebben.smartpower.GraphView.Point;
@@ -26,7 +25,6 @@ public class GraphActivity extends Activity {
 
         // Find the views.
 		final GraphView graphView = (GraphView) findViewById(R.id.graphview);
-		final ProgressBar pb = (ProgressBar) findViewById(R.id.loading_progress);
 
         // Retrieve the graphable which data is going to be displayed.
 		Intent intent = getIntent();
@@ -43,7 +41,6 @@ public class GraphActivity extends Activity {
             public void onConsumptionReceive(Consumption[] consumption) {
                 Collections.addAll(data, consumption);
                 display(data, graphView);
-                //pb.setVisibility(ProgressBar.GONE);
             }
 
             @Override
@@ -77,16 +74,29 @@ public class GraphActivity extends Activity {
         List<Point> graphViewData = new ArrayList<Point>();
 
         long firstTime = data.get(0).getDate().getTime();
+        int lastHour = 0;
 
         for (Consumption c : data) {
             long time = c.getDate().getTime();
-            float hour = (time - firstTime) / (60 * 60 * 1000);
+            int hour = (int) (time - firstTime) / (60 * 60 * 1000);
+            int deltaHour = hour - lastHour;
+
+            // Missing points - assume they are zero.
+            for(int i = 0; i < deltaHour-1; i++) {
+                graphViewData.add(new Point(lastHour+i+1, 0));
+            }
+
+            lastHour = hour;
+
             Point point = new Point(hour, c.getWatt());
             point.label = String.valueOf(time);
 
             graphViewData.add(point);
         }
 
+        for(Point p : graphViewData) {
+            Log.i("SmartPower", "X: " + p.x + ", Y: " + p.y);
+        }
         return graphViewData;
     }
     /**
