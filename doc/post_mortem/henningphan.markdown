@@ -69,7 +69,9 @@ Questions:
 3 Can't say there was a learning curve to this because I have mostly coded alone on my own projects giving me the role of decisionmaker  
 4 My own private projects  
 5 I believe projects without significant complexity can be done equally as good or better with a non agile method. Also I wouldn't want to work agile if the team doesn't have the agile mindset.  
-6  No comment
+6  No comment  
+
+4 Conversation, we knew each other from before and we have a "smsgrupp"
 
 5. We had problems with scrum in the beginning because some user stories was dependent on other tasks which someone else was developing, this lead to a slow start. Some minor information losses that could save time e.g. Coding a request that was already implemented in the API.
 Too many scrum meetings and too early in the morning. Didn't understand why we persisted with this time as 1-3 members daily didn't show up to the meeting place in time, the members would participate using skype. Lastly is the task to implement user stories that depend on unimplemented functions someone else is developing. Maybe they should have developed the user story together, extreme programming, or one should have taken care of both tasks.
