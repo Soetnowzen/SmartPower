@@ -1,7 +1,7 @@
 Post mortem - Henning Phan
 ==========================
 *	[processes and practices](#1)
-*	[Time spent]
+*	[Time spent](#2)
 *	[For each technique and practice we used]
 	*	[Advantage]
 	*	[Disadvantage]
@@ -16,9 +16,9 @@ Post mortem - Henning Phan
 * * *
 
 <h2 id="1">Which processes and practices did you use in your project?</h2>
-git flow, version control, scrum, documentation, empirical process control, agile, refactoring, collective code ownership, simple design, design improvement, user stories
+git flow, version control, scrum, documentation, empirical process control, agile, refactoring, collective code ownership, simple design, design improvement and user stories. Some are subset of others but I wanted to highlight them specially.
 
-<h2 id="2">Approximatey, how much time was spent (in total and by each 	group member) on the steps/activities involved as well as for the project as a whole?</h2>
+<h2 id="2">Approximatey, how much time was spent (in total and by each group member) on the steps/activities involved as well as for the project as a whole?</h2>
 
 | Name    | Git	|Pivot|Scrum	| Develop	| Research|error|
 |:-------:|:---:|:---:|:-------:|:--------:|:-------:|:---:|
@@ -29,13 +29,7 @@ git flow, version control, scrum, documentation, empirical process control, agil
 |Henning	|4	|2	|8		|50		|20		|14	|
 |Total	|21	|15	|42		|295		|43		|69	|
 The sum of total becomes 485 hours.
-It's hard to estimate as most worked independently at home and that we can't measure time based on commits.
-these values are only estimates:
-Andreas Arvidsson 125 h
-Johan Bregell 100 h
-Johan Swetzén 75 h
-Henning Phan 100 h
-Sebastian Lagerman 90 h
+It's hard to estimate as most worked independently at home and we were all doing different tasks, same had more experience in that field and some had easier tasks.
 
 4. Scrum was good to have when we became more comfortable with it. It gave me a good sense how far we were in the project, thanks to the many meetings. Another feature is you can pick a user story you are better suited for instead of having a boss managing that.
 I also enjoyed to work with git which I have worked with in another project but it was only when we started doing this project we used the git model
