@@ -48,7 +48,7 @@ Questions:
 6 If you had the practice/technique in a part of the project and not the entire project, how was using it compared to not using it?  
 
 ###Git version control###
-1 The advantages is many, multiple developers can contribute at the same time, can work at different geographical locations. Branching, everyone can code without interfering each other. Working offline, that you can revert to an arbitrary commit if you messed up  
+1 The advantages is many, multiple developers can contribute at the same time, can work at different geographical locations. Branching, everyone can code without interfering each other. Working offline, that you can revert to an arbitrary commit if you messed up. We used [a succesful git branching model](http://nvie.com/posts/a-successful-git-branching-model/ "git")  
 2 The disadvantages are nothing compared to what you gain but I find it time consuming to commit every step and that people push bad commits. Lastly is merging and rebasing, not always but some can be difficult to clean up  
 3 Very efficient,  quite easy to use and it goes fast to learn the basics, from there you can expand your knowledge little by little  
 4 Every project  
