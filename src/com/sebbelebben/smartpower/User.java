@@ -373,7 +373,7 @@ public class User implements Serializable, Graphable   {
     		if(favorite != null){
     			jsArray = new JSONArray(favorite);
     			for(int i = 0; i < jsArray.length(); i++) {
-        			JSONObject loop_psSocket = jsArray.getJSONObject(i);
+                JSONObject loop_psSocket = jsArray.getJSONObject(i);
         			if(loop_psSocket.getInt("id") == psSocket.getId()){
         				return true;
         			}
