@@ -72,22 +72,24 @@ Questions:
 6  No comment  
 
 ###Unit Testing###
-1 Too find errors in code, especially if someone changes a particular function
-2 It's impossible to completely test a program. Time consuming
-3 We were 5 so we hade the manpower to build some testcases
-4 I always underestimate testing because I always assume I can write good enough code. Should be done in all projects.
-5 No comments
-6 Had a bug that a constructor was misbuilt. An easy unit test would surely have caught it in this case.
+1 Too find errors in code, especially if someone changes a particular function  
+2 It's impossible to completely test a program. Time consuming  
+3 We were 5 so we hade the manpower to build some testcases  
+4 I always underestimate testing because I always assume I can write good enough code. Should be done in all projects  
+5 No comments  
+6 Had a bug that a constructor was misbuilt. An easy unit test would surely have caught it in this case
 
 <h2 id="4">What worked well in how you worked in this project?</h2>
 Conversation, we knew each other from before and we have a "smsgrupp". Work distribution was great with scrum and the close interactions.  
 
 <h2 id="5">What did not work well in how you worked in this project?</h2>
-5. We had problems with scrum in the beginning because some user stories was dependent on other tasks which someone else was developing, this lead to a slow start. Some minor information losses that could save time e.g. Coding a request that was already implemented in the API.
-Too many scrum meetings and too early in the morning. Didn't understand why we persisted with this time as 1-3 members daily didn't show up to the meeting place in time, the late members would participate using skype. Lastly is the task to implement user stories that depend on unimplemented functions someone else is developing. Maybe they should have coded the user story together, extreme programming, or one should have taken care of both tasks. Im also not so keen an being dependent on a server that's under development.
+We had problems with scrum in the beginning because some user stories was dependent on other tasks which someone else was developing, this lead to a slow start. Some minor information losses that could save time e.g. Coding a request that was already implemented in the API.  
+Too many scrum meetings and too early in the morning. Didn't understand why we persisted with this time as 1-3 members daily didn't show up to the meeting place in time, the late members would participate using skype.  
+
+Lastly is the task to implement user stories that depend on unimplemented functions someone else is developing. Maybe they should have coded the user story together, extreme programming, or one should have taken care of both tasks. Im also not so keen an being dependent on a server that's under development.
 
 <h2 id="6">6. How did you work together as a group in the project? What worked and not in your interaction(s)?</h2>
-We knew eachother from before and overall it worked well, we even requested methods to be implemented to another.
+We knew eachother from before and overall it worked well, we even requested methods to be implemented to another. Some miscommunication happened that happened because of a request to read the API which I believe no one did.
 
 <h2 id="seven">What would you do differently in a future but similar project?</h2>
 7. I did like the concept of scrum and pivotal tracker but I want the feature to have user stories locked if they depend on a yet unimplemented task. So the only user stories are those we can work on in parallell.
@@ -96,3 +98,6 @@ I have been thinking of the idea of having code roles, letting one developer be 
 
 Lastly I been thinking of merging waterfall with agile. Think waterfall with 3 iterations. First we create a prototyp to learn as much as possible of all the problems we didn't think of, then we start over but learn from our mistakes. Lastly if needed redesign it again for finishing touch.
 
+I would like to mention that I have been reminded once again of the importance of unit testing. Had good experiences with Git and bad moments with Eclipse. But what I believe is the best is the experience, I have learned the most by experiencing it here in this course and not from reading it
+
+Henning
