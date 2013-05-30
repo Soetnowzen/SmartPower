@@ -1,6 +1,6 @@
 Post mortem - Henning Phan
 ==========================
-*	[processes and practices](#one)
+*	[processes and practices](#1)
 *	[Time spent]
 *	[For each technique and practice we used]
 	*	[Advantage]
@@ -15,19 +15,18 @@ Post mortem - Henning Phan
 
 * * *
 
-<h2 id="one">Which processes and practices did you use in your project?</h2>
+<h2 id="1">Which processes and practices did you use in your project?</h2>
 git flow, version control, scrum, documentation, empirical process control, agile, refaktorering, collective code ownership, simple design, design improvement, user stories
 
 <h2 id="2">Approximatey, how much time was spent (in total and by each 	group member) on the steps/activities involved as well as for the project as a whole?</h2>
 
-| Left align | Right align | Center align |
-|:-----------|------------:|:------------:|
-| This       |        This |     This     |
-| column     |      column |    column    |
-| will       |        will |     will     |
-| be         |          be |      be      |
-| left       |       right |    center    |
-| aligned    |     aligned |   aligned    |
+| Left align | Git   | Pivot/Scrum | Developing| Research | err|
+|:----------:|:-----:|:-----------:|:---------:|:--------:|:--:|
+| Arvidsson  |       |     This    |			|		|
+| Bregell    |lumn   |    column   |			|		|
+| Lagerman   |    ll |     will    |			|		|
+| Swetzén    |    be |      be     |			|		|
+
 
 2. It's hard to estimate as most worked independently at home and that we can't measure time based on commits.
 these values are only estimates:
@@ -37,7 +36,8 @@ Johan Swetzén 75 h
 Henning Phan 100 h
 Sebastian Lagerman 90 h
 
-4. Scrum is good because everyone had their tasks and knew what they should do and by attending scrum meetings I knew what the group was doing which I feel is important because I personally put more effort into a project if I know my teammates puts in alot of effort. I also enjoyed to work with git which I have worked with in another project. As I mostly have been working in small groups the agile concept wasn't foregin to me but it's good to have the agile mindset as a team so everyone accepts the much needed refactoring in code.
+4. Scrum was good to have when we became more comfortable with it. It gave me a good sense how far we were in the project, thanks to the many meetings. Another feature is you can pick a user story you are better suited for instead of having a boss managing that.
+I also enjoyed to work with git which I have worked with in another project. As I mostly have been working in small groups the agile concept wasn't foregin to me but it's good to have the agile mindset as a team so everyone accepts the much needed refactoring in code.
 
 5. We had problems with scrum in the beginning because some user stories was dependent on other tasks which someone else was developing, this lead to a slow start. Some minor information losses that could save time e.g. Coding a request that was already implemented in the API.
 Too many scrum meetings and too early in the morning. Didn't understand why we persisted with this time as 1-3 members daily didn't show up to the meeting place in time, the members would participate using skype. Lastly is the task to implement user stories that depend on unimplemented functions someone else is developing. Maybe they should have developed the user story together, extreme programming, or one should have taken care of both tasks.
