@@ -64,7 +64,7 @@ Questions:
 6 In the end we worked so close to each other that we didnt use pivotal tracker instead we just requested each other directly in a loose form of scrum. Believe this was possible because of the small team size  
 
 ###Agile###
-1 Advantages that I noticed is the immediate feedback we can handle early instead of letting it hide in the code. By having more quality assurance the finished product will have less bugs 
+1 Advantages that I noticed is the immediate feedback, we can handle problems early instead of letting it hide in the code. By having more quality assurance the finished product will have less bugs 
 2 As said in scrum, if a user story is dependent on another I cant work. There is almost no point in documentation as you might refactor the code at any moment. As the code is only written with the short vision of only solving the problem at hands Im having a hard time to see the code grow resulting in unnecessary refactoring, though I doubt a project with such complexity is encountered often.  
 3 Can't say there was a learning curve to this because I have mostly coded alone on my own projects giving me the role of decisionmaker  
 4 My own private projects  
