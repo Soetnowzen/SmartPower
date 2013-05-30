@@ -16,7 +16,7 @@ Post mortem - Henning Phan
 * * *
 
 <h2 id="1">Which processes and practices did you use in your project?</h2>
-git flow, version control, scrum, documentation, empirical process control, agile, refactoring, collective code ownership, simple design, design improvement and user stories. Some are subset of others but I wanted to highlight them specially.
+git flow, version control, scrum, documentation, empirical process control, agile, refactoring, collective code ownership, simple design, design improvement, testing and user stories. Some are subset of others but I wanted to highlight them specially.
 
 <h2 id="2">Approximatey, how much time was spent (in total and by each group member) on the steps/activities involved as well as for the project as a whole?</h2>
 
@@ -56,7 +56,7 @@ Questions:
 6 To be without version control is like not having electricity
 
 ###Scrum###
-1 Advantage is that we have a pool we can choose our work from. Also because all our ideas was summarized on the pivotaltracker it helped me visualize the product, it's also a consistent way to get information. I also like that we are helping the customer to give them what they doesn't know they want yet  
+1 Advantage is that we have a pool we can choose our work from. Also because all our ideas was summarized on the pivotaltracker it helped me visualize the product, it's also a consistent way to get information. I also like that we are helping the customer to give them what they doesn't know they want yet. It's smart to have a working application after every sprint. It gives a feeling that we are building with Lego and adding features on top which is quite convenient with Git and branches.  
 2 Didn't really understand the point system at first. The daily meetings I was forced to participate \*early\* in the morning, three meetings a week would have been sufficient. Short meetings, only 15 minutes they said, someone always had to pull a joke.  
 3 It was an efficient way to keep track of tasks and keep our priorities straight. In my other course that's where we failed a little. It gave us a slow start because some user stories distributed were dependent on others not yet implemented. Was not hard to grasp the concept 
 4 Every project that has more than a few tasks. My favorite way to work is to write down all the tasks and then erase them one after another when finished. Scrum is all that  
@@ -65,19 +65,20 @@ Questions:
 
 ###Agile###
 1 Advantages that I noticed is the immediate feedback we can handle early instead of letting it hide in the code. By having more quality assurance the finished product will have less bugs 
-2 As said in scrum, if a user story is dependent on another I cant work. There is almost no point in documentation as you might refactor the code at any moment  
+2 As said in scrum, if a user story is dependent on another I cant work. There is almost no point in documentation as you might refactor the code at any moment. As the code is only written with the short vision of only solving the problem at hands Im having a hard time to see the code grow resulting in unnecessary refactoring, though I doubt a project with such complexity is encountered often.  
 3 Can't say there was a learning curve to this because I have mostly coded alone on my own projects giving me the role of decisionmaker  
 4 My own private projects  
 5 I believe projects without significant complexity can be done equally as good or better with a non agile method. Also I wouldn't want to work agile if the team doesn't have the agile mindset.  
 6  No comment
 
-
-
-
 5. We had problems with scrum in the beginning because some user stories was dependent on other tasks which someone else was developing, this lead to a slow start. Some minor information losses that could save time e.g. Coding a request that was already implemented in the API.
 Too many scrum meetings and too early in the morning. Didn't understand why we persisted with this time as 1-3 members daily didn't show up to the meeting place in time, the members would participate using skype. Lastly is the task to implement user stories that depend on unimplemented functions someone else is developing. Maybe they should have developed the user story together, extreme programming, or one should have taken care of both tasks.
 
 6. We knew eachother from before and overall it worked well, we even requested methods to be implemented to another.
-7. I did like the concept of scrum and pivotal tracker but I want the feature to have user stories locked if they depend on a yet unimplemented task. So the only user stories are those we can work on in parallell. I have been thinking of the idea of having code roles, letting one developer be in charge of a group of classes. 
-programmers have roles, bregell devApi
+7. I did like the concept of scrum and pivotal tracker but I want the feature to have user stories locked if they depend on a yet unimplemented task. So the only user stories are those we can work on in parallell.
+
+I have been thinking of the idea of having code roles, letting one developer be in charge of a group of classes.
+
+Lastly I been thinking of merging waterfall with agile. Think waterfall with 3 iterations. First we create a prototyp to learn as much as possible of all the problems we didn't think of, then we start over but learn from our mistakes. Lastly if needed redesign it again for finishing touch.
+
 
