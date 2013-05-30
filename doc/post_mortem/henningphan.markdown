@@ -48,7 +48,7 @@ Questions:
 6 If you had the practice/technique in a part of the project and not the entire project, how was using it compared to not using it?  
 
 ###Git version control###
-1 The advantages is many, multiple developers can contribute at the same time, can work at different geographical locations. Branching, everyone can code without interfering each other. Working offline, that you can revert to an arbitrary commit if you messed up. We used [a succesful git branching model](http://nvie.com/posts/a-successful-git-branching-model/ "git")  
+1 The advantages is many, multiple developers can contribute at the same time, can work at different geographical locations. Branching, everyone can code without interfering each other. Working offline, that you can revert to an arbitrary commit if you messed up. We used [a succesful git branching model](http://nvie.com/posts/a-successful-git-branching-model/ "git") and after reading it we enforced this model to our other course. It was enlightening and works well with the scrum model to always have a working application which is our develop branch  
 2 The disadvantages are nothing compared to what you gain but I find it time consuming to commit every step and that people push bad commits. Lastly is merging and rebasing, not always but some can be difficult to clean up  
 3 Very efficient,  quite easy to use and it goes fast to learn the basics, from there you can expand your knowledge little by little  
 4 Every project  
@@ -58,7 +58,7 @@ Questions:
 ###Scrum###
 1 Advantage is that we have a pool we can choose our work from. Also because all our ideas was summarized on the pivotaltracker it helped me visualize the product, it's also a consistent way to get information. I also like that we are helping the customer to give them what they doesn't know they want yet. It's smart to have a working application after every sprint. It gives a feeling that we are building with Lego and adding features on top which is quite convenient with Git and branches.  
 2 Didn't really understand the point system at first. The daily meetings I was forced to participate \*early\* in the morning, three meetings a week would have been sufficient. Short meetings, only 15 minutes they said, someone always had to pull a joke.  
-3 It was an efficient way to keep track of tasks and keep our priorities straight. In my other course that's where we failed a little. It gave us a slow start because some user stories distributed were dependent on others not yet implemented. Was not hard to grasp the concept 
+3 It was an efficient way to keep track of tasks and keep our priorities straight. In my other course that's where we failed a little. It gave us a slow start because some user stories distributed were dependent on others not yet implemented. Was not hard to grasp the concept  
 4 Every project that has more than a few tasks. My favorite way to work is to write down all the tasks and then erase them one after another when finished. Scrum is all that  
 5 Depends on my teammates and how efficient the meetings would be. Also Im not to keen to have multiple website to visit to keep track with one project. Google drive, github, pivotaltracker  
 6 In the end we worked so close to each other that we didnt use pivotal tracker instead we just requested each other directly in a loose form of scrum. Believe this was possible because of the small team size  
@@ -71,12 +71,17 @@ Questions:
 5 I believe projects without significant complexity can be done equally as good or better with a non agile method. Also I wouldn't want to work agile if the team doesn't have the agile mindset.  
 6  No comment  
 
-4 Conversation, we knew each other from before and we have a "smsgrupp". Work distribution was great with scrum and the close interactions.  
+<h2 id="4">What worked well in how you worked in this project?</h2>
+Conversation, we knew each other from before and we have a "smsgrupp". Work distribution was great with scrum and the close interactions.  
 
+<h2 id="5">What did not work well in how you worked in this project?</h2>
 5. We had problems with scrum in the beginning because some user stories was dependent on other tasks which someone else was developing, this lead to a slow start. Some minor information losses that could save time e.g. Coding a request that was already implemented in the API.
 Too many scrum meetings and too early in the morning. Didn't understand why we persisted with this time as 1-3 members daily didn't show up to the meeting place in time, the members would participate using skype. Lastly is the task to implement user stories that depend on unimplemented functions someone else is developing. Maybe they should have developed the user story together, extreme programming, or one should have taken care of both tasks.
 
-6. We knew eachother from before and overall it worked well, we even requested methods to be implemented to another.
+<h2 id="6">6. How did you work together as a group in the project? What worked and not in your interaction(s)?</h2>
+We knew eachother from before and overall it worked well, we even requested methods to be implemented to another.
+
+<h2 id="">What would you do differently in a future but similar project?</h2>
 7. I did like the concept of scrum and pivotal tracker but I want the feature to have user stories locked if they depend on a yet unimplemented task. So the only user stories are those we can work on in parallell.
 
 I have been thinking of the idea of having code roles, letting one developer be in charge of a group of classes.
