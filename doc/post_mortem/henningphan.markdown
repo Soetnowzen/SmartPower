@@ -32,6 +32,7 @@ The sum of total becomes 485 hours.
 It's hard to estimate as most worked independently at home and we were all doing different tasks, same had more experience in that field and some had easier tasks.
 
 <h2 id="3">For each of the techniques and practices used in your project you should answer all the questions</h2>
+
 Questions:
 1 What was the advantage of this technique based on your experience in this assignment?
 2 What was the disadvantage of this technique based on your experience in this assignment?
@@ -39,8 +40,21 @@ Questions:
 4 In which situations would you use this technique in a future project?
 5 In which situations would you not use this technique in a future project?
 6 If you had the practice/technique in a part of the project and not the entire project, how was using it compared to not using it?
-###Version control###
+###Git version control###
+1. The advantages is many, multiple developers can contribute at the same time, can work at different geographical locations. Branching, everyone can code without interfering each other. Working offline, that you can revert to an arbitrary commit if you messed up
+2. Maybe someone pushed an error but the advantages compensate for that thousandfold
+3. Very efficient,  quite easy to use and it goes fast to learn the basics, from there you can expand your knowledge little by little
+4. Every project
+5. The exception would be small projects that only have one functionality
+6. To be without version control is like not having electricity
 
+###Scrum###
+1
+2
+3
+4
+5
+6
 
 4. Scrum was good to have when we became more comfortable with it. It gave me a good sense how far we were in the project, thanks to the many meetings. Another feature is you can pick a user story you are better suited for instead of having a boss managing that.
 I also enjoyed to work with git which I have worked with in another project but it was only when we started doing this project we used the git model
