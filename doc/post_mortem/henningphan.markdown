@@ -2,16 +2,16 @@ Post mortem - Henning Phan
 ==========================
 *	[processes and practices](#1)
 *	[Time spent](#2)
-*	[For each technique and practice we used](#3)
-	*	[Advantage](#3.1)
+*	[For each technique and practice we used]
+	*	[Advantage]
 	*	[Disadvantage](#3.2)
-	*	[Efficency given time](#3.3)
-	*	[Will I use it in future projects](#3.4)
-	*	[using vs not using](#3.5)
-*	[What worked well in the project](#4)
-*	[What did not work well in the project](#5)
-*	[How was teamwork](#6)
-*	[What would we do different](#7)
+	*	[Efficency given time]
+	*	[Will I use it in future projects]
+	*	[using vs not using]
+*	[What worked well in the project]
+*	[What did not work well in the project]
+*	[How was teamwork]
+*	[What would we do different]
 
 * * *
 
