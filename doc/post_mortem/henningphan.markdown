@@ -31,6 +31,17 @@ git flow, version control, scrum, documentation, empirical process control, agil
 The sum of total becomes 485 hours.
 It's hard to estimate as most worked independently at home and we were all doing different tasks, same had more experience in that field and some had easier tasks.
 
+<h2 id="3">For each of the techniques and practices used in your project you should answer all the questions:h2>
+The questions:
+	1. What was the advantage of this technique based on your experience in this assignment?
+	2. What was the disadvantage of this technique based on your experience in this assignment?
+	3. How efficient was the technique given the time it took to use?
+	4.In which situations would you use this technique in a future project?
+	5. In which situations would you not use this technique in a future project?
+	6. If you had the practice/technique in a part of the project and not the entire project, how was using it compared to not using it?
+###Version control###
+
+
 4. Scrum was good to have when we became more comfortable with it. It gave me a good sense how far we were in the project, thanks to the many meetings. Another feature is you can pick a user story you are better suited for instead of having a boss managing that.
 I also enjoyed to work with git which I have worked with in another project but it was only when we started doing this project we used the git model
 
