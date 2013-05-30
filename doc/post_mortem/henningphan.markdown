@@ -31,7 +31,8 @@ git flow, version control, scrum, documentation, empirical process control, agil
 The sum of total becomes 485 hours.
 It's hard to estimate as most worked independently at home and we were all doing different tasks, same had more experience in that field and some had easier tasks.
 
-<h2 id="3">For each of the techniques and practices used in your project you should answer all the questions<h2>
+<h2 id="3">For each of the techniques and practices used in your project you should answer all the questions</h2>
+
 The questions:
 	1. What was the advantage of this technique based on your experience in this assignment?
 	2. What was the disadvantage of this technique based on your experience in this assignment?
