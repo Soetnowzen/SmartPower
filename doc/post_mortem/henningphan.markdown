@@ -49,24 +49,29 @@ Questions:
 
 ###Git version control###
 1 The advantages is many, multiple developers can contribute at the same time, can work at different geographical locations. Branching, everyone can code without interfering each other. Working offline, that you can revert to an arbitrary commit if you messed up  
-2 Maybe someone pushed an error but the advantages compensate for that thousandfold  
+2 The disadvantages are nothing compared to what you gain but I find it time consuming to commit every step and that people push bad commits. Lastly is merging and rebasing, not always but some can be difficult to clean up  
 3 Very efficient,  quite easy to use and it goes fast to learn the basics, from there you can expand your knowledge little by little  
 4 Every project  
 5 The exception would be small projects that only have one functionality  
 6 To be without version control is like not having electricity
 
 ###Scrum###
-1 Advantage is that we have a pool we can choose our work from. Also because all our ideas was summarized on the pivotaltracker it helped me visualize the product, it's also a consistent way to get information  
+1 Advantage is that we have a pool we can choose our work from. Also because all our ideas was summarized on the pivotaltracker it helped me visualize the product, it's also a consistent way to get information. I also like that we are helping the customer to give them what they doesn't know they want yet  
 2 Didn't really understand the point system at first. The daily meetings I was forced to participate \*early\* in the morning, three meetings a week would have been sufficient. Short meetings, only 15 minutes they said, someone always had to pull a joke.  
-3 It was an efficient way to keep track of tasks and keep our priorities straight. In my other course that's where we failed a little. It gave us a slow start because some user stories distributed were dependent on others not yet implemented  
+3 It was an efficient way to keep track of tasks and keep our priorities straight. In my other course that's where we failed a little. It gave us a slow start because some user stories distributed were dependent on others not yet implemented. Was not hard to grasp the concept 
 4 Every project that has more than a few tasks. My favorite way to work is to write down all the tasks and then erase them one after another when finished. Scrum is all that  
 5 Depends on my teammates and how efficient the meetings would be. Also Im not to keen to have multiple website to visit to keep track with one project. Google drive, github, pivotaltracker  
 6 In the end we worked so close to each other that we didnt use pivotal tracker instead we just requested each other directly in a loose form of scrum. Believe this was possible because of the small team size  
 
 ###Agile###
+1 Advantages that I noticed is the immediate feedback we can handle early instead of letting it hide in the code. By having more quality assurance the finished product will have less bugs 
+2 As said in scrum, if a user story is dependent on another I cant work. There is almost no point in documentation as you might refactor the code at any moment  
+3 Can't say there was a learning curve to this because I have mostly coded alone on my own projects giving me the role of decisionmaker  
+4 My own private projects  
+5 I believe projects without significant complexity can be done equally as good or better with a non agile method. Also I wouldn't want to work agile if the team doesn't have the agile mindset.  
+6  No comment
 
 
-4. aoeus saontehun atohest haoe
 
 
 5. We had problems with scrum in the beginning because some user stories was dependent on other tasks which someone else was developing, this lead to a slow start. Some minor information losses that could save time e.g. Coding a request that was already implemented in the API.
