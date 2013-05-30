@@ -1,6 +1,6 @@
 Post mortem - Henning Phan
 ==========================
-*	[processes and practices]
+*	[processes and practices](#1)
 *	[Time spent]
 *	[For each technique and practice we used]
 	*	[Advantage]
