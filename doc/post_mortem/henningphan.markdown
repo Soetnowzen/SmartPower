@@ -18,7 +18,17 @@ Post mortem - Henning Phan
 <h2 id="one">Which processes and practices did you use in your project?</h2>
 git flow, version control, scrum, documentation, empirical process control, agile, refaktorering, collective code ownership, simple design, design improvement, user stories
 
-Approximatey, how much time was spent (in total and by each 	group member) on the steps/activities involved as well as for the project as a whole?
+<h2 id="2">Approximatey, how much time was spent (in total and by each 	group member) on the steps/activities involved as well as for the project as a whole?</h2>
+
+| Left align | Right align | Center align |
+|:-----------|------------:|:------------:|
+| This       |        This |     This     |
+| column     |      column |    column    |
+| will       |        will |     will     |
+| be         |          be |      be      |
+| left       |       right |    center    |
+| aligned    |     aligned |   aligned    |
+
 2. It's hard to estimate as most worked independently at home and that we can't measure time based on commits.
 these values are only estimates:
 Andreas Arvidsson 125 h
