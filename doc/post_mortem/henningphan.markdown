@@ -34,6 +34,7 @@ It's hard to estimate as most worked independently at home and we were all doing
 <h2 id="3">For each of the techniques and practices used in your project you should answer all the questions</h2>
 
 Questions:
+
 1 What was the advantage of this technique based on your experience in this assignment?
 2 What was the disadvantage
 ###Git version control###
