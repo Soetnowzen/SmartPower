@@ -1,38 +1,24 @@
 Post mortem - Henning Phan
 ==========================
 *	[processes and practices](#1)
-*	[Time spent]
-*	[For each technique and practice we used]
-	*	[Advantage]
-	*	[Disadvantage]
-	*	[Efficency given time]
-	*	[Will I use it in future projects]
-	*	[using vs not using]
-*	[What worked well in the project]
-*	[What did not work well in the project]
-*	[How was teamwork]
-*	[What would we do different]
+*	[Time spent](#2)
+*	[For each technique and practice we used](#3)
+	*	[Advantage](#3.1)
+	*	[Disadvantage](#3.2)
+	*	[Efficency given time](#3.3)
+	*	[Will I use it in future projects](#3.4)
+	*	[using vs not using](#3.5)
+*	[What worked well in the project](#4)
+*	[What did not work well in the project](#5)
+*	[How was teamwork](#6)
+*	[What would we do different](#7)
 
 * * *
 
 <h2 id="1">Which processes and practices did you use in your project?</h2>
-1. Which processes and practices did you use in your project?
-2. Approximatey, how much time was spent (in total and by each 	group member) on the steps/activities involved as well as 	for the project as a whole?
-3. For each of the techniques and practices used in your project you should answer all the questions:
-	1. What was the advantage of this technique based on your 	experience in this assignment?
-	2. What was the disadvantage of this technique based on your 	experience in this assignment?
-	3. How efficient was the technique given the time it took to 	use?
-	4.In which situations would you use this technique in a 	future project?
-	5. In which situations would you not use this technique in a 	future project?
-	6. If you had the practice/technique in a part of the 			project and not the entire project, how was using it 	compared to not using it?
-4. What worked well in how you worked in this project?
-5. What did not work well in how you worked in this project?
-6. How did you work together as a group in the project? What worked and not in your interaction(s)?
-7. What would you do differently in a future but similar project?
-
-1. Processes and practices
 git flow, version control, scrum, documentation, empirical process control, agile, refaktorering, collective code ownership, simple design, design improvement, user stories
 
+<h2 id="2">2. Approximatey, how much time was spent (in total and by each 	group member) on the steps/activities involved as well as for the project as a whole?</h2>
 2. It's hard to estimate as most worked independently at home and that we can't measure time based on commits.
 these values are only estimates:
 Andreas Arvidsson 125 h
