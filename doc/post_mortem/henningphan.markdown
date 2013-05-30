@@ -1,17 +1,17 @@
 Post mortem - Henning Phan
 ==========================
-*	[processes and practices](#1)
-*	[Time spent](#2)
-*	[For each technique and practice we used](#3)
+*	[processes and practices]
+*	[Time spent]
+*	[For each technique and practice we used]
 	*	[Advantage]
 	*	[Disadvantage]
 	*	[Efficency given time]
 	*	[Will I use it in future projects]
 	*	[using vs not using]
-*	[What worked well in the project](#4)
-*	[What did not work well in the project](#5)
-*	[How was teamwork](#6)
-*	[What would we do different](#seven)
+*	[What worked well in the project]
+*	[What did not work well in the project]
+*	[How was teamwork]
+*	[What would we do different]
 
 * * *
 
@@ -71,6 +71,14 @@ Questions:
 5 I believe projects without significant complexity can be done equally as good or better with a non agile method. Also I wouldn't want to work agile if the team doesn't have the agile mindset.  
 6  No comment  
 
+###Unit Testing###
+1 Too find errors in code, especially if someone changes a particular function
+2 It's impossible to completely test a program. Time consuming
+3 We were 5 so we hade the manpower to build some testcases
+4 I always underestimate testing because I always assume I can write good enough code. Should be done in all projects.
+5 No comments
+6 Had a bug that a constructor was misbuilt. An easy unit test would surely have caught it in this case.
+
 <h2 id="4">What worked well in how you worked in this project?</h2>
 Conversation, we knew each other from before and we have a "smsgrupp". Work distribution was great with scrum and the close interactions.  
 
@@ -87,5 +95,4 @@ We knew eachother from before and overall it worked well, we even requested meth
 I have been thinking of the idea of having code roles, letting one developer be in charge of a group of classes.
 
 Lastly I been thinking of merging waterfall with agile. Think waterfall with 3 iterations. First we create a prototyp to learn as much as possible of all the problems we didn't think of, then we start over but learn from our mistakes. Lastly if needed redesign it again for finishing touch.
-
 
