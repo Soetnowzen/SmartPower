@@ -1,26 +1,24 @@
 package com.sebbelebben.smartpower;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import com.sebbelebben.smartpower.GraphView.Point;
-import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
-
-import android.os.Bundle;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.DatePicker;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+
+import com.sebbelebben.smartpower.GraphView.Point;
+import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
 
 /**
  * Class for displaying a graph of consumption.
@@ -56,31 +54,25 @@ public class GraphActivity extends Activity {
 			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZZ", Locale.ENGLISH);
 				String start = String.format("%s-%s-%s 00:00:00+00",year,monthOfYear,dayOfMonth);
-				try{
+				graphable.getConsumption(Duration.HOUR, 24, new OnConsumptionReceiveListener() {
 
-                    graphable.getConsumption(sdf.parse(start), new Date(System.currentTimeMillis()), new OnConsumptionReceiveListener() {
+					@Override
+					public void onConsumptionReceive(Consumption[] consumption) {
+						Collections.addAll(data, consumption);
+						display(data, graphView);
+						pb.setVisibility(ProgressBar.GONE);
+					}
 
-						@Override
-						public void onConsumptionReceive(Consumption[] consumption) {
-							Collections.addAll(data, consumption);
-							display(data, graphView);
-							pb.setVisibility(ProgressBar.GONE);
-						}
-
-						@Override
-						public void failed() {
-							Toast.makeText(GraphActivity.this, "FAILED TO GET CONSUMPTION", Toast.LENGTH_SHORT).show();
-						}
-					});
-				}catch(ParseException e){
-					Log.d("bug", "Error with parsing.");
-				}
+					@Override
+					public void failed() {
+						Toast.makeText(GraphActivity.this, "FAILED TO GET CONSUMPTION", Toast.LENGTH_SHORT).show();
+					}
+				});
 				
 			}
 		};
 		DatePickerDialog dp = new DatePickerDialog(this, mDateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH));
 		dp.show();
-
 	}
 
     /**

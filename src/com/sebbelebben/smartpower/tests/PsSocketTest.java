@@ -1,10 +1,10 @@
 package com.sebbelebben.smartpower.tests;
 
+import android.test.AndroidTestCase;
+
 import com.sebbelebben.smartpower.PsSocket;
 import com.sebbelebben.smartpower.Server.GenericListener;
-import com.sebbelebben.smartpower.Server.OnSetNameReceiveListener;
-
-import android.test.AndroidTestCase;
+import com.sebbelebben.smartpower.Server.GenericStringListener;
 
 public class PsSocketTest extends AndroidTestCase {
 	private PsSocket socket;
@@ -28,10 +28,10 @@ public class PsSocketTest extends AndroidTestCase {
 	
 	public void testSetName(){
 		
-		socket.setName("PsTestChange", new OnSetNameReceiveListener() {
+		socket.setName("PsTestChange", new GenericStringListener() {
 			
 			@Override
-			public void onSetNameReceived(String name) {
+			public void success(String name) {
 				assertEquals("PsTestChange", socket.getName());
 			}
 			

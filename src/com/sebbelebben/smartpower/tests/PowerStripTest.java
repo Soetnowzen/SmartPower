@@ -7,7 +7,7 @@ import android.test.AndroidTestCase;
 import com.sebbelebben.smartpower.PowerStrip;
 import com.sebbelebben.smartpower.PsSocket;
 import com.sebbelebben.smartpower.Server.GenericListener;
-import com.sebbelebben.smartpower.Server.OnSetNameReceiveListener;
+import com.sebbelebben.smartpower.Server.GenericStringListener;
 import com.sebbelebben.smartpower.Server.OnUpdateListener;
 
 public class PowerStripTest extends AndroidTestCase {
@@ -74,7 +74,7 @@ public class PowerStripTest extends AndroidTestCase {
 	}
 	
 	public void testId(){
-		assertEquals(Integer.valueOf(5), powerStrip.getId());
+		assertEquals(5, powerStrip.getId());
 	}
 	
 	public void testSerialId(){
@@ -84,10 +84,10 @@ public class PowerStripTest extends AndroidTestCase {
 	public void testName() throws Exception {
 		final String current_name = powerStrip.getName();
 		final String test_name = "TestPowerStripName";
-		powerStrip.setName(test_name, new OnSetNameReceiveListener() {
+		powerStrip.setName(test_name, new GenericStringListener() {
 			
 			@Override
-			public void onSetNameReceived(String name) {
+			public void success(String name) {
 				assertEquals(test_name, powerStrip.getName());
 				try {
 					barrier2.await();
@@ -107,10 +107,10 @@ public class PowerStripTest extends AndroidTestCase {
 			}
 		});
 		barrier2.await();
-		powerStrip.setName(current_name, new OnSetNameReceiveListener() {
+		powerStrip.setName(current_name, new GenericStringListener() {
 			
 			@Override
-			public void onSetNameReceived(String name) {
+			public void success(String name) {
 				assertEquals(current_name, powerStrip.getName());
 				try {
 					barrier2.await();

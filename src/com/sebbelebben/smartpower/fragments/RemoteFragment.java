@@ -34,7 +34,7 @@ import com.sebbelebben.smartpower.PsPart;
 import com.sebbelebben.smartpower.PsSocket;
 import com.sebbelebben.smartpower.R;
 import com.sebbelebben.smartpower.Server.GenericListener;
-import com.sebbelebben.smartpower.Server.OnSetNameReceiveListener;
+import com.sebbelebben.smartpower.Server.GenericStringListener;
 import com.sebbelebben.smartpower.User;
 
 /**
@@ -435,10 +435,10 @@ public class RemoteFragment extends SherlockFragment {
 
                         //String s = result.getText().toString();
                         //mPowerStrips.get(position);
-                        pspart.setName(result.getText().toString(), new OnSetNameReceiveListener() {
+                        pspart.setName(result.getText().toString(), new GenericStringListener() {
 
                             @Override
-                            public void onSetNameReceived(String name) {
+                            public void success(String name) {
                                 mAdapter.notifyDataSetChanged();
                             }
 
