@@ -1,6 +1,6 @@
 Post mortem - Henning Phan
 ==========================
-*	[processes and practices](#1)
+*	[processes and practices](#one)
 *	[Time spent](#2)
 *	[For each technique and practice we used]
 	*	[Advantage]
@@ -15,7 +15,7 @@ Post mortem - Henning Phan
 
 * * *
 
-<h2 id="1">Which processes and practices did you use in your project?</h2>
+<h2 id="one">Which processes and practices did you use in your project?</h2>
 git flow, version control, scrum, documentation, empirical process control, agile, refaktorering, collective code ownership, simple design, design improvement, user stories
 
 Approximatey, how much time was spent (in total and by each 	group member) on the steps/activities involved as well as for the project as a whole?
