@@ -16,19 +16,20 @@ Post mortem - Henning Phan
 * * *
 
 <h2 id="1">Which processes and practices did you use in your project?</h2>
-git flow, version control, scrum, documentation, empirical process control, agile, refaktorering, collective code ownership, simple design, design improvement, user stories
+git flow, version control, scrum, documentation, empirical process control, agile, refactoring, collective code ownership, simple design, design improvement, user stories
 
 <h2 id="2">Approximatey, how much time was spent (in total and by each 	group member) on the steps/activities involved as well as for the project as a whole?</h2>
 
-| Left align | Git   | Pivot/Scrum | Developing| Research | err|
-|:----------:|:-----:|:-----------:|:---------:|:--------:|:--:|
-| Arvidsson  |       |     This    |			|		|
-| Bregell    |lumn   |    column   |			|		|
-| Lagerman   |    ll |     will    |			|		|
-| Swetzén    |    be |      be     |			|		|
-
-
-2. It's hard to estimate as most worked independently at home and that we can't measure time based on commits.
+| Name    | Git	|Pivot|Scrum	| Develop	| Research|error|
+|:-------:|:---:|:---:|:-------:|:--------:|:-------:|:---:|
+|Andreas  	|4	|3	|8		|100		|4		|5	|
+|Bregell	|4	|3	|8		|60		|8		|20	|
+|Lagerman	|5	|3	|8		|55		|5		|15	|
+|Swetzén	|4	|5	|10		|30		|6		|15	|
+|Henning	|4	|2	|8		|50		|20		|14	|
+|Total	|21	|15	|42		|295		|43		|69	|
+The sum of total becomes 485 hours.
+It's hard to estimate as most worked independently at home and that we can't measure time based on commits.
 these values are only estimates:
 Andreas Arvidsson 125 h
 Johan Bregell 100 h
@@ -37,7 +38,7 @@ Henning Phan 100 h
 Sebastian Lagerman 90 h
 
 4. Scrum was good to have when we became more comfortable with it. It gave me a good sense how far we were in the project, thanks to the many meetings. Another feature is you can pick a user story you are better suited for instead of having a boss managing that.
-I also enjoyed to work with git which I have worked with in another project. As I mostly have been working in small groups the agile concept wasn't foregin to me but it's good to have the agile mindset as a team so everyone accepts the much needed refactoring in code.
+I also enjoyed to work with git which I have worked with in another project but it was only when we started doing this project we used the git model
 
 5. We had problems with scrum in the beginning because some user stories was dependent on other tasks which someone else was developing, this lead to a slow start. Some minor information losses that could save time e.g. Coding a request that was already implemented in the API.
 Too many scrum meetings and too early in the morning. Didn't understand why we persisted with this time as 1-3 members daily didn't show up to the meeting place in time, the members would participate using skype. Lastly is the task to implement user stories that depend on unimplemented functions someone else is developing. Maybe they should have developed the user story together, extreme programming, or one should have taken care of both tasks.
