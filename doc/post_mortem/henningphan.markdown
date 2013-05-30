@@ -37,7 +37,15 @@ Questions:
 
 1 What was the advantage of this technique based on your experience in this assignment?
 
-2 What was the disadvantage
+2 What was the disadvantage of this technique based on your experience in this assignment?
+
+3 How efficient was the technique given the time it took to use?
+
+4 In which situations would you use this technique in a future project?
+
+5 In which situations would you not use this technique in a future project?
+
+6 If you had the practice/technique in a part of the project and not the entire project, how was using it compared to not using it?
 
 ###Git version control###
 1 The advantages is many, multiple developers can contribute at the same time, can work at different geographical locations. Branching, everyone can code without interfering each other. Working offline, that you can revert to an arbitrary commit if you messed up
