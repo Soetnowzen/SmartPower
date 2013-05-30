@@ -1,27 +1,30 @@
 package com.sebbelebben.smartpower;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import com.sebbelebben.smartpower.GraphView.Point;
-import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
-
-import android.os.Bundle;
 import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.widget.DatePicker;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.sebbelebben.smartpower.GraphView.Point;
+import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
+
+/**
+ * Class for displaying a graph of consumption.
+ *
+ * @author Andreas Arvidsson
+ */
 public class GraphActivity extends Activity {
 
 	@Override
@@ -51,33 +54,33 @@ public class GraphActivity extends Activity {
 			public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZZ", Locale.ENGLISH);
 				String start = String.format("%s-%s-%s 00:00:00+00",year,monthOfYear,dayOfMonth);
-				try{
+				graphable.getConsumption(Duration.HOUR, 24, new OnConsumptionReceiveListener() {
 
-                    graphable.getConsumption(sdf.parse(start), new Date(System.currentTimeMillis()), new OnConsumptionReceiveListener() {
+					@Override
+					public void onConsumptionReceive(Consumption[] consumption) {
+						Collections.addAll(data, consumption);
+						display(data, graphView);
+						pb.setVisibility(ProgressBar.GONE);
+					}
 
-						@Override
-						public void onConsumptionReceive(Consumption[] consumption) {
-							Collections.addAll(data, consumption);
-							display(data, graphView);
-							pb.setVisibility(ProgressBar.GONE);
-						}
-
-						@Override
-						public void failed() {
-							Toast.makeText(GraphActivity.this, "FAILED TO GET CONSUMPTION", Toast.LENGTH_SHORT).show();
-						}
-					});
-				}catch(ParseException e){
-					Log.d("bug", "Error with parsing.");
-				}
+					@Override
+					public void failed() {
+						Toast.makeText(GraphActivity.this, "FAILED TO GET CONSUMPTION", Toast.LENGTH_SHORT).show();
+					}
+				});
 				
 			}
 		};
 		DatePickerDialog dp = new DatePickerDialog(this, mDateSetListener, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH),cal.get(Calendar.DAY_OF_MONTH));
 		dp.show();
-
 	}
-	
+
+    /**
+     * Displays a list of consumption points in the provided {@link GraphView}.
+     *
+     * @param data The consumption data.
+     * @param graphView The graph view.
+     */
 	private void display(List<Consumption> data, GraphView graphView){
 		List<Point> points = transform2(data);
 		graphView.setDataPoints(points);
@@ -89,9 +92,10 @@ public class GraphActivity extends Activity {
 		
 	}
 	/**
-	 * 
-	 * @param data the list of datapoints to be transformed
-	 * @return List<Point> the format the graph can display
+	 * Transforms the list of consumption to a list of data points.
+     *
+	 * @param data The list of datapoints to be transformed.
+	 * @return List<Point> The format the graph can display.
 	 */
     private List<Point> transform2(List<Consumption> data) {
         List<Point> graphViewData = new ArrayList<Point>();
@@ -121,9 +125,10 @@ public class GraphActivity extends Activity {
         return graphViewData;
     }
     /**
-     *  
-     * @param data the list of datapoint
-     * @return the value of the consumption with the highest value
+     *  Gets the maximum watt from the list of data points.
+     *
+     * @param data The list of data points.
+     * @return The value of the consumption with the highest value.
      */
 	private int getMaxWatt(List<Point> data) {
 		int maxWatt = 0;

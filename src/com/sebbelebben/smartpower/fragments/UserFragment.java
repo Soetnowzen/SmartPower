@@ -1,5 +1,8 @@
 package com.sebbelebben.smartpower.fragments;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.List;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -8,6 +11,7 @@ import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,10 +23,15 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.sebbelebben.smartpower.Consumption;
+import com.sebbelebben.smartpower.Duration;
+import com.sebbelebben.smartpower.GraphView;
 import com.sebbelebben.smartpower.PsSocket;
 import com.sebbelebben.smartpower.R;
+import com.sebbelebben.smartpower.Server;
 import com.sebbelebben.smartpower.Server.GenericListener;
 import com.sebbelebben.smartpower.User;
+
 /**
  * Fragment to display user information, 
  * users favorite sockets {com.sebbelebben.smartpower.PsSocket}
@@ -34,6 +43,8 @@ public class UserFragment extends SherlockFragment {
 	ArrayList<PsSocket> list;
 	SocketAdapter mAdapter;
 	ListView listView;
+    GraphView graphView;
+    User mUser;
 	
     /**
      * Creates a new instance of this fragment, using the provided {@link User} to 
@@ -52,12 +63,31 @@ public class UserFragment extends SherlockFragment {
 
 	public UserFragment() {
 	}
-
+	public void FavoriteChanged(){
+		list.clear();
+		list.addAll(mUser.getFavorite(getActivity()));
+		mAdapter.notifyDataSetChanged();
+	}
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		final User user = (User) getArguments().getSerializable("User");
+		mUser = (User) getArguments().getSerializable("User");
+
+        final List<Consumption> data = new ArrayList<Consumption>();
+        mUser.getConsumption(Duration.HOUR,12,new Server.OnConsumptionReceiveListener() {
+            @Override
+            public void onConsumptionReceive(Consumption[] consumption) {
+                Collections.addAll(data, consumption);
+                display(data, graphView);
+            }
+
+            @Override
+            public void failed() {
+                Toast.makeText(getActivity(), "Failed", Toast.LENGTH_SHORT).show();
+            }
+        });
+        
 		Resources res = getResources();
 		View view = inflater.inflate(R.layout.fragment_user, container, false);
-		
+		graphView = (GraphView) view.findViewById(R.id.graphview);
 		String header = res.getString(R.string.favorites);
 		SpannableString spanString = new SpannableString(header);
 		spanString.setSpan(new UnderlineSpan(), 0, spanString.length(), 0);
@@ -66,19 +96,90 @@ public class UserFragment extends SherlockFragment {
 		//String str = String.format(res.getString(R.string.userInfo), user.getUserName(), user.getPassword());
 		
 		listView = (ListView) view.findViewById(R.id.listView);
+
+//		String str = String.format(res.getString(R.string.userInfo), user.getUserName(), user.getPassword());
+//		((TextView) view.findViewById(R.id.textView)).setText(str);
+
 		list = new ArrayList<PsSocket>();
-		list.add(new PsSocket(13, "hennig", "apikey1011", true));
+		list = mUser.getFavorite(getActivity());
+		/*list.add(new PsSocket(13, "hennig", "apikey1011", true));
 		list.add(new PsSocket(13, "hennigphan123456711111111111111111111111111111", "apikey", true));
 		list.add(new PsSocket(13, "hennig2", "apikey1011", true));
 		list.add(new PsSocket(13, "hennig3", "apikey1011", true));
 		list.add(new PsSocket(13, "hennig4", "apikey1011", true));
-		list.add(new PsSocket(13, "hennig5", "apikey1011", true));
+		list.add(new PsSocket(13, "hennig5", "apikey1011", true));*/
 
 		mAdapter = new SocketAdapter(getActivity(), R.layout.powerstrip_item, list);
 		if(listView != null)
 			listView.setAdapter(mAdapter);
 		return view;
 	}
+
+    /**
+     * Displays a list of consumption points in the provided {@link GraphView}.
+     *
+     * @param data The consumption data.
+     * @param graphView The graph view.
+     */
+    private void display(List<Consumption> data, GraphView graphView){
+        List<GraphView.Point> points = transform2(data);
+        graphView.setDataPoints(points);
+        graphView.setYAxisEnd(getMaxWatt(points));
+        graphView.setXAxisEnd(points.get(points.size()-1).x);
+        graphView.setXSegments((int)(points.get(points.size()-1).x - points.get(0).x)/4);
+        //graphView.setYSegments((int)(getMaxWatt(points)/4));
+        graphView.setYSegments(5000);
+
+    }
+    /**
+     * Transforms the list of consumption to a list of data points.
+     *
+     * @param data The list of datapoints to be transformed.
+     * @return List<Point> The format the graph can display.
+     */
+    private List<GraphView.Point> transform2(List<Consumption> data) {
+        List<GraphView.Point> graphViewData = new ArrayList<GraphView.Point>();
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(data.get(0).getDate());
+
+        int currentDay = cal.get(Calendar.DAY_OF_YEAR);
+        int totalWatt = 0;
+        int j = 0;
+
+        for(Consumption c : data) {
+            cal.setTime(c.getDate());
+
+            Log.i("SmartPower", "" + cal.get(Calendar.DAY_OF_YEAR));
+
+            if(currentDay == cal.get(Calendar.DAY_OF_YEAR)) {
+                totalWatt += c.getWatt() * (10.0f/3600);
+            } else {
+                currentDay = cal.get(Calendar.DAY_OF_YEAR);
+                graphViewData.add(new GraphView.Point(j++, totalWatt));
+                totalWatt = 0;
+            }
+        }
+        graphViewData.add(new GraphView.Point(j++, totalWatt));
+
+        return graphViewData;
+    }
+    /**
+     *  Gets the maximum watt from the list of data points.
+     *
+     * @param data The list of data points.
+     * @return The value of the consumption with the highest value.
+     */
+    private int getMaxWatt(List<GraphView.Point> data) {
+        int maxWatt = 0;
+        for(GraphView.Point p : data) {
+            if(p.y > maxWatt) {
+                maxWatt = (int) p.y;
+            }
+        }
+
+        return maxWatt;
+    }
 	/**
 	 * Adapter that specifically displays {@link com.sebbelebben.smartpower.PsSocket}
 	 * 
@@ -101,8 +202,9 @@ public class UserFragment extends SherlockFragment {
 			TextView tv = (TextView) v.findViewById(R.id.text);
 			final ToggleButton tb = (ToggleButton) v.findViewById(R.id.toggle_button);
 			if ( tv != null) tv.setText(socket.getName());
-			if ( tb != null) {
+			if ( tb !=  null && socket != null && socket.getStatus() != null) {
 				tb.setChecked(socket.getStatus());
+
 			
 			tb.setOnClickListener(new OnClickListener() {
 

@@ -1,22 +1,22 @@
 package com.sebbelebben.smartpower;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 
-import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+
 import com.sebbelebben.smartpower.Server.GenericListener;
+import com.sebbelebben.smartpower.Server.GenericStringListener;
 import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
 import com.sebbelebben.smartpower.Server.OnGroupsReceiveListener;
 import com.sebbelebben.smartpower.Server.OnNewGroupReceiveListener;
-import com.sebbelebben.smartpower.Server.OnReceiveListener;
+
 
 /**
  * 
@@ -88,9 +88,9 @@ public class User implements Serializable, Graphable   {
 	 * @param listener
 	 */
 	public void logIn(final GenericListener listener){
-		Server.sendAndRecieve("{username:"+userName+",request:login,password:"+password+"}", new OnReceiveListener() {
+		Server.sendAndRecieve("{username:"+userName+",request:login,password:"+password+"}", new GenericStringListener() {
 			@Override
-			public void onReceiveSuccess(String result) {
+			public void success(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getString("username").equals(userName)){
@@ -111,7 +111,7 @@ public class User implements Serializable, Graphable   {
 			}
 
             @Override
-            public void onReceiveFailure() {
+            public void failed() {
                 listener.failed();
             }
 		});
@@ -140,9 +140,9 @@ public class User implements Serializable, Graphable   {
 	 * @param listener
 	 */
 	public void updateUser(final GenericListener listener){
-		Server.sendAndRecieve("{username:"+userName+",request:powerstripsandsockets,apikey:"+apiKey+"}", new OnReceiveListener() {
+		Server.sendAndRecieve("{username:"+userName+",request:powerstripsandsockets,apikey:"+apiKey+"}", new GenericStringListener() {
 			@Override
-			public void onReceiveSuccess(String result) {
+			public void success(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getString("username").equals(userName)){
@@ -186,7 +186,7 @@ public class User implements Serializable, Graphable   {
 			}
 
             @Override
-            public void onReceiveFailure() {
+            public void failed() {
                 listener.failed();
             }
         });
@@ -198,9 +198,9 @@ public class User implements Serializable, Graphable   {
 	 * @param listener
 	 */
 	public void createNewGroup(String name, final OnNewGroupReceiveListener listener){
-		Server.sendAndRecieve("{username:"+userName+",request:newgroup,apikey:"+apiKey+",name:"+name+"}", new OnReceiveListener() {
+		Server.sendAndRecieve("{username:"+userName+",request:newgroup,apikey:"+apiKey+",name:"+name+"}", new GenericStringListener() {
 			@Override
-			public void onReceiveSuccess(String result) {
+			public void success(String result) {
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getString("username").equals(userName)){
@@ -214,7 +214,7 @@ public class User implements Serializable, Graphable   {
 			}
 
             @Override
-            public void onReceiveFailure() {
+            public void failed() {
                 listener.failed();
             }
         });
@@ -225,9 +225,10 @@ public class User implements Serializable, Graphable   {
 	 * @param listener
 	 */
 	public void getGroups(final OnGroupsReceiveListener listener){
-		Server.sendAndRecieve("{username:"+userName+",request:groups,apikey:"+apiKey+"}", new OnReceiveListener() {
+		Server.sendAndRecieve("{username:"+userName+",request:groups,apikey:"+apiKey+"}", new GenericStringListener() {
+			
 			@Override
-			public void onReceiveSuccess(String result) {
+			public void success(String result) {
 				ArrayList<Group> groupList = new ArrayList<Group>();
 				try {
 					JSONObject data = new JSONObject(result);
@@ -247,23 +248,30 @@ public class User implements Serializable, Graphable   {
 			}
 
             @Override
-            public void onReceiveFailure() {
+            public void failed() {
                 listener.failed();
             }
         });
 	}
 	
 	/**
-	 * Creates a listener that waits for the server to supply the User's consumption between the given dates.
-	 * @param start
-	 * @param end
+	 * 
 	 * @param listener
 	 */
-	public void getConsumption(Date start, Date end, final OnConsumptionReceiveListener listener){
-		DateFormat dd = new SimpleDateFormat("yyyy-MM-dd HH-mm-ss.SSSZ", Locale.ENGLISH);
-		Server.sendAndRecieve("{username:"+userName+",request:consumption,apikey:"+apiKey+",startdate:"+dd.format(start)+",enddate:"+dd.format(end)+"}", new OnReceiveListener() {
+	public void getConsumption(Duration duration, int amount, final OnConsumptionReceiveListener listener){
+		String durationstring = null;
+		if(duration.equals(Duration.YEAR)){
+			durationstring = "year";
+		} else if(duration.equals(Duration.MONTH)){
+			durationstring = "month";
+		} else if(duration.equals(Duration.DAY)){
+			durationstring = "day";
+		} else if(duration.equals(Duration.HOUR)){
+			durationstring = "hour";
+		}
+		Server.sendAndRecieve("{username:"+userName+",request:consumption,apikey:"+apiKey+",duration:"+durationstring+",amount:"+Integer.toString(amount)+"}", new GenericStringListener() {
 			@Override
-			public void onReceiveSuccess(String result) {
+			public void success(String result) {
 				ArrayList<Consumption> consumptionList = new ArrayList<Consumption>();
 				try {
 					JSONObject data = new JSONObject(result);
@@ -290,9 +298,114 @@ public class User implements Serializable, Graphable   {
 			}
 
             @Override
-            public void onReceiveFailure() {
+            public void failed() {
                 listener.failed();
             }
         });
 	}
+	
+	/**
+	 * @param ps is the PowerStrip that is to be added to favorites
+	 * @param context
+	 * Takes a PowerStrip that the method save in the SharedPreferences (so favorites won't be lost if the app crashes)
+	 * it also saves it as a favorite.
+	 */
+    public void addFavorite(PsSocket ps, Context context) {
+        //SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sp = context.getSharedPreferences(userName, 0);
+    	String favorite = sp.getString("Favorite", null);
+    	try {
+    		//Check if @param favorite is null then make an empty array
+    		JSONArray jsArray;
+    		if(favorite == null){
+    			jsArray = new JSONArray();
+    		} else {
+    			jsArray = new JSONArray(favorite);
+    		}
+		    jsArray.put(new JSONObject(ps.toJSON()));
+		    Editor edit = sp.edit();
+		    edit.putString("Favorite", jsArray.toString());
+		    edit.commit();
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+    }
+
+    /**
+	 * @param psSocket is the PowerStrip that will be removed if it exist.
+	 * @param context
+	 * Removes the given PowerStrip from favorites if it exists.
+	 */
+    public void removeFavorite(PsSocket psSocket, Context context) {
+        //SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sp = context.getSharedPreferences(userName, 0);
+    	String favorite = sp.getString("Favorite", null);
+    	try {
+    		JSONArray jsArray = new JSONArray();
+    		JSONArray newJsArray = new JSONArray();
+    		if(favorite != null) {
+    			jsArray = new JSONArray(favorite);
+	    		for(int index = 0; index < jsArray.length(); index++) {
+	    			JSONObject comparablePS = jsArray.getJSONObject(index);
+	    			if(comparablePS.getInt("id") != psSocket.getId()) {
+	    				newJsArray.put(comparablePS);
+	    			}
+				}
+    		}
+    		Editor edit = sp.edit();
+    		edit.putString("Favorite", newJsArray.toString());
+    		edit.commit();
+    	} catch (JSONException e) {
+    		e.printStackTrace();
+    	}
+    }
+
+    /**
+	 * @param context
+	 * @return true if the supplied psSocket is in favorite list otherwise false
+	 */
+    public boolean isFavorite(PsSocket psSocket, Context context) {
+    	//SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sp = context.getSharedPreferences(userName, 0);
+    	String favorite = sp.getString("Favorite", null);
+    	try {
+    		JSONArray jsArray;
+    		if(favorite != null){
+    			jsArray = new JSONArray(favorite);
+    			for(int i = 0; i < jsArray.length(); i++) {
+        			JSONObject loop_psSocket = jsArray.getJSONObject(i);
+        			if(loop_psSocket.getInt("id") == psSocket.getId()){
+        				return true;
+        			}
+    			}
+    		}
+    	} catch (JSONException e) {
+    		e.printStackTrace();
+    	}
+        return false;
+    }
+
+    /**
+	 * @param context
+	 * @return Returns all the favorite PowerStrips and return null if there are non.
+	 */
+    public ArrayList<PsSocket> getFavorite(Context context) {
+    	//SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences sp = context.getSharedPreferences(userName, 0);
+    	String favorite = sp.getString("Favorite", null);
+    	try{
+    		ArrayList<PsSocket> list = new ArrayList<PsSocket>();
+    		if(favorite != null) {
+	    		JSONArray jsArray = new JSONArray(favorite);
+	    		for(int index = 0; index < jsArray.length(); index++) {
+	    			JSONObject jAddablePsSocket = jsArray.getJSONObject(index);
+	    			list.add(new PsSocket(jAddablePsSocket));
+	    		}
+	    		return list;
+    		}
+    	} catch (JSONException e) {
+    		e.printStackTrace();
+    	}
+        return new ArrayList<PsSocket>();
+    }
 }

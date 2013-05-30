@@ -1,7 +1,8 @@
 package com.sebbelebben.smartpower;
 
-import java.text.*;
-import java.util.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * 

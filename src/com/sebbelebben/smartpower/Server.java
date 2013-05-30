@@ -22,7 +22,7 @@ public class Server {
 	 * @param message The message to be sent to the server.
 	 * @param listener A listener to notify when the message has completed.
 	 */
-	public static void sendAndRecieve(String message, OnReceiveListener listener){
+	public static void sendAndRecieve(String message, GenericStringListener listener){
 		SendTask sendTask = new SendTask(listener);
 		sendTask.execute(message);
 	}
@@ -33,14 +33,14 @@ public class Server {
 	 * @author Johan Bregell
 	 */
 	private static class SendTask extends AsyncTask<String, Void, String> {
-		private OnReceiveListener mListener;
+		private GenericStringListener mListener;
 		
 		/**
 		 * Creates an async task that can send and receive messages from the server.
          *
 		 * @param listener The listener to be called when a response is received.
 		 */
-		public SendTask(OnReceiveListener listener) {
+		public SendTask(GenericStringListener listener) {
 			mListener = listener;
 		}
 		
@@ -77,24 +77,18 @@ public class Server {
 		@Override
 		protected void onPostExecute(String result) {
             if(result != null) {
-			    Log.i("SmartPower", result);
- 
+                mListener.success(result);
             } else {
-                mListener.onReceiveFailure();
+                mListener.failed();
             }
 		}
 	}
 
     // Interfaces for handling responses from the server
 
-	public static interface OnSetNameReceiveListener{
-		void onSetNameReceived(String name);
+	public static interface GenericStringListener{
+		void success(String name);
 		void failed();
-	}
-	
-	public static interface OnReceiveListener {
-		void onReceiveSuccess(String result);
-        void onReceiveFailure();
 	}
 	
 	public static interface OnSocketReceiveListener {

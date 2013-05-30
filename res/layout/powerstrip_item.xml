@@ -8,9 +8,7 @@
 	<ViewFlipper
     	android:id="@+id/viewflipper"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:inAnimation="@anim/slide_in_left"
-        android:outAnimation="@anim/slide_out_right">
+        android:layout_height="fill_parent">
     	<RelativeLayout
             	android:layout_width="fill_parent"
             	android:layout_height="wrap_content"
