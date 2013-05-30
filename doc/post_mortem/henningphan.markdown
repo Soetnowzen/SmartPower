@@ -11,7 +11,7 @@ Post mortem - Henning Phan
 *	[What worked well in the project](#4)
 *	[What did not work well in the project](#5)
 *	[How was teamwork](#6)
-*	[What would we do different](#7)
+*	[What would we do different](#seven)
 
 * * *
 
@@ -81,7 +81,7 @@ Too many scrum meetings and too early in the morning. Didn't understand why we p
 <h2 id="6">6. How did you work together as a group in the project? What worked and not in your interaction(s)?</h2>
 We knew eachother from before and overall it worked well, we even requested methods to be implemented to another.
 
-<h2 id="7">What would you do differently in a future but similar project?</h2>
+<h2 id="seven">What would you do differently in a future but similar project?</h2>
 7. I did like the concept of scrum and pivotal tracker but I want the feature to have user stories locked if they depend on a yet unimplemented task. So the only user stories are those we can work on in parallell.
 
 I have been thinking of the idea of having code roles, letting one developer be in charge of a group of classes.
