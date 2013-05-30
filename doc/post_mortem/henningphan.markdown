@@ -1,5 +1,21 @@
 Post mortem - Henning Phan
 ==========================
+*	[processes and practices]
+*	[Time spent]
+*	[For each technique and practice we used]
+	*	[Advantage]
+	*	[Disadvantage]
+	*	[Efficency given time]
+	*	[Will I use it in future projects]
+	*	[using vs not using]
+*	[What worked well in the project]
+*	[What did not work well in the project]
+*	[How was teamwork]
+*	[What would we do different]
+
+* * *
+
+<h2 id="1">Which processes and practices did you use in your project?</h2>
 1. Which processes and practices did you use in your project?
 2. Approximatey, how much time was spent (in total and by each 	group member) on the steps/activities involved as well as 	for the project as a whole?
 3. For each of the techniques and practices used in your project you should answer all the questions:
