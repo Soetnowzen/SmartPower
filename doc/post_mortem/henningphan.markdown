@@ -8,10 +8,10 @@ Post mortem - Henning Phan
 	*	[Efficency given time]
 	*	[Will I use it in future projects]
 	*	[using vs not using]
-*	[What worked well in the project]
-*	[What did not work well in the project]
-*	[How was teamwork]
-*	[What would we do different]
+*	[What worked well in the project](#4)
+*	[What did not work well in the project](#5)
+*	[How was teamwork](#6)
+*	[What would we do different](#7)
 
 * * *
 
@@ -76,12 +76,12 @@ Conversation, we knew each other from before and we have a "smsgrupp". Work dist
 
 <h2 id="5">What did not work well in how you worked in this project?</h2>
 5. We had problems with scrum in the beginning because some user stories was dependent on other tasks which someone else was developing, this lead to a slow start. Some minor information losses that could save time e.g. Coding a request that was already implemented in the API.
-Too many scrum meetings and too early in the morning. Didn't understand why we persisted with this time as 1-3 members daily didn't show up to the meeting place in time, the members would participate using skype. Lastly is the task to implement user stories that depend on unimplemented functions someone else is developing. Maybe they should have developed the user story together, extreme programming, or one should have taken care of both tasks.
+Too many scrum meetings and too early in the morning. Didn't understand why we persisted with this time as 1-3 members daily didn't show up to the meeting place in time, the late members would participate using skype. Lastly is the task to implement user stories that depend on unimplemented functions someone else is developing. Maybe they should have coded the user story together, extreme programming, or one should have taken care of both tasks. Im also not so keen an being dependent on a server that's under development.
 
 <h2 id="6">6. How did you work together as a group in the project? What worked and not in your interaction(s)?</h2>
 We knew eachother from before and overall it worked well, we even requested methods to be implemented to another.
 
-<h2 id="">What would you do differently in a future but similar project?</h2>
+<h2 id="7">What would you do differently in a future but similar project?</h2>
 7. I did like the concept of scrum and pivotal tracker but I want the feature to have user stories locked if they depend on a yet unimplemented task. So the only user stories are those we can work on in parallell.
 
 I have been thinking of the idea of having code roles, letting one developer be in charge of a group of classes.
