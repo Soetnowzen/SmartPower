@@ -41,23 +41,23 @@ Questions:
 5 In which situations would you not use this technique in a future project?
 6 If you had the practice/technique in a part of the project and not the entire project, how was using it compared to not using it?
 ###Git version control###
-1. The advantages is many, multiple developers can contribute at the same time, can work at different geographical locations. Branching, everyone can code without interfering each other. Working offline, that you can revert to an arbitrary commit if you messed up
-2. Maybe someone pushed an error but the advantages compensate for that thousandfold
-3. Very efficient,  quite easy to use and it goes fast to learn the basics, from there you can expand your knowledge little by little
-4. Every project
-5. The exception would be small projects that only have one functionality
-6. To be without version control is like not having electricity
+1 The advantages is many, multiple developers can contribute at the same time, can work at different geographical locations. Branching, everyone can code without interfering each other. Working offline, that you can revert to an arbitrary commit if you messed up
+2 Maybe someone pushed an error but the advantages compensate for that thousandfold
+3 Very efficient,  quite easy to use and it goes fast to learn the basics, from there you can expand your knowledge little by little
+4 Every project
+5 The exception would be small projects that only have one functionality
+6 To be without version control is like not having electricity
 
 ###Scrum###
-1
-2
-3
-4
-5
-6
+1 Advantage is that we have a pool we can choose our work from. Also because all our ideas was summarized on the pivotaltracker it helped me visualize the product, it's also a consistent way to get information
+2 Didn't really understand the point system at first. The daily meetings I was forced to participate \*early\* in the morning, three meetings a week would have been sufficient. Short meetings, only 15 minutes they said, someone always had to pull a joke.
+3 It was an efficient way to keep track of tasks and keep our priorities straight. In my other course that's where we failed a little. It gave us a slow start because some user stories distributed were dependent on others not yet implemented
+4 Every project that has more than a few tasks. My favorite way to work is to write down all the tasks and then erase them one after another when finished. Scrum is all that
+5 Depends on my teammates and how efficient the meetings would be. Also Im not to keen to have multiple website to visit to keep track with one project. Google drive, github, pivotaltracker.
+6 In the end we worked so close to each other that we didnt use pivotal tracker instead we just requested each other directly in a loose form of scrum. Believe this was possible because of the small team size
 
-4. Scrum was good to have when we became more comfortable with it. It gave me a good sense how far we were in the project, thanks to the many meetings. Another feature is you can pick a user story you are better suited for instead of having a boss managing that.
-I also enjoyed to work with git which I have worked with in another project but it was only when we started doing this project we used the git model
+4. aoeus saontehun atohest haoe
+
 
 5. We had problems with scrum in the beginning because some user stories was dependent on other tasks which someone else was developing, this lead to a slow start. Some minor information losses that could save time e.g. Coding a request that was already implemented in the API.
 Too many scrum meetings and too early in the morning. Didn't understand why we persisted with this time as 1-3 members daily didn't show up to the meeting place in time, the members would participate using skype. Lastly is the task to implement user stories that depend on unimplemented functions someone else is developing. Maybe they should have developed the user story together, extreme programming, or one should have taken care of both tasks.
