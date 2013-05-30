@@ -38,6 +38,7 @@ Questions:
 1 What was the advantage of this technique based on your experience in this assignment?
 
 2 What was the disadvantage
+
 ###Git version control###
 1 The advantages is many, multiple developers can contribute at the same time, can work at different geographical locations. Branching, everyone can code without interfering each other. Working offline, that you can revert to an arbitrary commit if you messed up
 2 Maybe someone pushed an error but the advantages compensate for that thousandfold
