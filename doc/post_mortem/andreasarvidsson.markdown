@@ -29,6 +29,17 @@ Testing is something I've also ignored in the past, but the importance of it is 
 ### Agile Development
 
 ## Time
+We have not kept track of the amount of time spent on the project, so it becomes tricky to evaluate how much people actually have spent. However, I feel that the following list represent the time distribution quite well:
+1. Andreas Arvidsson (me) - 130 hours
+2. Johan Bregell - 110 hours
+3. Henning Phan - 100 hours
+4. Sebastian Lagerman - 80 hours
+5. Johan Swetzén - 70 hours
 
-## My contributions to the project
-I am very happy with my contribution to the project and the codebase.
+This is partly based on number of commits as well as my general impression I got at the scrum meetings.
+
+## My thoughts
+I am very happy with my contribution to the project and the codebase, as well as the others contribution. I have made the most commits in the project (checked with the "git shortlog" command) - however, this does not necessarily mean that I was the one contributing the most. I was the one in charge of the majority of merging (mainly feature branches into develop at scrum meetings), and I usually have pretty few changes each commit (easier to keep track of things for me that way).
+
+## Future projects
+I believe the core methodology taught in this course will be applied in future projects for me if I have a say in it. Version control (be it git or subversion) is a must of course, and I would very much prefer scrum as well. One thing I would like to try is code review - that is, someone reviews my code and I review some of the collaborators code before they get merged into the main branches. I feel like this is a nice alternative to extreme programming (where two programmers work on one computer), which I'm not a big fan of (even though I haven't tried it much). Also, the scrum meetings maybe should not be every day, at least not for a part-time project like this.
