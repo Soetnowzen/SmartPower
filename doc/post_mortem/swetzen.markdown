@@ -38,10 +38,52 @@ Jag har svårt att se situationer där det inte skulle vara lämpligt. Ett agtil
 
 ## Versionshantering - Git flow
 
-Versonshantering har jag arbetat med länge och
-Vi har arbetat med en modell för git som finns [här](http://nvie.com/posts/a-successful-git-branching-model/) och handlar om hur man jobbar med brancher.
+Versonshantering har jag arbetat med länge och sedan några år tillbaka använder jag det för mina egna projekt. Jag tycker att det fungerar så bra att jag rutinmässigt versionshanterar konfigurationsfiler och -mappar på servrar som jag administrerar. Det är så enkelt att ändra, gå tillbaka, etc. speciellt om man inte har konfigurerat ett visst program tidigare.
+
+Jag är mest van vid att använda git efter att ha stött på cvs, svn och mercurial innan jag hittat fram till git. Något som var lite nytt för den här kursen var att vi arbetade med en modell för git som finns [här](http://nvie.com/posts/a-successful-git-branching-model/) och handlar om hur man jobbar med brancher. Det är ett sätt att strukturera arbetet för att enkelt ha koll på släppta versioner, vad som fungerar just nu och samtidigt separera ut i brancher när man arbetar med stora funktioner.
+
+### Fördelar
+
+Fördelar med versionshantering i allmänhet är att man kan arbeta med vad man vill utan att fundera så mycket på om andra jobbar i samma filer. Med Git så löses väldigt mycket av merge-konflikter automatiskt. Just med Git är det bra att det är distribuerat, även om vi inte utnyttjat det så mycket nu när vi haft en centraliserad server. Men att man har hela repot själv på sin dator gör att man känner att man har stor kontroll över versionshanteringen. Bara att man kan göra en commit lokalt är väldigt trevligt jämfört med cvs eller svn. Git flow var också väldigt nyttigt att prova eftersom det också innebar mer kontroll och en bättre överblick, både över vårt projekt men också över hur Git fungerar. Att väldigt medvetet tänka på hur och när man gör en branch, commitar lokalt och sedan gör en merge in till develop var bra. Jag har arbetat på ett liknande sätt på mitt förra sommarjobb, en branch för varje issue man jobbade med, och det knöts också ihop med kodgranskning genom att man namngav sin branch rätt. Problemet då var att jag bara följde mallen som satts upp utan att faktiskt förstå, det en annan i teamet som alltid godkände allt och därmed hanterade merge och konflikter som uppstod. Nu har jag koll på hela kedjan. Hur som helst, fördelar - man får bättre koll och kontroll.
+
+### Nackdelar
+
+Det är svårt att komma på nackdelar med versionshantering och git flow. Versionshantering är väldigt användbart och används över allt. Git flow ger en bra struktur och arbetsprocess till Git, som annars är väldigt fritt och skulle kunna användas ostrukturerat om man ville det. Inga nackdelar låter för bra för att vara sant, men så känns det.
+
+### Hur effektiv var tekniken?
+
+Git är väldigt effektivt när man vet vad man gör. Vet man inte vad man gör så finns det gott om möjligheter att ställa till det för sig. Det är väldigt kraftfullt. Om du skulle fråga hur effektivt det är att programmera för Android skulle svaret vara liknande: det är inte så lätt att vara effektiv i början men när man kommer in i det så ökar effektiviteten. Nu kanske vi la mer tid än vad som var nödvändigt på att hitta information om Git, men i framtida projekt har vi bättre koll på hur man bör göra.
+
+### I vilka situationer skulle du använda tekniken framöver?
+
+Jag kommer nog fortsätta som nu. Om jag har en mapp där jag märker att jag sparar mycket och ofta och tycker att det skulle vara bra att ha en historik kan jag mycket väl versionshantera den. I programmeringsprojekt i allmänhet är versionshantering ett måste.
+
+### I vilka situationer skulle du inte använda tekniken framöver?
+
+Git lämpar sig för sådant som förändras mycket och framförallt då det gäller textfiler av olika slag. Jag skulle inte använda Git tex. om jag skriver i word-dokument eller för en konfigurationsfil som är densamma hela tiden.
 
 ## Test-driven utveckling
 
+Vi har hört om konceptet i den här kursen och förstått att det finns en del fördelar, men eftersom det kom lite sent så kan man inte säga att vi har jobbat test-drivet. Vi har skrivit tester men det är inte så många och testerna kom efter att vi gjort funktionaliteten. Idealiskt borde vi haft en process där vi utvecklat tester, programmerat, testat och sedan kört dem vid varje commit tex. Jag tyckte ändå att det var värt att nämna.
+
+### Fördelar
+
+Det verkar som att test-driven utveckling ger stabilare program och mer säkerhet till mig som programmerare efter jag ändrat någonting. När jag modifierat en liten bit i ena hörnet av koden som inte borde påverka någonting annat så vet jag av erfarenhet att den ändå gör det ibland. Har jag då tester på huvudfunktionaliteten av appen så kan jag enkelt testa så att inget går sönder av ändringen. En fördel är att programmet blir mer stabilt och det är väldigt viktigt speciellt när man arbetar med riktigt stora projekt.
+
+### Nackdelar
+
+En sak som alltid känns som en nackdel när man ska skriva tester är att det tar sådan tid! Speciellt när jag skulle göra automatiserade acceptance-tester i Robotium så tog det ju lång tid att sätta sig in i hur det fungerade och svårt att lyckas med det som jag ville. Sedan är det en konst att designa bra tester också så att de verkligen testar det som krävs och hittar edge-fallen.
+
+### Hur effektiv var tekniken?
+
+Eftersom vi inte använde det fullt ut är det svårt att bedöma effektiviteten.
+
+### I vilka situationer skulle du använda tekniken framöver?
+
+När jag arbetar på större projetk och vill ha koll på att allt fungerar korrekt.
+
+### I vilka situationer skulle du inte använda tekniken framöver?
+
+I mindre projekt där jag jobbar själv. Tester kan jag mycket väl skriva, men det har inte en så central roll som i test-driven utveckling.
 
 
