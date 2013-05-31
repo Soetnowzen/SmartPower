@@ -49,6 +49,7 @@ Documentation takes time - a lot of time. This demands more resources, which mig
 
 ## Time
 We have not kept track of the amount of time spent on the project, so it becomes tricky to evaluate how much people actually have spent. However, I feel that the following list represent the time distribution quite well:
+
 1. Andreas Arvidsson (me) - 130 hours
 2. Johan Bregell - 110 hours
 3. Henning Phan - 100 hours
