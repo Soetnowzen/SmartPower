@@ -4,13 +4,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -46,7 +53,7 @@ public class RemoteFragment extends SherlockFragment {
     private ExpandableListView mListView;
 	private ArrayList<PowerStrip> mPowerStrips = new ArrayList<PowerStrip>();
 	private ExpandablePowerStripAdapter mAdapter;
-	private FavoriteListener mCallback;
+	private RemoteFavoriteListener mCallback;
     /**
      * Creates a new instance of this fragment, using the provided {@link User} to list the {@link PowerStrip} and
      * {@link com.sebbelebben.smartpower.PsSocket}.
@@ -62,17 +69,17 @@ public class RemoteFragment extends SherlockFragment {
 		f.setArguments(args);
 		return f;
 	}
-	public interface FavoriteListener{
-		public void onFavoriteChanged();
+	public interface RemoteFavoriteListener{
+		public void notifyFavoriteChanged();
 	}
 	@Override
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		try{
-			mCallback = (FavoriteListener) activity;
+			mCallback = (RemoteFavoriteListener) activity;
 		}catch(ClassCastException e){
 			throw new ClassCastException(activity.toString() +
-					" must implement FavoriteListener");
+					" must implement RemoteFavoriteListener");
 		}
 	}
 	public void onCreate(Bundle savedInstanceState) {
@@ -118,6 +125,23 @@ public class RemoteFragment extends SherlockFragment {
 		registerForContextMenu(mListView);
 
 		return view;
+	}
+	public void update(int id, boolean status){
+		for (PowerStrip ps : mPowerStrips) {
+			for (PsSocket socket: ps.getSockets()){
+				if(socket.getId() == id){
+					socket.setStatus(status);
+					mAdapter.notifyDataSetChanged();
+					break;
+				}
+			}
+		}
+			
+			
+		
+		
+		
+		mAdapter.notifyDataSetChanged();
 	}
 
     /**
@@ -186,6 +210,7 @@ public class RemoteFragment extends SherlockFragment {
 							public void success() {
                                 getSherlockActivity().setProgressBarIndeterminateVisibility(false);
 								tb.setChecked(false);
+                                notifyFavoriteChanged(child);
 							}
 							
 							@Override
@@ -201,6 +226,7 @@ public class RemoteFragment extends SherlockFragment {
 							public void success() {
                                 getSherlockActivity().setProgressBarIndeterminateVisibility(false);
 								tb.setChecked(true);
+                                notifyFavoriteChanged(child);
 							}
 							
 							@Override
@@ -243,7 +269,7 @@ public class RemoteFragment extends SherlockFragment {
                 		user.addFavorite(child, context);
                 		favoriteButton.setImageResource(R.drawable.ic_favorite_on_light);
                 	}
-                	mCallback.onFavoriteChanged();
+                	mCallback.notifyFavoriteChanged();
                 }
             });
 
@@ -340,10 +366,12 @@ public class RemoteFragment extends SherlockFragment {
 					} else {
                         // Make sure all ViewFlippers are restored
                         for(View childView : childMap.get(groupPos)) {
-                            ViewFlipper flipper = (ViewFlipper) childView.findViewById(R.id.viewflipper);
-                            flipper.setInAnimation(getActivity(), R.anim.no_anim);
-                            flipper.setOutAnimation(getActivity(), R.anim.no_anim);
-                            flipper.setDisplayedChild(0);
+                            if(childView != null) {
+                                ViewFlipper flipper = (ViewFlipper) childView.findViewById(R.id.viewflipper);
+                                flipper.setInAnimation(getActivity(), R.anim.no_anim);
+                                flipper.setOutAnimation(getActivity(), R.anim.no_anim);
+                                flipper.setDisplayedChild(0);
+                            }
                         }
                         
 						mListView.collapseGroup(groupPos);
@@ -440,6 +468,8 @@ public class RemoteFragment extends SherlockFragment {
                             @Override
                             public void success(String name) {
                                 mAdapter.notifyDataSetChanged();
+                                
+                                notifyFavoriteChanged(pspart);
                             }
 
                             @Override
@@ -463,6 +493,34 @@ public class RemoteFragment extends SherlockFragment {
 
         // show it
         alertDialog.show();
+    }
+
+    private void notifyFavoriteChanged(PsPart pspart) {
+        User user = (User) getArguments().getSerializable("User");
+
+        // Go through favorites to see if it was changed
+        SharedPreferences sp = getActivity().getSharedPreferences(user.getUserName(), 0);
+        String favorite = sp.getString("Favorite", null);
+        try {
+            if(favorite != null){
+                JSONArray jsArray = new JSONArray(favorite);
+                for(int i = 0; i < jsArray.length(); i++) {
+                    JSONObject loop_psSocket = jsArray.getJSONObject(i);
+                    if(loop_psSocket.getInt("id") == pspart.getId()){
+                        PsSocket socket = (PsSocket) pspart;
+
+                        jsArray.put(i, new JSONObject(socket.toJSON()));
+                        Editor edit = sp.edit();
+                        edit.putString("Favorite", jsArray.toString());
+                        edit.commit();
+                        // Favorite was changed
+                        mCallback.notifyFavoriteChanged();
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 	private void groupOutlets(final int position) {

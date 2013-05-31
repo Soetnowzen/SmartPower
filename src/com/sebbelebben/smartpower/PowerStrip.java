@@ -34,6 +34,7 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 	 * @param apiKey The users apiKey
 	 * @param name Name of the powerstrip
 	 * @param psSockets list of all sockets the powerstrip holds
+	 * @param status the state of the powerstrip (on/off)
 	 */
 	public PowerStrip(int id, String serialId, String apiKey, String name, PsSocket[] psSockets, Boolean status){
 		this.id = id;
@@ -75,8 +76,9 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 	 */
 	public void setName(String name, final GenericStringListener listener){
 		final String previousName = this.name;
-		this.name = name;
-		Server.sendAndRecieve("{powerstripid:"+id+",request:setname,apikey:"+apiKey+",newname:"+name+"}", new GenericStringListener() {
+		final String newName = name.replaceAll("[^\\w\\s^-]", "");
+        this.name = newName; 
+		Server.sendAndRecieve("{powerstripid:"+id+",request:setname,apikey:"+apiKey+",newname:"+newName+"}", new GenericStringListener() {
 			@Override
 			public void success(String result) {
 				try {
@@ -114,7 +116,7 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 	 * @param end end Date
 	 * @param listener
 	 */
-	public void getConsumption(Duration duration, int amount, final OnConsumptionReceiveListener listener){
+	public void getConsumption(Duration duration, final int amount, final OnConsumptionReceiveListener listener){
 		String durationstring = null;
 		if(duration.equals(Duration.YEAR)){
 			durationstring = "year";
@@ -124,11 +126,13 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 			durationstring = "day";
 		} else if(duration.equals(Duration.HOUR)){
 			durationstring = "hour";
+		} else if(duration.equals(Duration.MINUTE)){
+			durationstring = "minute";
 		}
 		Server.sendAndRecieve("{powerstripid:"+id+",request:consumption,apikey:"+apiKey+",duration:"+durationstring+",amount:"+Integer.toString(amount)+"}", new GenericStringListener() {
 			@Override
 			public void success(String result) {
-				ArrayList<Consumption> consumptionList = new ArrayList<Consumption>();
+				ArrayList<Consumption> consumptionList = new ArrayList<Consumption>(amount);
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getInt("powerstripid") == id){
@@ -176,7 +180,7 @@ public class PowerStrip implements Serializable, Graphable, PsPart{
 		Server.sendAndRecieve("{powerstripid:"+id+",request:sockets,apikey:"+apiKey+"}", new GenericStringListener() {
 			@Override
 			public void success(String result) {
-				ArrayList<PsSocket> psSocketList = new ArrayList<PsSocket>();
+				ArrayList<PsSocket> psSocketList = new ArrayList<PsSocket>(4);
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getInt("powerstripid") == id){

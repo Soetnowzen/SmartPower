@@ -255,10 +255,12 @@ public class User implements Serializable, Graphable   {
 	}
 	
 	/**
-	 * 
-	 * @param listener
+	 * Retrieves the users total consumption data from the server
+	 * @param listener The listener that will supply the data when ready
+	 * @param duration The resolution of the request
+	 * @param amount The amount instances of the duration
 	 */
-	public void getConsumption(Duration duration, int amount, final OnConsumptionReceiveListener listener){
+	public void getConsumption(Duration duration, final int amount, final OnConsumptionReceiveListener listener){
 		String durationstring = null;
 		if(duration.equals(Duration.YEAR)){
 			durationstring = "year";
@@ -268,11 +270,13 @@ public class User implements Serializable, Graphable   {
 			durationstring = "day";
 		} else if(duration.equals(Duration.HOUR)){
 			durationstring = "hour";
+		} else if(duration.equals(Duration.MINUTE)){
+			durationstring = "minute";
 		}
 		Server.sendAndRecieve("{username:"+userName+",request:consumption,apikey:"+apiKey+",duration:"+durationstring+",amount:"+Integer.toString(amount)+"}", new GenericStringListener() {
 			@Override
 			public void success(String result) {
-				ArrayList<Consumption> consumptionList = new ArrayList<Consumption>();
+				ArrayList<Consumption> consumptionList = new ArrayList<Consumption>(amount);
 				try {
 					JSONObject data = new JSONObject(result);
 					if (data.getString("username").equals(userName)){

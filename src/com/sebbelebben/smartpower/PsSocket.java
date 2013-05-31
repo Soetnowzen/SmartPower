@@ -61,7 +61,7 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 	/**
 	 * Creates a listener that waits for the server to supply the PsSocket's consumption between the given dates.
 	 */
-	public void getConsumption(Duration duration, int amount, final OnConsumptionReceiveListener listener){
+	public void getConsumption(Duration duration, final int amount, final OnConsumptionReceiveListener listener){
 		String durationstring = null;
 		if(duration.equals(Duration.YEAR)){
 			durationstring = "year";
@@ -71,11 +71,13 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 			durationstring = "day";
 		} else if(duration.equals(Duration.HOUR)){
 			durationstring = "hour";
+		} else if(duration.equals(Duration.MINUTE)){
+			durationstring = "minute";
 		}
         Server.sendAndRecieve("{socketid:"+id+",request:consumption,apikey:"+apiKey+",duration:"+durationstring+",amount:"+Integer.toString(amount)+"}", new GenericStringListener() {
             @Override
             public void success(String result) {
-                ArrayList<Consumption> consumptionList = new ArrayList<Consumption>();
+                ArrayList<Consumption> consumptionList = new ArrayList<Consumption>(amount);
                 try {
                     JSONObject data = new JSONObject(result);
                     if (data.getInt("socketid") == id){
@@ -106,6 +108,9 @@ public class PsSocket implements Serializable,Graphable, PsPart {
             }
         });
 	}
+	public void setStatus(boolean status){
+		this.status = status;
+	}
 	
 	/**
 	 * Sets a new name on the PsSocket.
@@ -114,8 +119,9 @@ public class PsSocket implements Serializable,Graphable, PsPart {
 	 */
 	public void setName(String name, final GenericStringListener listener){
         final String previousName = this.name;
-        this.name = name;
-		Server.sendAndRecieve("{socketid:"+id+",request:setname,apikey:"+apiKey+",newname:"+name+"}", new GenericStringListener() {
+        final String newName = name.replaceAll("[^\\w\\s^-]", "");
+        this.name = newName; 		
+		Server.sendAndRecieve("{socketid:"+id+",request:setname,apikey:"+apiKey+",newname:"+newName+"}", new GenericStringListener() {
 			@Override
 			public void success(String result) {
 				try {

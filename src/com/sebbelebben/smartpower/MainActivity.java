@@ -8,7 +8,8 @@ import org.json.JSONObject;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.sebbelebben.smartpower.fragments.*;
-import com.sebbelebben.smartpower.fragments.RemoteFragment.FavoriteListener;
+import com.sebbelebben.smartpower.fragments.RemoteFragment.RemoteFavoriteListener;
+import com.sebbelebben.smartpower.fragments.UserFragment.UserFavoriteListener;
 import com.viewpagerindicator.TitlePageIndicator;
 
 import android.content.Intent;
@@ -21,10 +22,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
-public class MainActivity extends SherlockFragmentActivity implements FavoriteListener{
+public class MainActivity extends SherlockFragmentActivity implements RemoteFavoriteListener, UserFavoriteListener{
 	private ViewPager mPager;
 	private MainPagerAdapter mAdapter;
 	private User mUser;
+	private RemoteFragment remoteFragment;
 	private UserFragment userFragment;
 
 	@Override
@@ -89,6 +91,7 @@ public class MainActivity extends SherlockFragmentActivity implements FavoriteLi
 		    	switch(position) {
 			case 0:
 				fragment = RemoteFragment.newInstance(mUser);
+				remoteFragment = (RemoteFragment) fragment;
 				break;
 			case 1:
                 Log.i("SmartPower", "CREATING FRAGMENT");
@@ -134,12 +137,18 @@ public class MainActivity extends SherlockFragmentActivity implements FavoriteLi
      * future android versions. Also, if the fragment layout is changed in the viewpager,
      * then this will probably not function properly. Use with caution, and party hard.
      */
-	public void onFavoriteChanged() {
+	public void notifyFavoriteChanged() {
         FragmentManager fm = getSupportFragmentManager();
         Fragment f = fm.findFragmentByTag("android:switcher:"+R.id.viewpager+":1");
 
         if(f != null && f instanceof UserFragment) {
-            ((UserFragment) f).FavoriteChanged();
+            ((UserFragment) f).updateFavorites();
         }
+	}
+
+	@Override
+	public void notifyUserFavoriteChanged(int id, boolean status) {
+		remoteFragment.update(id, status);
+		
 	}
 }
