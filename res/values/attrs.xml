@@ -15,5 +15,6 @@
         <attr name="axisBackgroundColor" format="color" />
         <attr name="dataBackgroundColor" format="color" />
         <attr name="textColor" format="color" />
+        <attr name="scrollable" format="boolean" />
     </declare-styleable>
 </resources>

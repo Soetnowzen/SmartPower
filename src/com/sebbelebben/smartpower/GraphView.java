@@ -47,6 +47,7 @@ public class GraphView extends View {
 	private int mAxisBackgroundColor;
 	private int mDataBackgroundColor;
 	private int mTextColor;
+    private boolean mScrollable;
 
 	// Misc
 	private int mXPadding = 40;
@@ -84,6 +85,7 @@ public class GraphView extends View {
 		    mAxisBackgroundColor = attributes.getColor(R.styleable.GraphView_axisBackgroundColor, Color.BLACK);
 		    mDataBackgroundColor = attributes.getColor(R.styleable.GraphView_dataBackgroundColor, Color.BLACK);
 		    mTextColor = attributes.getColor(R.styleable.GraphView_textColor, Color.BLACK);
+            mScrollable = attributes.getBoolean(R.styleable.GraphView_scrollable, false);
 		    attributes.recycle();
 
             init();
@@ -336,18 +338,21 @@ public class GraphView extends View {
 		
 		@Override
 		public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-			float scale = (mXAxisEnd - mXAxisStart) / (float)(getWidth() - mXPadding);
-			mXAxisEnd += distanceX * scale;
-			mXAxisStart += distanceX * scale;
+            if(mScrollable) {
+                float scale = (mXAxisEnd - mXAxisStart) / (float)(getWidth() - mXPadding);
+                mXAxisEnd += distanceX * scale;
+                mXAxisStart += distanceX * scale;
 
-            // Limit the scrolling to the minimum X value
-            if(mDataPoints.size() > 0 && mXAxisStart < mDataPoints.get(0).x) {
-                mXAxisEnd = mXAxisEnd + Math.abs(mXAxisStart);
-                mXAxisStart = mDataPoints.get(0).x;
+                // Limit the scrolling to the minimum X value
+                if(mDataPoints.size() > 0 && mXAxisStart < mDataPoints.get(0).x) {
+                    mXAxisEnd = mXAxisEnd + Math.abs(mXAxisStart);
+                    mXAxisStart = mDataPoints.get(0).x;
+                }
+
+                invalidate();
+                return true;
             }
-			
-			invalidate();
-			return true;
+            return false;
 		}
 	}
 
@@ -410,6 +415,7 @@ public class GraphView extends View {
 	public static class Point {
 		public float x;
 		public float y;
+        public String label;
 		
 		public Point(float x, float y) {
 			this.x = x;

@@ -1,7 +1,5 @@
 package com.sebbelebben.smartpower;
 
-import java.util.Date;
-
 import com.sebbelebben.smartpower.Server.OnConsumptionReceiveListener;
 
 /**
@@ -16,5 +14,5 @@ public interface Graphable {
 	 * @param end
 	 * @param listener
 	 */
-	public void getConsumption(Date start, Date end, final OnConsumptionReceiveListener listener);
+	public void getConsumption(Duration duration, int amount, final OnConsumptionReceiveListener listener);
 }

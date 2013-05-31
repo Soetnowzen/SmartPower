@@ -1,6 +1,11 @@
 Design decisions
 ================
 
+## Initial design
+
+Our initial design was done with fluidui and can be found at [fluidui](https://www.fluidui.com/editor/live/preview/p_qDdXxKS8pfpCBSiu2IerV8nc8RJLmxso.1364381332109). It a prototype with limited functionality, but it's easy to see that it's a long way away from what we now have done.
+
+
 ## Design elements
 
 ### Slider
@@ -20,6 +25,6 @@ This library gives us the possibility of adding a title to each of the sliding f
 
 ### Robotium
 
-For acceptance testing, we chose to use Robotium since it's easy to test the GUI using this library, which would be hard to automate otherwise.
+For acceptance testing, we chose to use Robotium since it's easy to test the GUI using this library, which would be hard to automate otherwise. It was also recommended by our supervisor.
 
 
