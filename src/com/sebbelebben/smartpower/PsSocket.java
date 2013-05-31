@@ -108,6 +108,9 @@ public class PsSocket implements Serializable,Graphable, PsPart {
             }
         });
 	}
+	public void setStatus(boolean status){
+		this.status = status;
+	}
 	
 	/**
 	 * Sets a new name on the PsSocket.

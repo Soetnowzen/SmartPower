@@ -26,6 +26,7 @@ public class MainActivity extends SherlockFragmentActivity implements RemoteFavo
 	private ViewPager mPager;
 	private MainPagerAdapter mAdapter;
 	private User mUser;
+	private RemoteFragment remoteFragment;
 	private UserFragment userFragment;
 
 	@Override
@@ -90,6 +91,7 @@ public class MainActivity extends SherlockFragmentActivity implements RemoteFavo
 		    	switch(position) {
 			case 0:
 				fragment = RemoteFragment.newInstance(mUser);
+				remoteFragment = (RemoteFragment) fragment;
 				break;
 			case 1:
                 Log.i("SmartPower", "CREATING FRAGMENT");
@@ -146,7 +148,7 @@ public class MainActivity extends SherlockFragmentActivity implements RemoteFavo
 
 	@Override
 	public void notifyUserFavoriteChanged(int id, boolean status) {
-		// TODO Auto-generated method stub
+		remoteFragment.update(id, status);
 		
 	}
 }

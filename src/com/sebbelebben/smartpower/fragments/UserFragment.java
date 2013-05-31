@@ -174,21 +174,21 @@ public class UserFragment extends SherlockFragment {
 
 					@Override
 					public void onClick(View v) {
-                        getSherlockActivity().setProgressBarIndeterminateVisibility(false);
+                        getSherlockActivity().setProgressBarIndeterminateVisibility(true);
 						tb.setChecked(!tb.isChecked());
 						if ( tb.isChecked()) {
 							socket.turnOff(new GenericListener() {
 								
 								@Override
 								public void success() {
-                                    getSherlockActivity().setProgressBarIndeterminateVisibility(true);
+                                    getSherlockActivity().setProgressBarIndeterminateVisibility(false);
 									tb.setChecked(false);
 									mCallback.notifyUserFavoriteChanged(socket.getId(), false);
 								}
 								
 								@Override
 								public void failed() {
-                                    getSherlockActivity().setProgressBarIndeterminateVisibility(true);
+                                    getSherlockActivity().setProgressBarIndeterminateVisibility(false);
 									Toast.makeText(getActivity(), "Failed turning socket off", Toast.LENGTH_SHORT);
 								}
 							});
@@ -197,7 +197,7 @@ public class UserFragment extends SherlockFragment {
 								
 								@Override
 								public void success() {
-                                    getSherlockActivity().setProgressBarIndeterminateVisibility(true);
+                                    getSherlockActivity().setProgressBarIndeterminateVisibility(false);
 									tb.setChecked(true);
 									mCallback.notifyUserFavoriteChanged(socket.getId(), true);
 									

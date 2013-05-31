@@ -17,6 +17,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -124,6 +125,24 @@ public class RemoteFragment extends SherlockFragment {
 		registerForContextMenu(mListView);
 
 		return view;
+	}
+	public void update(int id, boolean status){
+		for (PowerStrip ps : mPowerStrips) {
+			for (PsSocket socket: ps.getSockets()){
+				if(socket.getId() == id){
+					socket.setStatus(status);
+					mAdapter.notifyDataSetChanged();
+					break;
+				}
+			}
+		}
+			
+			
+		
+		
+		
+		mAdapter.notifyDataSetChanged();
+		Log.i("bug", "henning");
 	}
 
     /**
