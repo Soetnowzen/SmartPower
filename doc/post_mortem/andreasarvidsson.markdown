@@ -9,6 +9,8 @@ For version control, we have used Git. I've been using it for some time now. It 
 
 In this project, we have used the popular branching model "git flow", as described [here](http://nvie.com/posts/a-successful-git-branching-model/). 
 
+For me, using git was really efficient time-wise, since I knew most of the commands before and it really helped a lot when tracking down bugs (just browse through the commit history). If development continued, it would be even more awesome, since we can compare releases, do nightly builds and all that good stuff. Even if I was forced to learn the git commands again, it would probably be worth it in the long run.
+
 #### Advantage
 There's a great bunch of advantages using version control and git, not only when developing as a team but also for individual use. First and foremost, it allows me to go back through all the commits to see what has been changed. This is very useful when something is not functioning correct, and you want to find out what (and who caused it, which is most of the times me). Not only this though, but you can easily keep track of all versions of the program (if using tags correctly), have access to the code base on all computers, synchronize code between collaborators, experiment with the code through branches, and much more.
 
@@ -20,7 +22,7 @@ There are some minor disadvantages to git obviously. The most clear is that it a
 I haven't seen or experienced many disadvantages with the git flow branching model. It might be too complicated for projects of this timelength, since many features are not used. We only did one release and no hotfixes.
 
 ### Agile Development (Scrum)
-I have never worked on a larger project with someone else, so learning about scrum has been low priority for me until now. It has proven to be a very efficient tool, although it could perhaps have been executed better if we had more experience with using it though.
+I have never worked on a larger project with someone else, so learning about scrum has been low priority for me until now. It has proven to be a very neat workflow, although it could perhaps have been executed better if we had more experience with using it though. I can't really say anything about efficiency, since this is the only method I am familiar with. I can't imagine the project would've been better off using another method though.
 
 #### Advantage
 Using agile development methods like SCRUM gives you alot of flexibility while having the customer in focus. By mainly developing features that the user wants (that answers user stories), the finshed product will be done sooner and with more user-oriented features. All developers are kept up-to-date when attending the meetings; this provides a greater understanding of the project and where it's heading.
@@ -31,6 +33,8 @@ Scrum obviously requires some extra resources to be successfully executed, not o
 ### Unit and Acceptance testing
 Testing is something I've basically ignored in the past, but the importance of it is more clear now after this course. We did not do test-driven development, but rather constructing tests after the code was written. This was much due to that the design was not 100% clear, so the tests we wrote would have to be rewritten. Since we did not have much time due to the other course, we had to cut this overhead. It would've been interesting to try TDD though, since it seems promising.
 
+Since this was a small project, the overhead of writing tests made it not very efficient time wise. I believe that if we had more time, then the real power of testing would shine.
+
 #### Advantage
 Using unit- and acceptance tests allowed us to be certain a part of the code worked. It took a bit of time, and the time was probably not regained in this small project, but if we were to continue the development we would be happy there are tests to rely on instead of tedious bug searching each time we change the code.
 
@@ -40,6 +44,8 @@ In this project, I had some problems constructing unit tests for some classes wh
 
 ### Documentation
 We noticed that when using SCRUM, documentation was not as important since we had good communication in the group during the meetings. We did add some javadocs, as well as comments of course, when the code was largely finished.
+
+Documentation, like testing, was not very efficient time-wise for this small project. If, however, development continues, we will be glad we have it. Documentation is for the future, not the present (unless a customer wants it, of course).
 
 #### Advantage
 Documentation is a great tool, not only when you work as a team but also when you work alone. Code is read more often than it is written, so it makes sense to make it as clear as possible. Explaining how methods work (using tools as JavaDoc) allows both you and the other collaborators to remember what the method actually does, months after if was last used. It is especially important when developing open source projects, so that other people can contribute more easily.
