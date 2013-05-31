@@ -72,7 +72,7 @@ Eftersom vi inte använde det fullt ut är det svårt att bedöma effektiviteten
 
 ### I vilka situationer skulle du använda tekniken framöver?
 
-När jag arbetar på större projetk och vill ha koll på att allt fungerar korrekt.
+När jag arbetar på större projekt och vill ha koll på att allt fungerar korrekt.
 
 ### I vilka situationer skulle du inte använda tekniken framöver?
 
