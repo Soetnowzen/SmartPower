@@ -58,6 +58,7 @@ public class UserFragment extends SherlockFragment {
 
 	public UserFragment() {
 	}
+	
 	public void updateFavorites(){
 		list.clear();
 		list.addAll(mUser.getFavorite(getActivity()));

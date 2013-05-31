@@ -8,7 +8,7 @@ import org.json.JSONObject;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.sebbelebben.smartpower.fragments.*;
-import com.sebbelebben.smartpower.fragments.RemoteFragment.FavoriteListener;
+import com.sebbelebben.smartpower.fragments.RemoteFragment.RemoteFavoriteListener;
 import com.viewpagerindicator.TitlePageIndicator;
 
 import android.content.Intent;
@@ -21,7 +21,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 
-public class MainActivity extends SherlockFragmentActivity implements FavoriteListener{
+public class MainActivity extends SherlockFragmentActivity implements RemoteFavoriteListener{
 	private ViewPager mPager;
 	private MainPagerAdapter mAdapter;
 	private User mUser;

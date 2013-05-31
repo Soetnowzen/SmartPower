@@ -52,7 +52,7 @@ public class RemoteFragment extends SherlockFragment {
     private ExpandableListView mListView;
 	private ArrayList<PowerStrip> mPowerStrips = new ArrayList<PowerStrip>();
 	private ExpandablePowerStripAdapter mAdapter;
-	private FavoriteListener mCallback;
+	private RemoteFavoriteListener mCallback;
     /**
      * Creates a new instance of this fragment, using the provided {@link User} to list the {@link PowerStrip} and
      * {@link com.sebbelebben.smartpower.PsSocket}.
@@ -68,14 +68,14 @@ public class RemoteFragment extends SherlockFragment {
 		f.setArguments(args);
 		return f;
 	}
-	public interface FavoriteListener{
+	public interface RemoteFavoriteListener{
 		public void notifyFavoriteChanged();
 	}
 	@Override
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		try{
-			mCallback = (FavoriteListener) activity;
+			mCallback = (RemoteFavoriteListener) activity;
 		}catch(ClassCastException e){
 			throw new ClassCastException(activity.toString() +
 					" must implement FavoriteListener");
