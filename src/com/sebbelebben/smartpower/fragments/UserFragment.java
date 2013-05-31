@@ -158,6 +158,7 @@ public class UserFragment extends SherlockFragment {
 
 					@Override
 					public void onClick(View v) {
+                        getSherlockActivity().setProgressBarIndeterminateVisibility(false);
 						Log.d("bug", "onclick");
 						tb.setChecked(!tb.isChecked());
 						if ( tb.isChecked()) {
@@ -165,11 +166,13 @@ public class UserFragment extends SherlockFragment {
 								
 								@Override
 								public void success() {
+                                    getSherlockActivity().setProgressBarIndeterminateVisibility(true);
 									tb.setChecked(false);
 								}
 								
 								@Override
 								public void failed() {
+                                    getSherlockActivity().setProgressBarIndeterminateVisibility(true);
 									Toast.makeText(getActivity(), "Failed turning socket off", Toast.LENGTH_SHORT);
 								}
 							});
@@ -178,12 +181,14 @@ public class UserFragment extends SherlockFragment {
 								
 								@Override
 								public void success() {
+                                    getSherlockActivity().setProgressBarIndeterminateVisibility(true);
 									tb.setChecked(true);
 									
 								}
 								
 								@Override
 								public void failed() {
+                                    getSherlockActivity().setProgressBarIndeterminateVisibility(true);
 									Toast.makeText(getActivity(), "Failed turning socket on", Toast.LENGTH_SHORT);
 								}
 							});

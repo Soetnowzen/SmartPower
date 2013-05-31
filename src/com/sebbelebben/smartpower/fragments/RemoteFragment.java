@@ -192,6 +192,7 @@ public class RemoteFragment extends SherlockFragment {
 							public void success() {
                                 getSherlockActivity().setProgressBarIndeterminateVisibility(false);
 								tb.setChecked(false);
+                                notifyFavoriteChanged(child);
 							}
 							
 							@Override
@@ -207,6 +208,7 @@ public class RemoteFragment extends SherlockFragment {
 							public void success() {
                                 getSherlockActivity().setProgressBarIndeterminateVisibility(false);
 								tb.setChecked(true);
+                                notifyFavoriteChanged(child);
 							}
 							
 							@Override
@@ -449,29 +451,7 @@ public class RemoteFragment extends SherlockFragment {
                             public void success(String name) {
                                 mAdapter.notifyDataSetChanged();
                                 
-                                User user = (User) getArguments().getSerializable("User");
-                                
-                                SharedPreferences sp = getActivity().getSharedPreferences(user.getUserName(), 0);
-                                String favorite = sp.getString("Favorite", null);
-                                try {
-                            		if(favorite != null){
-                            			JSONArray jsArray = new JSONArray(favorite);
-                            			for(int i = 0; i < jsArray.length(); i++) {
-                                			JSONObject loop_psSocket = jsArray.getJSONObject(i);
-                                			if(loop_psSocket.getInt("id") == pspart.getId()){
-                                				PsSocket socket = (PsSocket) pspart;
-                                				
-                                				jsArray.put(i, new JSONObject(socket.toJSON()));
-                                				Editor edit = sp.edit();
-                                			    edit.putString("Favorite", jsArray.toString());
-                                			    edit.commit();
-                                				mCallback.onFavoriteChanged();
-                                			}
-                            			}
-                            		}
-                            	} catch (JSONException e) {
-                            		e.printStackTrace();
-                            	}
+                                notifyFavoriteChanged(pspart);
                             }
 
                             @Override
@@ -495,6 +475,34 @@ public class RemoteFragment extends SherlockFragment {
 
         // show it
         alertDialog.show();
+    }
+
+    private void notifyFavoriteChanged(PsPart pspart) {
+        User user = (User) getArguments().getSerializable("User");
+
+        // Go through favorites to see if it was changed
+        SharedPreferences sp = getActivity().getSharedPreferences(user.getUserName(), 0);
+        String favorite = sp.getString("Favorite", null);
+        try {
+            if(favorite != null){
+                JSONArray jsArray = new JSONArray(favorite);
+                for(int i = 0; i < jsArray.length(); i++) {
+                    JSONObject loop_psSocket = jsArray.getJSONObject(i);
+                    if(loop_psSocket.getInt("id") == pspart.getId()){
+                        PsSocket socket = (PsSocket) pspart;
+
+                        jsArray.put(i, new JSONObject(socket.toJSON()));
+                        Editor edit = sp.edit();
+                        edit.putString("Favorite", jsArray.toString());
+                        edit.commit();
+                        // Favorite was changed
+                        mCallback.onFavoriteChanged();
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 	private void groupOutlets(final int position) {
