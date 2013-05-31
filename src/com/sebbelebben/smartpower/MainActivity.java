@@ -145,7 +145,7 @@ public class MainActivity extends SherlockFragmentActivity implements RemoteFavo
 	}
 
 	@Override
-	public void notifyUserFavoriteChanged() {
+	public void notifyUserFavoriteChanged(int id, boolean status) {
 		// TODO Auto-generated method stub
 		
 	}

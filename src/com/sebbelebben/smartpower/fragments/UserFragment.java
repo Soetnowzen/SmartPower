@@ -62,7 +62,7 @@ public class UserFragment extends SherlockFragment {
 	public UserFragment() {
 	}
 	public interface UserFavoriteListener{
-		public void notifyUserFavoriteChanged();
+		public void notifyUserFavoriteChanged(int id, boolean status);
 	}
 	@Override
 	public void onAttach(Activity activity){
@@ -175,7 +175,6 @@ public class UserFragment extends SherlockFragment {
 					@Override
 					public void onClick(View v) {
                         getSherlockActivity().setProgressBarIndeterminateVisibility(false);
-						Log.d("bug", "onclick");
 						tb.setChecked(!tb.isChecked());
 						if ( tb.isChecked()) {
 							socket.turnOff(new GenericListener() {
@@ -184,6 +183,7 @@ public class UserFragment extends SherlockFragment {
 								public void success() {
                                     getSherlockActivity().setProgressBarIndeterminateVisibility(true);
 									tb.setChecked(false);
+									mCallback.notifyUserFavoriteChanged(socket.getId(), false);
 								}
 								
 								@Override
@@ -199,6 +199,7 @@ public class UserFragment extends SherlockFragment {
 								public void success() {
                                     getSherlockActivity().setProgressBarIndeterminateVisibility(true);
 									tb.setChecked(true);
+									mCallback.notifyUserFavoriteChanged(socket.getId(), true);
 									
 								}
 								
