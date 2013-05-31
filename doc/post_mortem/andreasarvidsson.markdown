@@ -22,23 +22,54 @@ I haven't seen or experienced many disadvantages with the git flow branching mod
 ### Agile Development (Scrum)
 I have never worked on a larger project with someone else, so learning about scrum has been low priority for me until now. It has proven to be a very efficient tool, although it could perhaps have been executed better if we had more experience with using it though.
 
+#### Advantage
+Using agile development methods like SCRUM gives you alot of flexibility while having the customer in focus. By mainly developing features that the user wants (that answers user stories), the finshed product will be done sooner and with more user-oriented features. All developers are kept up-to-date when attending the meetings; this provides a greater understanding of the project and where it's heading.
+
+#### Disadvantage
+Scrum obviously requires some extra resources to be successfully executed, not only because of the regular meetings but also since testing is involved at every step. Also, it can be difficult to organize the project if the goals are not clear and concise, and since new goals and user stories are introduced all the time, the project might never even get finished.
+
 ### Unit and Acceptance testing
 Testing is something I've basically ignored in the past, but the importance of it is more clear now after this course.
+
+#### Advantage
+Using unit- and acceptance tests allows the developer to be certain a part of the code to work.
+
+#### Disadvantage
+The only obvious disadvantage is that it takes time to do. This time is probably regained when you don't have to search for weird bugs though.
+In this project, I had some problems with constructing unit tests for the GraphView class. 00
+
+### Documentation
+We noticed that when using SCRUM, documentation was not as important since we had great communication in the group during the meetings. We did add some javadocs, as well as comments of course, when the code was largely finished.
+
+#### Advantage
+Documentation is a great tool, not only when you work as a team but also when you work alone. Code is read more often than it is written, so it makes sense to make it as clear as possible. Explaining how methods work (using tools as JavaDoc) allows both you and the other collaborators to remember what the method actually does, months after if was last used. It is especially important when developing open source projects, so that other people can contribute more easily.
+
+#### Disadvantage
+Documentation takes time - a lot of time. This demands more resources, which might not be available or might be needed somewhere else. If the communication between developers are good enough, documentation should not be prioritized (especially not in the early stages of development, since it's easy to forget to change the documentation when you change the code). Sometimes, it is more important to provide a finished product quicker, unless the customer actually needs the documentation.
 
 ## Time
 We have not kept track of the amount of time spent on the project, so it becomes tricky to evaluate how much people actually have spent. However, I feel that the following list represent the time distribution quite well:
 1. Andreas Arvidsson (me) - 130 hours
 2. Johan Bregell - 110 hours
 3. Henning Phan - 100 hours
-4. Sebastian Lagerman - 80 hours
-5. Johan Swetzén - 70 hours
+4. Sebastian Lagerman - 90 hours
+5. Johan Swetzén - 80 hours
 
-This is partly based on number of commits as well as my general impression I got at the scrum meetings. It might be totally off though, since much time might have been spent "behind the scenes" - like learning android and how git works.
+This is partly based on number of commits as well as my general impression I got at the scrum meetings. It might be totally off though, since much time might have been spent "behind the scenes" - like learning android and how git works for some people.
 
 ## My thoughts
+
+### Project
 I am very happy with my contribution to the project and the codebase, as well as the others contribution. I have made the most commits in the project (checked with the "git shortlog" command) - however, this does not necessarily mean that I was the one contributing the most. I was the one in charge of the majority of merging (mainly feature branches into develop at scrum meetings), and I usually have pretty few changes each commit (easier to keep track of things for me that way) - this naturally leads to more commits. Furthermore, I was the only one who has done extensive work on the Android platform, so I did not need to spend much time searching for fundamental aspects in this field.
 
-I think that everyone in the project has done excellent work. The shortcomings of the project was probably that there was hard to have regular scrum meetings, since we all had bachelor's thesis to work on. I think we managed it OK though.
+I think that everyone in the project has done excellent work. The shortcomings of the project was probably that there was hard to have regular scrum meetings, since we all had bachelor's thesis to work on. Sometimes, people would come late to the meetings due to either traffic, other meetings or laziness (myself included). Relying on Skype was discouraged in our group, but we were sometimes forced to use it in order to have our daily meeting. I think we managed it OK though, but it's definitively something that could have been done better.
+
+### Course
+The course have been one of the most valuable for me personally, since as as software developer, the techniques taught will help me on a daily basis. We don't have many project courses either, and I believe that's a big mistake.
+
+As for improvements for the course, I suggest that you have a few more lectures. It was really easy to miss the last ones since they were not every monday. There were both slides and videos (which was awesome, so keep doing that), which greatly limited the impact of missing the lectures.
+
+Me, along with a few people in the group, switched to Android Studio half way through the course. It was a joy to work with, so I recommend you have that as an option to Eclipse (some people might prefer Eclipse though) in later courses.
 
 ## Future projects
 I believe the core methodology taught in this course will be applied in future projects for me if I have a say in it. Version control (be it git or subversion) is a must of course, and I would very much prefer scrum as well. One thing I would like to try is code review - that is, someone reviews my code and I review some of the collaborators code before they get merged into the main branches. I feel like this is a nice alternative to extreme programming (where two programmers work on one computer), which I'm not a big fan of (even though I haven't tried it much). Also, the scrum meetings maybe should not be every day, at least not for a part-time project like this.
