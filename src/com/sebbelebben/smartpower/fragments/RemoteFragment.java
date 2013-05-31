@@ -78,7 +78,7 @@ public class RemoteFragment extends SherlockFragment {
 			mCallback = (RemoteFavoriteListener) activity;
 		}catch(ClassCastException e){
 			throw new ClassCastException(activity.toString() +
-					" must implement FavoriteListener");
+					" must implement RemoteFavoriteListener");
 		}
 	}
 	public void onCreate(Bundle savedInstanceState) {

@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Typeface;
@@ -25,6 +26,7 @@ import android.widget.ToggleButton;
 import com.actionbarsherlock.app.SherlockFragment;
 import com.sebbelebben.smartpower.*;
 import com.sebbelebben.smartpower.Server.GenericListener;
+import com.sebbelebben.smartpower.fragments.RemoteFragment.RemoteFavoriteListener;
 
 /**
  * Fragment to display user information, 
@@ -39,6 +41,7 @@ public class UserFragment extends SherlockFragment {
 	ListView listView;
     GraphView graphView;
     User mUser;
+    UserFavoriteListener mCallback;
 	
     /**
      * Creates a new instance of this fragment, using the provided {@link User} to 
@@ -58,7 +61,19 @@ public class UserFragment extends SherlockFragment {
 
 	public UserFragment() {
 	}
-	
+	public interface UserFavoriteListener{
+		public void notifyUserFavoriteChanged();
+	}
+	@Override
+	public void onAttach(Activity activity){
+		super.onAttach(activity);
+		try{
+			mCallback = (UserFavoriteListener) activity;
+		}catch(ClassCastException e){
+			throw new ClassCastException(activity.toString() +
+					" must implement UserFavoriteListener");
+		}
+	}
 	public void updateFavorites(){
 		list.clear();
 		list.addAll(mUser.getFavorite(getActivity()));
