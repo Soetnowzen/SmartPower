@@ -346,10 +346,12 @@ public class RemoteFragment extends SherlockFragment {
 					} else {
                         // Make sure all ViewFlippers are restored
                         for(View childView : childMap.get(groupPos)) {
-                            ViewFlipper flipper = (ViewFlipper) childView.findViewById(R.id.viewflipper);
-                            flipper.setInAnimation(getActivity(), R.anim.no_anim);
-                            flipper.setOutAnimation(getActivity(), R.anim.no_anim);
-                            flipper.setDisplayedChild(0);
+                            if(childView != null) {
+                                ViewFlipper flipper = (ViewFlipper) childView.findViewById(R.id.viewflipper);
+                                flipper.setInAnimation(getActivity(), R.anim.no_anim);
+                                flipper.setOutAnimation(getActivity(), R.anim.no_anim);
+                                flipper.setDisplayedChild(0);
+                            }
                         }
                         
 						mListView.collapseGroup(groupPos);
