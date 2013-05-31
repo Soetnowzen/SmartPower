@@ -60,8 +60,8 @@ public class LoginActivity extends Activity {
 		//Listens for when the login button is pressed.
 		loginButton.setOnClickListener(new OnClickListener() {
 			public void onClick(View arg0) {
-				String username = mUsernameBox.getText().toString();
-				String password = mPasswordBox.getText().toString();
+				String username = mUsernameBox.getText().toString().replaceAll("[^\\w\\s^-]", "");
+				String password = mPasswordBox.getText().toString().replaceAll("[^\\w\\s^-]", "");
 				mUser = new User(username, password);
 				logIn();
 			}

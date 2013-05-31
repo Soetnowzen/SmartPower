@@ -1,7 +1,5 @@
 package com.sebbelebben.smartpower.tests;
 
-import java.util.concurrent.CyclicBarrier;
-
 import android.test.AndroidTestCase;
 
 import com.sebbelebben.smartpower.PowerStrip;
@@ -12,16 +10,10 @@ import com.sebbelebben.smartpower.Server.OnUpdateListener;
 
 public class PowerStripTest extends AndroidTestCase {
 	private PowerStrip powerStrip;
-	private CyclicBarrier barrier3 = new CyclicBarrier(3);
-	private CyclicBarrier barrier2 = new CyclicBarrier(2);
 
-	public PowerStripTest() throws Exception {
+	public PowerStripTest(){
 		super();
-		this.powerStrip = new PowerStrip(5, "SN-ANDRO2", "apikey1011", "Grendosan 2", null, null);
-	}
-	
-	public PowerStripTest(PowerStrip powerStrip){
-		this.powerStrip = powerStrip;
+		this.powerStrip = new PowerStrip(5, "SN-ANDRO2", "apikey1011", "SN-ANDRO2", null, null);
 	}
 	
 	protected void setUp() throws Exception {
@@ -30,47 +22,17 @@ public class PowerStripTest extends AndroidTestCase {
 			
 			@Override
 			public void success() {
-				assertEquals(4, powerStrip.getSockets().length);
-				try {
-					barrier3.await();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 			}
 			
 			@Override
 			public void failed() {
-				assertFalse(true);
-				try {
-					barrier3.await();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 			}
 		});
-		powerStrip.updateStatus(new OnUpdateListener() {
-			
-			@Override
-			public void onUpdateReceive(Boolean status) {
-				assertEquals(status, powerStrip.getStatus());
-				try {
-					barrier3.await();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-			
-			@Override
-			public void failed() {
-				assertFalse(true);
-				try {
-					barrier3.await();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-		barrier3.await();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void testId(){
@@ -89,68 +51,55 @@ public class PowerStripTest extends AndroidTestCase {
 			@Override
 			public void success(String name) {
 				assertEquals(test_name, powerStrip.getName());
-				try {
-					barrier2.await();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 			}
 			
 			@Override
 			public void failed() {
 				assertEquals(current_name, powerStrip.getName());
-				try {
-					barrier2.await();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 			}
 		});
-		barrier2.await();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		powerStrip.setName(current_name, new GenericStringListener() {
 			
 			@Override
 			public void success(String name) {
 				assertEquals(current_name, powerStrip.getName());
-				try {
-					barrier2.await();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 			}
 			
 			@Override
 			public void failed() {
 				assertEquals(test_name, powerStrip.getName());
-				try {
-					barrier2.await();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 			}
 		});
-		barrier2.await();
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 	
-	public void testJSON(){
-		String PsSocketsJSON = "";
-		System.out.println(PsSocketsJSON);
-		PsSocket[] psSockets = powerStrip.getSockets();
-		for(int i = 0; i < psSockets.length; i++){
-			if(i != 1){
-				PsSocketsJSON.concat(",");
+	public void testStatus(){
+		powerStrip.updateStatus(new OnUpdateListener() {
+			
+			@Override
+			public void onUpdateReceive(Boolean status) {
+				assertEquals(status, powerStrip.getStatus());
 			}
-			PsSocketsJSON.concat(psSockets[i].toJSON());
+			
+			@Override
+			public void failed() {
+				assertFalse(true);
+			}
+		});
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
-		System.out.println(PsSocketsJSON);
-		String JSON = 
-			"{" +
-				"\"id\":"+Integer.toString(powerStrip.getId())+"," +
-				"\"serialId\":\""+powerStrip.toString()+"\"," +
-				"\"name\":\""+powerStrip.getName()+"\"," +
-				"\"pssockets\":["+PsSocketsJSON+"]" +
-			"}";
-		assertEquals(JSON, powerStrip.toJSON());
 	}
 
 	protected void tearDown() throws Exception {
