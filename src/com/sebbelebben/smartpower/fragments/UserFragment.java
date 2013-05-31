@@ -221,7 +221,7 @@ public class UserFragment extends SherlockFragment {
 								
 								@Override
 								public void failed() {
-                                    getSherlockActivity().setProgressBarIndeterminateVisibility(true);
+                                    getSherlockActivity().setProgressBarIndeterminateVisibility(false);
 									Toast.makeText(getActivity(), "Failed turning socket on", Toast.LENGTH_SHORT);
 								}
 							});
