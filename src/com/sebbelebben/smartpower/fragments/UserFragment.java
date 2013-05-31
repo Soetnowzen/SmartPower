@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -163,7 +164,22 @@ public class UserFragment extends SherlockFragment {
 			final PsSocket socket = objects.get(position);
 			TextView tv = (TextView) v.findViewById(R.id.text);
 			final ToggleButton tb = (ToggleButton) v.findViewById(R.id.toggle_button);
+			ImageButton favorite = (ImageButton) v.findViewById(R.id.favorite_btn);
 			if ( tv != null) tv.setText(socket.getName());
+			/**
+			 * Sets onclicklistener to favoriteButton to unfavorite 
+			 * the socket
+			 */
+			if(favorite != null){
+				favorite.setOnClickListener(new OnClickListener() {
+					
+					@Override
+					public void onClick(View v) {
+						mUser.removeFavorite(socket, context);
+						updateFavorites();
+					}
+				});
+			}
 			/*
 			 * sets the onclicklistener to the togglebutton
 			 * The toggling is delayed until a confirmation from server arrives

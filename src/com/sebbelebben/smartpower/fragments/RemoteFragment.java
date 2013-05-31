@@ -142,7 +142,6 @@ public class RemoteFragment extends SherlockFragment {
 		
 		
 		mAdapter.notifyDataSetChanged();
-		Log.i("bug", "henning");
 	}
 
     /**
