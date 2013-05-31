@@ -71,6 +71,10 @@ I am very happy with my contribution to the project and the codebase, as well as
 
 I think that everyone in the project has done excellent work. The shortcomings of the project was probably that there was hard to have regular scrum meetings, since we all had bachelor's thesis to work on. Sometimes, people would come late to the meetings due to either traffic, other meetings or laziness (myself included). Relying on Skype was discouraged in our group, but we were sometimes forced to use it in order to have our daily meeting. I think we managed it OK though, but it's definitively something that could have been done better.
 
+Most other things worked nice - everyone stuck with the git branching model we chose (even though some problems was encountered) and the project was a success.
+
+The main annoyance was the usage of Eclipse and the weird errors that magically appeared when we used some external libraries. Switching to Android Studio helped a lot.
+
 ### Course
 The course have been one of the most valuable for me personally, since as as software developer, the techniques taught will help me on a daily basis. We don't have many project courses either, and I believe that's a big mistake.
 
@@ -80,3 +84,5 @@ Me, along with a few people in the group, switched to Android Studio half way th
 
 ## Future projects
 I believe the core methodology taught in this course will be applied in future projects for me if I have a say in it. Version control (be it git or subversion) is a must of course, and I would very much prefer scrum as well. One thing I would like to try is code review - that is, someone reviews my code and I review some of the collaborators code before they get merged into the main branches. I feel like this is a nice alternative to extreme programming (where two programmers work on one computer), which I'm not a big fan of (even though I haven't tried it much). Also, the scrum meetings maybe should not be every day, at least not for a part-time project like this.
+
+Documentation and testing was the two processes I felt was not so important in this particular project if the development is halted now after the course. This was expected, since it's just a project for a course and I have no personal attachments to it. However, the project I do participate in in the future, documentation and testing will play a key part.
