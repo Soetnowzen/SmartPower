@@ -5,19 +5,19 @@ Post Mortem Report - Andreas Arvidsson
 I've used a bunch of new processes and practices during the development of SmartPower. Some which I'm familiar with, some that are completely new.
 
 ### Version control (Git)
-For version control, we have used Git. I've been using it for some time now. It has mostly been private projects to keep track of the changes I've made. I did not use a cool branching model or any advance features though. This course has taught me to do so, and I'm very pleased to have increased my proficiency at using this excellent tool. In future project, git will still be my main tool for version control.
+For version control, we have used Git (duh, it's not like we had any choice). I've been using it for some time now. It has mostly been private projects to keep track of the changes I've made to the code. I did not use a cool branching model or any advance features though. This course has taught me to do so, and I'm very pleased to have increased my proficiency at using this excellent tool. In future project, git will still be my main tool for version control.
 
 In this project, we have used the popular branching model "git flow", as described [here](http://nvie.com/posts/a-successful-git-branching-model/). 
 
 For me, using git was really efficient time-wise, since I knew most of the commands before and it really helped a lot when tracking down bugs (just browse through the commit history). If development continued, it would be even more awesome, since we can compare releases, do nightly builds and all that good stuff. Even if I was forced to learn the git commands again, it would probably be worth it in the long run.
 
 #### Advantage
-There's a great bunch of advantages using version control and git, not only when developing as a team but also for individual use. First and foremost, it allows me to go back through all the commits to see what has been changed. This is very useful when something is not functioning correct, and you want to find out what (and who caused it, which is most of the times me). Not only this though, but you can easily keep track of all versions of the program (if using tags correctly), have access to the code base on all computers, synchronize code between collaborators, experiment with the code through branches, and much more.
+There's a great bunch of advantages using version control and git, not only when developing as a team but also for individual use. First and foremost, it allows me to go back through all the commits to see what has been changed. This is very useful when something is not functioning correct, and you want to find out where the problem is (git blame, hello!). Not only this though, but you can easily keep track of all versions of the program (if using tags correctly), have access to the code base on all computers, synchronize code between collaborators, experiment with the code through branches, and much more.
 
-The branching model (git flow) chosen gives numerous advantages, all listed on the website. My experience has been largely positive, even though we haven't used all aspects of it (hotfix-branches for example).
+The branching model (git flow) chosen gives numerous advantages, all basically listed on the website. My experience has been largely positive, even though we haven't used all aspects of it (hotfix-branches for example).
 
 #### Disadvantage
-There are some minor disadvantages to git obviously. The most clear is that it adds a bit of overhead timewise, since every non-trivial change should be committed. There's also some conflicts that can occur when merging and rebasing which can be a bit tedious to solve. Furthermore, it is very hard to remove a commit - so if you accidentally push your password somehow, you're basically doomed. However, these disadvantages are overshadowed by the advantages of using git. The extra time spent learning and integrating git into the workflow is well worth it, especially if problems arise later in the developmeny.
+There are some minor disadvantages to git obviously. The most clear is that it adds a bit of overhead timewise, since every non-trivial change should be committed. There's also some conflicts that can occur when merging and rebasing which can be a bit tedious to solve. Furthermore, it is very hard to remove a commit - so if you accidentally push your password somehow, you're basically doomed. However, these disadvantages are overshadowed by the advantages of using git. The extra time spent learning and integrating git into the workflow is well worth it, especially if problems arise later in the development.
 
 I haven't seen or experienced many disadvantages with the git flow branching model. It might be too complicated for projects of this timelength, since many features are not used. We only did one release and no hotfixes.
 
@@ -25,7 +25,7 @@ I haven't seen or experienced many disadvantages with the git flow branching mod
 I have never worked on a larger project with someone else, so learning about scrum has been low priority for me until now. It has proven to be a very neat workflow, although it could perhaps have been executed better if we had more experience with using it though. I can't really say anything about efficiency, since this is the only method I am familiar with. I can't imagine the project would've been better off using another method though.
 
 #### Advantage
-Using agile development methods like SCRUM gives you alot of flexibility while having the customer in focus. By mainly developing features that the user wants (that answers user stories), the finshed product will be done sooner and with more user-oriented features. All developers are kept up-to-date when attending the meetings; this provides a greater understanding of the project and where it's heading.
+Using agile development methods like Scrum gives you a lot of flexibility while having the customer in focus. By mainly developing features that the user wants (that answers user stories), the finished product will be done sooner and with more user-oriented features. All developers are kept up-to-date when attending the meetings; this provides a greater understanding of the project and where it's heading, which is always nice of course.
 
 #### Disadvantage
 Scrum obviously requires some extra resources to be successfully executed, not only because of the regular meetings but also since testing is involved at every step. Also, it can be difficult to organize the project if the goals are not clear and concise, and since new goals and user stories are introduced all the time, the project might never even get finished.
@@ -40,7 +40,7 @@ Using unit- and acceptance tests allowed us to be certain a part of the code wor
 
 #### Disadvantage
 The only obvious disadvantage is that it takes time to do. This time is probably regained when you don't have to search for weird bugs though.
-In this project, I had some problems constructing unit tests for some classes which mainly consists of private methods. An example of this is GraphView, whose calculations are only shown when rendering the view.
+In this project, I had some problems constructing unit tests for some classes which mainly consists of private methods. An example of this is GraphView, whose calculations are only shown when rendering the view. These types of classes must rely on other testing methods (acceptance, for example).
 
 ### Documentation
 We noticed that when using SCRUM, documentation was not as important since we had good communication in the group during the meetings. We did add some javadocs, as well as comments of course, when the code was largely finished.
@@ -67,13 +67,13 @@ This is partly based on number of commits as well as my general impression I got
 ## My thoughts
 
 ### Project
-I am very happy with my contribution to the project and the codebase, as well as the others contribution. I have made the most commits in the project (checked with the "git shortlog" command) - however, this does not necessarily mean that I was the one contributing the most. I was the one in charge of the majority of merging (mainly feature branches into develop at scrum meetings), and I usually have pretty few changes each commit (easier to keep track of things for me that way) - this naturally leads to more commits. Furthermore, I was the only one who has done extensive work on the Android platform, so I did not need to spend much time searching for fundamental aspects in this field.
+I am very happy with my contribution to the project and the codebase, as well as the others contribution. I have made the most commits in the project (checked with the "git shortlog" command) - however, this does not necessarily mean that I was the one contributing the most. I was the one in charge of the majority of merging (mainly feature branches into develop at scrum meetings), and I usually have pretty few changes each commit (easier to keep track of things for me that way) - this naturally leads to more commits. Furthermore, I was the only one who had done extensive work on the Android platform, so I did not need to spend much time searching for fundamental aspects in this field.
 
 I think that everyone in the project has done excellent work. The shortcomings of the project was probably that there was hard to have regular scrum meetings, since we all had bachelor's thesis to work on. Sometimes, people would come late to the meetings due to either traffic, other meetings or laziness (myself included). Relying on Skype was discouraged in our group, but we were sometimes forced to use it in order to have our daily meeting. I think we managed it OK though, but it's definitively something that could have been done better.
 
 Most other things worked nice - everyone stuck with the git branching model we chose (even though some problems was encountered) and the project was a success.
 
-The main annoyance was the usage of Eclipse and the weird errors that magically appeared when we used some external libraries. Switching to Android Studio helped a lot.
+The main annoyance was the usage of Eclipse and the weird errors that magically appeared when we used some external libraries. Switching to Android Studio helped a lot for me, and for future projects this will be the IDE of my choice.
 
 ### Course
 The course have been one of the most valuable for me personally, since as as software developer, the techniques taught will help me on a daily basis. We don't have many project courses either, and I believe that's a big mistake.
