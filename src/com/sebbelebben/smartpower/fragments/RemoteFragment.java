@@ -4,11 +4,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -186,6 +192,7 @@ public class RemoteFragment extends SherlockFragment {
 							public void success() {
                                 getSherlockActivity().setProgressBarIndeterminateVisibility(false);
 								tb.setChecked(false);
+                                notifyFavoriteChanged(child);
 							}
 							
 							@Override
@@ -201,6 +208,7 @@ public class RemoteFragment extends SherlockFragment {
 							public void success() {
                                 getSherlockActivity().setProgressBarIndeterminateVisibility(false);
 								tb.setChecked(true);
+                                notifyFavoriteChanged(child);
 							}
 							
 							@Override
@@ -340,10 +348,12 @@ public class RemoteFragment extends SherlockFragment {
 					} else {
                         // Make sure all ViewFlippers are restored
                         for(View childView : childMap.get(groupPos)) {
-                            ViewFlipper flipper = (ViewFlipper) childView.findViewById(R.id.viewflipper);
-                            flipper.setInAnimation(getActivity(), R.anim.no_anim);
-                            flipper.setOutAnimation(getActivity(), R.anim.no_anim);
-                            flipper.setDisplayedChild(0);
+                            if(childView != null) {
+                                ViewFlipper flipper = (ViewFlipper) childView.findViewById(R.id.viewflipper);
+                                flipper.setInAnimation(getActivity(), R.anim.no_anim);
+                                flipper.setOutAnimation(getActivity(), R.anim.no_anim);
+                                flipper.setDisplayedChild(0);
+                            }
                         }
                         
 						mListView.collapseGroup(groupPos);
@@ -440,6 +450,8 @@ public class RemoteFragment extends SherlockFragment {
                             @Override
                             public void success(String name) {
                                 mAdapter.notifyDataSetChanged();
+                                
+                                notifyFavoriteChanged(pspart);
                             }
 
                             @Override
@@ -463,6 +475,34 @@ public class RemoteFragment extends SherlockFragment {
 
         // show it
         alertDialog.show();
+    }
+
+    private void notifyFavoriteChanged(PsPart pspart) {
+        User user = (User) getArguments().getSerializable("User");
+
+        // Go through favorites to see if it was changed
+        SharedPreferences sp = getActivity().getSharedPreferences(user.getUserName(), 0);
+        String favorite = sp.getString("Favorite", null);
+        try {
+            if(favorite != null){
+                JSONArray jsArray = new JSONArray(favorite);
+                for(int i = 0; i < jsArray.length(); i++) {
+                    JSONObject loop_psSocket = jsArray.getJSONObject(i);
+                    if(loop_psSocket.getInt("id") == pspart.getId()){
+                        PsSocket socket = (PsSocket) pspart;
+
+                        jsArray.put(i, new JSONObject(socket.toJSON()));
+                        Editor edit = sp.edit();
+                        edit.putString("Favorite", jsArray.toString());
+                        edit.commit();
+                        // Favorite was changed
+                        mCallback.onFavoriteChanged();
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
 	private void groupOutlets(final int position) {
