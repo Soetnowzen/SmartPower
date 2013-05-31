@@ -1,17 +1,9 @@
 Post Mortem Report - Johan Swetzén
 ==================================
 
-# Processes and practices
+# Processer och arbetssätt
 
 Processerna och arbetssätten som vi jobbat med är framför allt Scrum, Versionshantering, Git flow och Test-driven utveckling. Man kan väl säga att det det är lite nytt och mycket som inte är direkt nytt men som jag lärt mig mycket av att jobba mer med.
-
-## Tid på kursen
-
-Jag kan ärligt säga att jag inte har lagt ner så mycket tid på den här kursen som jag skulle vilja. Det började dåligt för mig med att jag var sjuk en och en halv vecka i början och sedan hade jag svårt att komma igång med strulande Eclipse bland annat. Nu i slutet har jag jobbat desto mer istället och det var skönt att känna att jag fick upp lite hastighet i Android-kodandet, eftersom jag aldrig programmerat för Android tidigare.
-
-Tiden som jag har lagt på kursen är minst 70 timmar, men det är lite mer tid som jag inte loggat ordentligt. Av det jag skrivit upp vet jag att det är 50 timmar faktiskt arbete, 5 timmar föreläsning och 13 timmar möten. 
-
-Med andra ord är det ganska mycket tid som gått åt till möten. Vi har haft ett 15 minuters scrum-möte varje vardag som vi allt för sällan kunnat kombinera med att arbeta direkt efteråt
 
 ## Scrum
 
@@ -85,5 +77,24 @@ När jag arbetar på större projetk och vill ha koll på att allt fungerar korr
 ### I vilka situationer skulle du inte använda tekniken framöver?
 
 I mindre projekt där jag jobbar själv. Tester kan jag mycket väl skriva, men det har inte en så central roll som i test-driven utveckling.
+
+## Tid på kursen
+
+Jag kan ärligt säga att jag inte har lagt ner så mycket tid på den här kursen som jag skulle vilja. Det började dåligt för mig med att jag var sjuk en och en halv vecka i början och sedan hade jag svårt att komma igång med strulande Eclipse bland annat. Nu i slutet har jag jobbat desto mer istället och det var skönt att känna att jag fick upp lite hastighet i Android-kodandet, eftersom jag aldrig programmerat för Android tidigare.
+
+Tiden som jag har lagt på kursen är minst 70 timmar, men det är lite mer tid som jag inte loggat ordentligt. Av det jag skrivit upp vet jag att det är 50 timmar faktiskt arbete, 5 timmar föreläsning och 13 timmar möten. 
+
+Med andra ord är det ganska mycket tid som gått åt till möten. Vi har haft ett 15 minuters scrum-möte varje vardag som vi allt för sällan kunnat kombinera med att arbeta direkt efteråt
+
+# Vad fungerade bra med arbetssättet?
+
+
+
+# Vad fungerade mindre bra?
+
+# Hur arbetade vi tillsammans, vad fungerade bra och dåligt?
+
+# Vad skulle du ändra på i ett framtida projekt?
+
 
 
