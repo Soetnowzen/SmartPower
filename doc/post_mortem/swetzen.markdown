@@ -78,7 +78,7 @@ När jag arbetar på större projetk och vill ha koll på att allt fungerar korr
 
 I mindre projekt där jag jobbar själv. Tester kan jag mycket väl skriva, men det har inte en så central roll som i test-driven utveckling.
 
-## Tid på kursen
+# Tid på kursen
 
 Jag kan ärligt säga att jag inte har lagt ner så mycket tid på den här kursen som jag skulle vilja. Det började dåligt för mig med att jag var sjuk en och en halv vecka i början och sedan hade jag svårt att komma igång med strulande Eclipse bland annat. Nu i slutet har jag jobbat desto mer istället och det var skönt att känna att jag fick upp lite hastighet i Android-kodandet, eftersom jag aldrig programmerat för Android tidigare.
 
@@ -88,13 +88,17 @@ Med andra ord är det ganska mycket tid som gått åt till möten. Vi har haft e
 
 # Vad fungerade bra med arbetssättet?
 
-
+Med Scrum och pivotal tracker kunde vi dela upp arbetet väldigt bra och vi hade egentligen inte behövt träffas mer än de dagliga scrum-mötena. Det gick lätt att hålla koll på vad alla gjorde och också se vad vi gjort tidigare. Vi kommunicerade med en SMS-grupp, facebook-grupp och skype utöver de fysiska mötetna.
 
 # Vad fungerade mindre bra?
 
-# Hur arbetade vi tillsammans, vad fungerade bra och dåligt?
+Trots scrum-mötena så kändes det ibland som att kommunikationen brast och vi hade svårt att sätta oss in i varnadras kod. Detta berodde nog på dåligt kommenterad kod i början samt att många av oss var nya med Android. I början hade jag inte en chans att förstå hur en activity fungerade när Andreas, som är väldigt erfaren, skrivit en massa bra kod. Det hjälpte inte ens med kommentarer. Men vi hade lite problem i början också med att Henning satt och arbetade på ett klass för att läsa in data från Bregells kandidatgrupps server samtidigt som Johan (Bregell) gjorde API:t som Henning skulle koppla upp sig mot. Då gjorde Henning en massa arbeta för att hantera den data han trodde han skulle få fast det senare visade sig att Bregell löst problemet genom att skicka ut mer lätthanterlig data från första början! Det problemet kunde antagligen ha lösts genom att de två satt sig ner och haft ett möte, men vi hade i princip inga möten förutom det dagliga scrum-mötet. Det skulle knna bli mycket bättre.
+
+# Hur arbetade vi tillsammans, bra/dåligt?
+
+Som sagt delade vi upp arbetet i pivotal tracker. Alla fick skriva user stories som vi ville ha in. Johan Bregell hade vi utsett till någon form av projektledare så han fick gå igenom och prioritera dem, med viss inrådan från oss andra. Genom att vi hade ett möte varje dag och var tydligt fokuserade kring en uppgift som skulle lösas drog det ihop gruppen. Jag har tagit upp det som en nackdel tidigare att vi träffades varenda dag, men den kontinuiteten tror jag hjälpte till att bygga oss som grupp också. Jag har svår att komma på något riktigt negativt med hur vi jobbade som grupp.
 
 # Vad skulle du ändra på i ett framtida projekt?
 
-
+Ett av de stora problemen som uppkom berodde på att det API som vi jobbade mot skrevs parallellt med vår app. Det vållade lite problem, tex. det jag skrev om Henning tidigare. Annars fungerade det över lag bra, fast det hade varit nyttigt med ett och annat möte ibland för att bara några personer skulle kunna diskutera ett problem. Som det var nu hade vi inte riktigt med det i tankarna så det blev snarare så att alla pratade om det, vilket var ineffektivt, eller att vi inte pratade alls och det var ju ännu värre!
 
