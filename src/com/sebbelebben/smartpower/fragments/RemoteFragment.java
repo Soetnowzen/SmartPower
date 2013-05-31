@@ -69,7 +69,7 @@ public class RemoteFragment extends SherlockFragment {
 		return f;
 	}
 	public interface FavoriteListener{
-		public void onFavoriteChanged();
+		public void notifyFavoriteChanged();
 	}
 	@Override
 	public void onAttach(Activity activity){
@@ -251,7 +251,7 @@ public class RemoteFragment extends SherlockFragment {
                 		user.addFavorite(child, context);
                 		favoriteButton.setImageResource(R.drawable.ic_favorite_on_light);
                 	}
-                	mCallback.onFavoriteChanged();
+                	mCallback.notifyFavoriteChanged();
                 }
             });
 
@@ -496,7 +496,7 @@ public class RemoteFragment extends SherlockFragment {
                         edit.putString("Favorite", jsArray.toString());
                         edit.commit();
                         // Favorite was changed
-                        mCallback.onFavoriteChanged();
+                        mCallback.notifyFavoriteChanged();
                     }
                 }
             }

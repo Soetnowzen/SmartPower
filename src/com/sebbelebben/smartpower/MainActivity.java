@@ -134,12 +134,12 @@ public class MainActivity extends SherlockFragmentActivity implements FavoriteLi
      * future android versions. Also, if the fragment layout is changed in the viewpager,
      * then this will probably not function properly. Use with caution, and party hard.
      */
-	public void onFavoriteChanged() {
+	public void notifyFavoriteChanged() {
         FragmentManager fm = getSupportFragmentManager();
         Fragment f = fm.findFragmentByTag("android:switcher:"+R.id.viewpager+":1");
 
         if(f != null && f instanceof UserFragment) {
-            ((UserFragment) f).FavoriteChanged();
+            ((UserFragment) f).updateFavorites();
         }
 	}
 }
