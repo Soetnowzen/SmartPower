@@ -29,17 +29,17 @@ Using agile development methods like SCRUM gives you alot of flexibility while h
 Scrum obviously requires some extra resources to be successfully executed, not only because of the regular meetings but also since testing is involved at every step. Also, it can be difficult to organize the project if the goals are not clear and concise, and since new goals and user stories are introduced all the time, the project might never even get finished.
 
 ### Unit and Acceptance testing
-Testing is something I've basically ignored in the past, but the importance of it is more clear now after this course.
+Testing is something I've basically ignored in the past, but the importance of it is more clear now after this course. We did not do test-driven development, but rather constructing tests after the code was written. This was much due to that the design was not 100% clear, so the tests we wrote would have to be rewritten. Since we did not have much time due to the other course, we had to cut this overhead. It would've been interesting to try TDD though, since it seems promising.
 
 #### Advantage
-Using unit- and acceptance tests allows the developer to be certain a part of the code to work.
+Using unit- and acceptance tests allowed us to be certain a part of the code worked. It took a bit of time, and the time was probably not regained in this small project, but if we were to continue the development we would be happy there are tests to rely on instead of tedious bug searching each time we change the code.
 
 #### Disadvantage
 The only obvious disadvantage is that it takes time to do. This time is probably regained when you don't have to search for weird bugs though.
-In this project, I had some problems with constructing unit tests for the GraphView class. 00
+In this project, I had some problems constructing unit tests for some classes which mainly consists of private methods. An example of this is GraphView, whose calculations are only shown when rendering the view.
 
 ### Documentation
-We noticed that when using SCRUM, documentation was not as important since we had great communication in the group during the meetings. We did add some javadocs, as well as comments of course, when the code was largely finished.
+We noticed that when using SCRUM, documentation was not as important since we had good communication in the group during the meetings. We did add some javadocs, as well as comments of course, when the code was largely finished.
 
 #### Advantage
 Documentation is a great tool, not only when you work as a team but also when you work alone. Code is read more often than it is written, so it makes sense to make it as clear as possible. Explaining how methods work (using tools as JavaDoc) allows both you and the other collaborators to remember what the method actually does, months after if was last used. It is especially important when developing open source projects, so that other people can contribute more easily.
